@@ -7,7 +7,8 @@
 using namespace std;
 
 Quadris::Quadris()
-: cmdInterpreter{}, scoreBoard{}, textDisplay{} {
+: cmdInterpreter{}, scoreBoard{}, textDisplay{}, gameBoard{} {
+	
 }
 
 void Quadris::init() {

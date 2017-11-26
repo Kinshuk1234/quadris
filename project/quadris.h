@@ -4,6 +4,7 @@
 #include "commandinterpreter.h"
 #include "scoreboard.h"
 #include "textdisplay.h"
+#include "gameboard.h"
 
 
 
@@ -11,7 +12,7 @@ class Quadris {
 	CommandInterpreter cmdInterpreter;
 	ScoreBoard scoreBoard;
 	TextDisplay textDisplay;
-	// GameBoard gameBoard;
+	GameBoard gameBoard;
 
 	
 public:
