@@ -7,8 +7,7 @@
 using namespace std;
 
 Quadris::Quadris()
-: cmdInterpreter{} {
-
+: cmdInterpreter{}, scoreBoard{}, textDisplay{} {
 }
 
 void Quadris::init() {
@@ -22,7 +21,9 @@ void Quadris::runGameLoop() {
 	bool gameFinished = false;
 
 	while (!gameFinished) {
+		// TODO: what happens at EOF signal?
 		cin >> command;
+		cout << "Command: \'" << command << "\'" << endl;
 		// TODO: add actions...
 		// TODO: Visitor pattern for commands with the game board.
 	}

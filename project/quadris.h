@@ -1,17 +1,18 @@
 #include "commandinterpreter.h"
+#include "scoreboard.h"
+#include "textdisplay.h"
 
 
 
 class Quadris {
 	CommandInterpreter cmdInterpreter;
-	// ScoreBoard sb;
-	// Display textDisplay;
-	// GameBoard gb;
+	ScoreBoard scoreBoard;
+	TextDisplay textDisplay;
+	// GameBoard gameBoard;
 
 	
 public:
 	void init();
-	
 	// Big 5
 	Quadris();
 
