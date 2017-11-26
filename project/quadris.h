@@ -1,12 +1,12 @@
-
+#include "commandinterpreter.h"
 
 
 
 class Quadris {
-	// GameBoard gb;
+	CommandInterpreter cmdInterpreter;
 	// ScoreBoard sb;
-	// CommandInterpreter cmdInterpreter;
 	// Display textDisplay;
+	// GameBoard gb;
 
 	
 public:

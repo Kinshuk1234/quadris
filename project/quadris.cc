@@ -6,16 +6,24 @@
 
 using namespace std;
 
-Quadris::Quadris() {
+Quadris::Quadris()
+: cmdInterpreter{} {
 
 }
 
 void Quadris::init() {
 	// TODO: initialize the game object
-
 	runGameLoop();
 }
 
 void Quadris::runGameLoop() {
-	cout << "Quadris game loop." << endl;
+	string command = "";
+
+	bool gameFinished = false;
+
+	while (!gameFinished) {
+		cin >> command;
+		// TODO: add actions...
+		// TODO: Visitor pattern for commands with the game board.
+	}
 }

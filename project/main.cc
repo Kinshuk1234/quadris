@@ -1,5 +1,7 @@
 #include <iostream>
 #include "quadris.h"
+#include <map>
+#include <vector>
 
 using namespace std;
 
