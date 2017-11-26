@@ -13,7 +13,6 @@ class Quadris {
 	ScoreBoard scoreBoard;
 	TextDisplay textDisplay;
 	GameBoard gameBoard;
-
 	
 public:
 	void init();
@@ -26,3 +25,5 @@ private:
 };
 
 #endif
+
+
