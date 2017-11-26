@@ -5,6 +5,14 @@
 using namespace std;
 
 
+// other methods ------------------
+
+
+
+
+
+// Big 5 + ctor ------------------
+
 TextDisplay::TextDisplay()
 : grid{} {
 	for (int i = 0; i < 15; i++) {

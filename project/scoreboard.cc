@@ -1,9 +1,7 @@
 #include "scoreboard.h"
 #include "gameboard.h"
 
-
-ScoreBoard::ScoreBoard()
-: currentScore{0}, highScore{0} {/* CTOR BODY */}
+// other methods ---------------------------------
 
 
 void ScoreBoard::updateScore(int lastTurnScore) {
@@ -16,4 +14,10 @@ void ScoreBoard::updateScore(int lastTurnScore) {
 void ScoreBoard::updateCurrentScoreWith(GameBoard &gb) {
 	gb.updateScore(*this);
 }
+
+
+// Big 5 + ctor ---------------------------------
+
+ScoreBoard::ScoreBoard()
+: currentScore{0}, highScore{0} {/* CTOR BODY */}
 

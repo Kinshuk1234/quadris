@@ -28,7 +28,12 @@ void Quadris::runGameLoop() {
 		// TODO: add actions...
 		// TODO: Visitor pattern for commands with the game board.
 		// TODO: update scoreboard score in the END
-		scoreBoard.updateCurrentScoreWith(gameBoard);
+
+		if (command == "drop") {
+			// TODO: drop the piece if possible.
+			scoreBoard.updateCurrentScoreWith(gameBoard);
+		}
+		
 	}
 }
 

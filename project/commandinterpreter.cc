@@ -3,9 +3,19 @@
 #include <map>
 using namespace std;
 
-// TEMP
-#include <iostream>
 
+
+// Other Methods ------------------------
+
+
+void CommandInterpreter::addNewCommand(string commandName) {
+	// TODO: check if the command name exists already, if so, then throw error
+	// TODO: add the list of commands
+	// TODO: check for the list end keyword to end the command list
+	// TODO: then, add the macro to the map
+}
+
+// Big 5 + ctor ------------------------
 
 CommandInterpreter::CommandInterpreter()
 : cList{} {
@@ -15,13 +25,8 @@ CommandInterpreter::CommandInterpreter()
 	cList["down"] = {"down"};
 	cList["counterclockwise"] = {"counterclockwise"};
 	cList["clockwise"] = {"clockwise"};
+	// TODO: add more usual commands...
 }
 
-void CommandInterpreter::addNewCommand(string commandName) {
-	// TODO: check if the command name exists already, if so, then throw error
-	// TODO: add the list of commands
-	// TODO: check for the list end keyword to end the command list
-	// TODO: then, add the macro to the map
-}
 
 

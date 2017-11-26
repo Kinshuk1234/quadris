@@ -1,6 +1,13 @@
 #include "cell.h"
 
 
+// Other Methods ------------------------
+
+
+
+
+
+// Big 5 + ctor -------------------------
 
 Cell::Cell(int r, int c)
 : r{r}, c{c} {/* CTOR BODY */}
