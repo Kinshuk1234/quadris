@@ -1,3 +1,6 @@
+#ifndef TEXT_DISPLAY_H
+#define TEXT_DISPLAY_H
+
 #include <iostream>
 #include <vector>
 
@@ -14,3 +17,4 @@ public:
 	friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 
+#endif

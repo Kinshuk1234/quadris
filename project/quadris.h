@@ -1,3 +1,6 @@
+#ifndef QUADRIS_H
+#define QUADRIS_H
+
 #include "commandinterpreter.h"
 #include "scoreboard.h"
 #include "textdisplay.h"
@@ -20,3 +23,5 @@ private:
 	void runGameLoop();
 
 };
+
+#endif
