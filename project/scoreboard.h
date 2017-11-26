@@ -8,11 +8,18 @@ class ScoreBoard {
 	int currentScore;
 	int highScore;
 public:
-	ScoreBoard();
+	
 
 	// Visitor of GameBoard
 	void updateCurrentScoreWith(GameBoard &gb); // Start here
 	void updateScore(int lastTurnScore);
+
+	// Big 5 + ctor
+	ScoreBoard();
+	ScoreBoard(const ScoreBoard &other) = delete;
+	ScoreBoard(ScoreBoard &&other) = delete;
+	ScoreBoard &operator=(const ScoreBoard &other) = delete;
+	ScoreBoard &operator=(ScoreBoard &&other) = delete;
 };
 
 #endif

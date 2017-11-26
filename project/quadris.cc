@@ -1,5 +1,5 @@
 #include "quadris.h"
-
+#include <memory>
 
 // TEMP:
 #include <iostream>
@@ -7,7 +7,7 @@
 using namespace std;
 
 Quadris::Quadris()
-: cmdInterpreter{}, scoreBoard{}, textDisplay{}, gameBoard{} {
+: cmdInterpreter{}, scoreBoard{}, textDisplay{make_unique<TextDisplay>()}, gameBoard{textDisplay} {
 
 }
 
