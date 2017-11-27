@@ -7,20 +7,15 @@
 #include "scoreboard.h"
 #include "textdisplay.h"
 #include "gameboard.h"
-#include "levelzero.h"
-
-class Level; // May need to change if changing from ptr to another ref to object.
 
 
 
 
-class Quadris {
-	CommandInterpreter cmdInterpreter;
+class Quadris : public CommandInterpreter {
+	// CommandInterpreter cmdInterpreter;
 	ScoreBoard scoreBoard;
 	TextDisplay *textDisplay; // Change to smart pointer (i.e. unique_ptr, shared_ptr)
 	GameBoard *gameBoard;
-
-	Level *level;
 	
 public:
 	void init();

@@ -10,7 +10,6 @@ class CommandInterpreter : public Subject<std::vector<std::string>> { // TODO: i
 	std::string currentCommand;
 
 public:
-	void addNewCommand(std::string commandName, std::istream &in); // add a macro command
 	void execute(std::string command);
 
 	std::vector<std::string> getData() override;
@@ -23,6 +22,9 @@ public:
 	CommandInterpreter &operator=(CommandInterpreter &&other) = delete;
 
 	friend std::istream &operator>>(std::istream &in, std::vector<std::string> &vec);
+
+private:
+	std::string getFullCommand(std::string incCommand);
 };
 
 #endif
