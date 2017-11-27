@@ -7,7 +7,7 @@
 using namespace std;
 
 Quadris::Quadris()
-: cmdInterpreter{}, scoreBoard{}, textDisplay{make_shared<TextDisplay>()}, gameBoard{textDisplay} {
+: cmdInterpreter{}, scoreBoard{}, textDisplay{new TextDisplay{}}, gameBoard{textDisplay} {
 
 }
 

@@ -15,11 +15,13 @@ class GameBoard {
 
 public:
 
+	void changeCell(int r, int c, char ch); // TEMP
+
 	// Visitor pattern with ScoreBoard
 	void updateScore(ScoreBoard &sb);
 
 	// Big 5 + ctor
-	GameBoard(std::shared_ptr<TextDisplay> &td);
+	GameBoard(TextDisplay *td);
 	GameBoard(const GameBoard &other) = delete;
 	GameBoard(GameBoard &&other) = delete;
 	GameBoard &operator=(const GameBoard &other) = delete;

@@ -9,6 +9,7 @@ using namespace std;
 // other methods ------------------
 
 void TextDisplay::notify(Subject<CellData> &notifier) {
+	cout << "Notified" << endl;
 	CellData ci = notifier.getData();
 	grid.at(ci.r).at(ci.c) = ci.blockType; // Change to enum?
 }

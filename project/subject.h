@@ -5,6 +5,8 @@
 #include <vector>
 #include "observer.h"
 
+#include <iostream> // TEMP
+
 // template <typename DataType> class Observer; // 
 
 template <typename DataType>
@@ -15,6 +17,10 @@ public:
 	void notifyAll();
 	void attach(Observer<DataType> *obs);
 	virtual DataType getData() const = 0;
+
+	void getObSize();
+
+	// Big 5 + ctor
 
 };
 
@@ -29,11 +35,12 @@ void Subject<DataType>::notifyAll() {
 	// for (auto i = observerList.begin(); i != observerList.end(); ++i) {
 	// 	(*i)->notify(*this);
 	// }
-
+	std::cout << "Notifying ALL: " << observerList.size() << std::endl;
 	for (auto &ob : observerList) {
 		ob->notify(*this);
 	}
 }
+
 
 
 #endif

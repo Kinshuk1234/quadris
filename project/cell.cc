@@ -1,6 +1,9 @@
 #include "cell.h"
 #include "subject.h"
 
+#include <iostream>
+
+using namespace std;
 
 // Other Methods ------------------------
 
@@ -13,6 +16,7 @@ CellData Cell::getData() const {
 
 void Cell::set(char newBlockType) {
 	blockType = newBlockType;
+	cout << "...notifying..." << endl;
 	notifyAll();
 }
 
@@ -24,10 +28,12 @@ Cell::Cell(int r, int c)
 
 
 Cell::Cell(const Cell &other)
-: /* TODO: Copy superclasses (i.e. Subject) */r{other.r}, c{other.c} {/* COPY CTOR BODY */}
+: Subject<CellData>{other}, r{other.r}, c{other.c} {/* COPY CTOR BODY */}
 
 Cell::Cell(Cell &&other)
-: /* TODO: Copy superclasses (i.e. Subject) */r{other.r}, c{other.c} {/* COPY CTOR BODY */}
+: /* TODO: Copy superclasses (i.e. Subject) */r{other.r}, c{other.c} {/* COPY CTOR BODY */
+cout << "MOVE RUNNING" << endl;
+}
 
 Cell::~Cell() {
 	

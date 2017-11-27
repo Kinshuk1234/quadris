@@ -10,7 +10,9 @@ class Row {
 
 
 public:
-	void add_cell(Cell c);
+	void emplaceCell(Cell c);
+
+	Cell &getCellAt(int col);
 
 	// Big 5 + ctor
 	Row();

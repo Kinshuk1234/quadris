@@ -5,8 +5,12 @@
 
 // Other Methods ------------------------
 
-void Row::add_cell(Cell c) {
+void Row::emplaceCell(Cell c) {
 	rowOfCells.emplace_back(c);
+}
+
+Cell &Row::getCellAt(int index) {
+	return rowOfCells.at(index);
 }
 
 

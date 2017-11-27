@@ -14,7 +14,7 @@
 class Quadris {
 	CommandInterpreter cmdInterpreter;
 	ScoreBoard scoreBoard;
-	std::shared_ptr<TextDisplay> textDisplay;
+	TextDisplay *textDisplay; // Change to smart pointer (i.e. unique_ptr, shared_ptr)
 	GameBoard gameBoard;
 	
 public:
