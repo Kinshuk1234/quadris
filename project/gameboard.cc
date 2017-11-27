@@ -34,25 +34,6 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 	}
 }
 
-
-GameBoard::GameBoard(TextDisplay *td)
-: grid{}, lastTurnScore{0} {
-	for (int i = 0; i < 18; i++) {
-		grid.emplace_back();
-		for (int j = 0; j < 11; j++) {
-			Cell c{i, j};
-			grid.back().emplace_back(c);
-			grid.back().back().attach(td);
-		}
-	}
-}
-
-
-
-void GameBoard::updateScore(ScoreBoard &sb) {
-	sb.updateScore(lastTurnScore);
-}
-
 void GameBoard::setCurrentBlock(Block *b) {
 	currentBlock = b;
 	blockList.emplace_back(currentBlock);
@@ -61,7 +42,7 @@ void GameBoard::setCurrentBlock(Block *b) {
 
 void GameBoard::dropBlock() {
 	// TODO: drop block
-	// TODO: remove rows
+	// TODO: remove row(s) if full, etc
 	// TODO: remove blocks that have been on the board for >= 10 turns
 	// TODO: update score
 	cout << "Gameboard says: Drop block" << endl;
@@ -94,6 +75,19 @@ void GameBoard::levelChange(bool goUp) {
 }
 
 // Big 5 + ctor --------------------------------------
+
+
+GameBoard::GameBoard(TextDisplay *td)
+: grid{}, lastTurnScore{0}, currentBlock{nullptr}, blockList{}, level{new LevelZero}, scoreBoard{} {
+	for (int i = 0; i < 18; i++) {
+		grid.emplace_back();
+		for (int j = 0; j < 11; j++) {
+			Cell c{i, j};
+			grid.back().emplace_back(c);
+			grid.back().back().attach(td);
+		}
+	}
+}
 
 GameBoard::~GameBoard() {
 	// TODO: should we delete the currentBlock ptr?

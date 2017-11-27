@@ -20,23 +20,22 @@ void Quadris::runGameLoop() {
 
 	bool gameFinished = false;
 
-	while (!gameFinished) {
+	while (!gameFinished and (!cin.eof())) {
 		// TODO: what happens at EOF signal?
 		cin >> command;
 		cout << "Command: \'" << command << "\'" << endl;
-		// TODO: update scoreboard score in the END
 		execute(command);
-		scoreBoard.updateCurrentScoreWith(*gameBoard);
 		cout << *textDisplay << endl;
 	}
+
+	// TODO: show score, highscore and stuff??
 }
 
 
 // Big 5 + ctor -------------------------------------------
 
 Quadris::Quadris()
-: scoreBoard{}, 
-textDisplay{new TextDisplay{}}, 
+: textDisplay{new TextDisplay{}}, 
 gameBoard{new GameBoard{textDisplay}}
 {}
 

@@ -7,6 +7,7 @@
 #include "subject.h"
 #include "cell.h"
 #include "block.h"
+#include "scoreboard.h"
 
 class TextDisplay;
 
@@ -21,6 +22,7 @@ class GameBoard : public Observer<std::vector<std::string>> {
 	Block *currentBlock;
 	std::vector<Block *> blockList;
 	Level *level;
+	ScoreBoard scoreBoard;
 
 public:
 
@@ -29,9 +31,6 @@ public:
 	void changeCell(int r, int c, char ch); // TEMP
 
 	void setCurrentBlock(Block *b);
-
-	// Visitor pattern with ScoreBoard
-	void updateScore(ScoreBoard &sb);
 
 	// Big 5 + ctor
 	GameBoard(TextDisplay *td);

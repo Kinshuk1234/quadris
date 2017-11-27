@@ -11,7 +11,6 @@ public:
 	
 
 	// Visitor of GameBoard
-	void updateCurrentScoreWith(GameBoard &gb); // Start here
 	void updateScore(int lastTurnScore);
 
 	// Big 5 + ctor

@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "commandinterpreter.h"
-#include "scoreboard.h"
 #include "textdisplay.h"
 #include "gameboard.h"
 
@@ -12,8 +11,6 @@
 
 
 class Quadris : public CommandInterpreter {
-	// CommandInterpreter cmdInterpreter;
-	ScoreBoard scoreBoard;
 	TextDisplay *textDisplay; // Change to smart pointer (i.e. unique_ptr, shared_ptr)
 	GameBoard *gameBoard;
 	
