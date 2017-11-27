@@ -19,7 +19,7 @@ public:
 	void updateScore(ScoreBoard &sb);
 
 	// Big 5 + ctor
-	GameBoard(std::unique_ptr<TextDisplay> &td);
+	GameBoard(std::shared_ptr<TextDisplay> &td);
 	GameBoard(const GameBoard &other) = delete;
 	GameBoard(GameBoard &&other) = delete;
 	GameBoard &operator=(const GameBoard &other) = delete;

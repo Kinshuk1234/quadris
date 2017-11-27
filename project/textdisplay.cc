@@ -1,13 +1,17 @@
 #include "textdisplay.h"
 #include <vector>
 #include <iostream>
+#include "subject.h"
 
 using namespace std;
 
 
 // other methods ------------------
 
-
+void TextDisplay::notify(Subject<CellData> &notifier) {
+	CellData ci = notifier.getData();
+	grid.at(ci.r).at(ci.c) = ci.blockType; // Change to enum?
+}
 
 
 

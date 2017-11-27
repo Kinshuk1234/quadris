@@ -1,4 +1,6 @@
 #include "row.h"
+#include "cell.h"
+
 
 
 // Other Methods ------------------------

@@ -14,7 +14,7 @@
 class Quadris {
 	CommandInterpreter cmdInterpreter;
 	ScoreBoard scoreBoard;
-	std::unique_ptr<TextDisplay> textDisplay;
+	std::shared_ptr<TextDisplay> textDisplay;
 	GameBoard gameBoard;
 	
 public:

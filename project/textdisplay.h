@@ -4,16 +4,17 @@
 #include <iostream>
 #include <vector>
 #include "celldata.h"
+#include "observer.h"
 
-
-
+class Cell;
 
 class TextDisplay : public Observer<CellData> {
 	std::vector<std::vector<char>> grid;
 
 public:
+	void notify(Subject<CellData> &notifier) override;
 
-	void notify(Subject<CellData> &notifier);
+	friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 
 	// Big 5 + ctor
 	TextDisplay();

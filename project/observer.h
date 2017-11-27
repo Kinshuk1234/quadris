@@ -1,11 +1,15 @@
 #ifndef OBSERVER_H
 #define OBSERVER_H
 
-template <typename DataType>
-class Observer {
+
+template <typename DataType> class Subject;
+
+template <typename DataType> class Observer {
 public:
 	virtual void notify(Subject<DataType> &notifier) = 0;
-}
-
+	virtual ~Observer() = default;
+};
 
 #endif
+
+

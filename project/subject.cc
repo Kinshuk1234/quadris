@@ -13,3 +13,5 @@ void Subject<DataType>::notifyAll() {
 		i->notify(*this);
 	}
 }
+
+
