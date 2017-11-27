@@ -9,14 +9,13 @@ using namespace std;
 
 // Cell is a Subject
 
-CellData Cell::getData() const {
+CellData Cell::getData() {
 	CellData cd{blockType, r, c};
 	return cd;
 }
 
 void Cell::set(char newBlockType) {
 	blockType = newBlockType;
-	cout << "...notifying..." << endl;
 	notifyAll();
 }
 

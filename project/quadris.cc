@@ -7,12 +7,13 @@
 using namespace std;
 
 Quadris::Quadris()
-: cmdInterpreter{}, scoreBoard{}, textDisplay{new TextDisplay{}}, gameBoard{textDisplay} {
+: cmdInterpreter{}, scoreBoard{}, textDisplay{new TextDisplay{}}, gameBoard{new GameBoard{textDisplay}} {
 
 }
 
 void Quadris::init() {
 	// TODO: initialize the game object
+	cmdInterpreter.attach(gameBoard);
 	runGameLoop();
 }
 
@@ -31,9 +32,15 @@ void Quadris::runGameLoop() {
 
 		if (command == "drop") {
 			// TODO: drop the piece if possible.
-			scoreBoard.updateCurrentScoreWith(gameBoard);
+			scoreBoard.updateCurrentScoreWith(*gameBoard);
+		} else if (command == "newcommand") {
+			cout << "Taking new command..." << endl;
+			string newc;
+			cin >> newc;
+			cmdInterpreter.addNewCommand(newc, cin);
+		} else {
+			cmdInterpreter.execute(command);
 		}
-		
 	}
 }
 

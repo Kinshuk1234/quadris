@@ -10,7 +10,7 @@ class Cell : public Subject<CellData> { // Subject to textdisplay
 
 public:
 
-	CellData getData() const override;
+	CellData getData() override;
 	void set(char newBlockType);
 
 	// Big 5 + ctor

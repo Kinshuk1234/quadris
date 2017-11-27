@@ -7,6 +7,15 @@
 
 using namespace std;
 
+
+void GameBoard::notify(Subject<vector<string>> &notifier) {
+	vector<string> arr = notifier.getData();
+	for (auto it = arr.begin(); it != arr.end(); ++it) {
+		cout << *it << endl;
+	}
+}
+
+
 GameBoard::GameBoard(TextDisplay *td)
 :rowList{}, lastTurnScore{0} {
 	for (int i = 0; i < 18; i++) {

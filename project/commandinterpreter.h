@@ -2,13 +2,18 @@
 #define COMMAND_INTERPRETER_H
 #include <vector>
 #include <map>
+#include "subject.h"
 
 
-class CommandInterpreter { // TODO: inherit from subject
+class CommandInterpreter : public Subject<std::vector<std::string>> { // TODO: inherit from subject
 	std::map<std::string, std::vector<std::string>> cList;
+	std::string currentCommand;
 
 public:
-	void addNewCommand(std::string commandName); // add a macro command
+	void addNewCommand(std::string commandName, std::istream &in); // add a macro command
+	void execute(std::string command);
+
+	std::vector<std::string> getData() override;
 
 	// Big 5 + ctor
 	CommandInterpreter(); // main constructor
@@ -16,6 +21,8 @@ public:
 	CommandInterpreter(CommandInterpreter &&other) = delete;
 	CommandInterpreter &operator=(const CommandInterpreter &other) = delete;
 	CommandInterpreter &operator=(CommandInterpreter &&other) = delete;
+
+	friend std::istream &operator>>(std::istream &in, std::vector<std::string> &vec);
 };
 
 #endif

@@ -9,11 +9,13 @@ class TextDisplay;
 
 class ScoreBoard;
 
-class GameBoard {
+class GameBoard : public Observer<std::vector<std::string>> {
 	std::vector<Row> rowList; // List of rows in the grid containing each cell (r, c)
 	int lastTurnScore; // score of the most recent turn, to be sent to the scoreboard
 
 public:
+
+	void notify(Subject<std::vector<std::string>> &notifier);
 
 	void changeCell(int r, int c, char ch); // TEMP
 

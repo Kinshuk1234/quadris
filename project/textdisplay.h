@@ -14,8 +14,6 @@ class TextDisplay : public Observer<CellData> {
 public:
 	void notify(Subject<CellData> &notifier) override;
 
-	friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
-
 	// Big 5 + ctor
 	TextDisplay();
 	TextDisplay(const TextDisplay &other) = delete;
