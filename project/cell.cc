@@ -13,7 +13,7 @@ CellData Cell::getData() const {
 
 void Cell::set(char newBlockType) {
 	blockType = newBlockType;
-	this->notifyAll();
+	notifyAll();
 }
 
 

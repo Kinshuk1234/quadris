@@ -3,6 +3,7 @@
 
 
 template <typename DataType> class Subject;
+class Cell;
 
 template <typename DataType> class Observer {
 public:
