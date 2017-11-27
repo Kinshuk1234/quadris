@@ -3,17 +3,17 @@
 
 #include <iostream>
 #include <vector>
+#include "celldata.h"
 
 
 
 
-class TextDisplay {
+class TextDisplay : public Observer<CellData> {
 	std::vector<std::vector<char>> grid;
 
 public:
 
-
-	friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
+	void notify(Subject<CellData> &notifier);
 
 	// Big 5 + ctor
 	TextDisplay();
@@ -21,6 +21,8 @@ public:
 	TextDisplay(TextDisplay &&other) = delete;
 	TextDisplay &operator=(const TextDisplay &other) = delete;
 	TextDisplay &operator=(TextDisplay &&other) = delete;
+
+	friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 
 #endif

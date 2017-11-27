@@ -4,7 +4,7 @@
 template <typename DataType>
 class Observer {
 public:
-	virtual notify(Subject<DataType> &notifier) = 0;
+	virtual void notify(Subject<DataType> &notifier) = 0;
 }
 
 

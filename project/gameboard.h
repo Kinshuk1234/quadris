@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "row.h"
-#include <memory>
+#include <memory> // For pointer to TextDisplay
 
 class TextDisplay;
 

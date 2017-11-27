@@ -3,7 +3,7 @@
 using namespace std;
 
 template <typename DataType>
-void Subject<DataType>::attach(unique_ptr<Observer<DataType>> observerPointer) {
+void Subject<DataType>::attach(Observer<DataType> *observerPointer) {
 	observerList.emplace_back(observerPointer);
 }
 
