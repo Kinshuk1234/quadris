@@ -1,5 +1,8 @@
-#include "quadris.h"
 #include <memory>
+#include "quadris.h"
+
+#include "levelzero.h"
+
 
 // TEMP:
 #include <iostream>
@@ -7,7 +10,11 @@
 using namespace std;
 
 Quadris::Quadris()
-: cmdInterpreter{}, scoreBoard{}, textDisplay{new TextDisplay{}}, gameBoard{new GameBoard{textDisplay}} {
+: cmdInterpreter{}, 
+scoreBoard{}, 
+textDisplay{new TextDisplay{}}, 
+gameBoard{new GameBoard{textDisplay}},
+level{new LevelZero{}} {
 
 }
 
@@ -42,6 +49,15 @@ void Quadris::runGameLoop() {
 			cmdInterpreter.execute(command);
 		}
 	}
+}
+
+Quadris::~Quadris() {
+	delete textDisplay;
+	textDisplay = nullptr;
+	delete gameBoard;
+	gameBoard = nullptr;
+	delete level;
+	level = nullptr;
 }
 
 
