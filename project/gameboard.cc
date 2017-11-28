@@ -2,8 +2,8 @@
 #include "gameboard.h"
 #include "scoreboard.h"
 #include "textdisplay.h"
-#include "levelzero.h"
 #include <iostream>
+#include "level0.h"
 
 using namespace std;
 
@@ -78,7 +78,7 @@ void GameBoard::levelChange(bool goUp) {
 
 
 GameBoard::GameBoard(TextDisplay *td)
-: grid{}, lastTurnScore{0}, currentBlock{nullptr}, blockList{}, level{new LevelZero}, scoreBoard{} {
+: grid{}, lastTurnScore{0}, currentBlock{nullptr}, blockList{}, level{new Level0{}}, scoreBoard{} {
 	for (int i = 0; i < 18; i++) {
 		grid.emplace_back();
 		for (int j = 0; j < 11; j++) {

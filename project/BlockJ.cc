@@ -1,4 +1,4 @@
-#include "BlockJ.h"
+#include "blockj.h"
 #include <iostream>
 
 using namespace std;

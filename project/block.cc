@@ -30,28 +30,29 @@ void Block::translateY() {
 		}
 }
 
-void BlockL::checkOrientation(const BlockL &b) {
-	int count = 0;
-	for(int i=0; i<4; ++i) {
-		for(int j=0; j<4; ++j) {
-			if(orientations.at(i).at(j) != b.orientations.at(i).at(j)) {
-				break;
-			}
-			count += 1;
-		}
-		if(count==4) {
-			currOrientation = i;
-			break;
-		}
-	}
+void Block::checkOrientation(const Block &b) {
+	// TODO: check if used
+	// int count = 0;
+	// for(int i=0; i<4; ++i) {
+	// 	for(int j=0; j<4; ++j) {
+	// 		if(orientations.at(i).at(j) != b.orientations.at(i).at(j)) {
+	// 			break;
+	// 		}
+	// 		count += 1;
+	// 	}
+	// 	if(count==4) {
+	// 		currOrientation = i;
+	// 		break;
+	// 	}
+	// }
 }
 
-void BlockL::rotate_cw() {
+void Block::rotate_cw() {
 	// gameBoard should validate this rotation
 	currOrientation = (currOrientation + 1) % 4;
 }
 
-void BlockL::rotate_ccw() {
+void Block::rotate_ccw() {
 	// gameBoard should validate this rotation
 	currOrientation = (currOrientation - 1) % 4;
 }

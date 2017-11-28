@@ -7,12 +7,11 @@
 #include <string>
 
 class Block;
+
 class Level {
 public:
 	virtual Block *getBlock() = 0;
-	virtual ~Level() = default;
+	virtual ~Level();
 };
-
-Level::~Level() {}
 
 #endif

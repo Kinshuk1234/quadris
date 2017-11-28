@@ -1,8 +1,15 @@
 #include "level0.h"
-
+#include "blocki.h"
+#include "blockj.h"
+#include "blockl.h"
+#include "blocko.h"
+#include "blocks.h"
+#include "blockt.h"
+#include "blockz.h"
 using namespace std;
 
-Level0::Level0(string filename) {
+Level0::Level0(string filename)
+: v{} {
 	char blockType;
 	ifstream f{filename};
 	while(f >> blockType) {
@@ -11,27 +18,28 @@ Level0::Level0(string filename) {
 }
 
 Block* Level0::getBlock() {
-	if (v.begin() == "I") {
+	char firstLetter = *v.begin();
+	if (firstLetter == 'I') {
 		v.erase(v.begin());
 		return new BlockI;
 	}
-	else if (v.begin() == "J") {
+	else if (firstLetter == 'J') {
 		v.erase(v.begin());
 		return new BlockJ;
 	}
-	else if (v.begin() == "L") {
+	else if (firstLetter == 'L') {
 		v.erase(v.begin());
 		return new BlockL;
 	}
-	else if (v.begin() == "O") {
+	else if (firstLetter == 'O') {
 		v.erase(v.begin());
 		return new BlockO;
 	}
-	else if (v.begin() == "S") {
+	else if (firstLetter == 'S') {
 		v.erase(v.begin());
 		return new BlockS;
 	}
-	else if (v.begin() == "Z") {
+	else if (firstLetter == 'Z') {
 		v.erase(v.begin());
 		return new BlockZ;
 	}

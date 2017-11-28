@@ -7,7 +7,7 @@
 class BlockL : public Block {
 public:
 	// ctors
-	BlockL() = default;
+	BlockL();
 	BlockL(const BlockL &other) = delete;
 	BlockL(BlockL &&other) = delete;
 	BlockL &operator=(const BlockL &other) = delete;

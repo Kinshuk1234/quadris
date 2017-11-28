@@ -1,4 +1,4 @@
-#include "BlockS.h"
+#include "blocks.h"
 #include <iostream>
 
 using namespace std;

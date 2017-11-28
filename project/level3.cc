@@ -1,5 +1,11 @@
 #include "level3.h"
-
+#include "blocki.h"
+#include "blockj.h"
+#include "blockl.h"
+#include "blocko.h"
+#include "blocks.h"
+#include "blockt.h"
+#include "blockz.h"
 using namespace std;
 
 Level3::Level3(int seed) : seed{seed} {};

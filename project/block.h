@@ -1,7 +1,7 @@
 #ifndef BLOCK_H
 #define BLOCK_H
-#include "gameboard.h"
 #include "pos.h"
+#include <vector>
 
 class Block {
 	// Orientations: 0 is North, 1 is East, 2 is South, 3 is West

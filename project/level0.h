@@ -4,12 +4,12 @@
 
 
 class Block;
-class Level0 : public Level{
-	std::vector<char> v();
+class Level0 : public Level {
+	std::vector<char> v;
 	public:
-		Level0(string filename = "sequence.txt");
+		Level0(std::string filename = "sequence.txt");
 		Block *getBlock() override;
-		~Level0() = default;
+		~Level0();
 };
 
 #endif

@@ -4,10 +4,11 @@
 
 class Block;
 class Level3 : public Level{
+	int seed;
 	public:
 		Level3(int seed = 1);
 		Block *getBlock() override;
-		~Level3() = default;
+		~Level3();
 	};
 
 #endif

@@ -7,12 +7,12 @@
 class BlockS : public Block {
 public:
 	// ctors
-	BlockS() = default;
+	BlockS();
 	BlockS(const BlockS &other) = delete;
 	BlockS(BlockS &&other) = delete;
 	BlockS &operator=(const BlockS &other) = delete;
 	BlockS &operator=(BlockS &&other) = delete;
-	~BlockO() = default;
+	~BlockS() = default;
 
 	// other methods
 };
