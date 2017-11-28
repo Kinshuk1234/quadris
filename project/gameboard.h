@@ -8,6 +8,7 @@
 #include "cell.h"
 #include "block.h"
 #include "scoreboard.h"
+#include "pos.h"
 
 class TextDisplay;
 
