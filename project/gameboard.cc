@@ -19,16 +19,19 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 	int xChange = 0;
 	int yChange = 0;
 	int rotateChange = 0;
-	Pos transformedRefPoint = currentBlock->getRefPoint();
-	int transformedOrientation = currentBlock->getCurrentOrientation();
+	int transformedOrientation = currentBlock->getCurrentOr();
+	Pos transformedRefPoint = currentBlock->getRefPoint(transformedOrientation);
+	vector<Pos> initialPoints = currentBlock->getOrPtsOf(transformedRefPoint, transformedOrientation);
 
 	for (auto it = arr.begin(); it != arr.end(); ++it) {
 		string currCommand = *it;
 		if (currCommand == "left") {
 			xChange -= 1;
+			cout << "Going Left" << endl;
 			// TODO: if block isHeavy, move down one
 		} else if (currCommand == "right") {
 			xChange += 1;
+			cout << "Going Right" << endl;
 			// TODO: if block isHeavy, move down one, if valid
 		} else if (currCommand == "down") {
 			yChange += 1;
@@ -43,11 +46,11 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 			transformedRefPoint.x += xChange;
 			transformedRefPoint.y += yChange;
 			transformedOrientation = (transformedOrientation + rotateChange) % 4; 
-			vector<Pos> transformedPoints = currentBlock->getOrientationWith(transformedRefPoint, transformedOrientation);
-			if (isFittable(transformedPoints)) {
+			vector<Pos> transformedPoints = currentBlock->getOrPtsOf(transformedRefPoint, transformedOrientation);
+			if (isFittable(initialPoints, transformedPoints)) {
 				dropBlock();
-				transformedRefPoint.x = currentBlock->getRefPoint().x;
-				transformedRefPoint.y = currentBlock->getRefPoint().y;
+				transformedRefPoint.x = currentBlock->getRefPoint(currentBlock->getCurrentOrientation()).x;
+				transformedRefPoint.y = currentBlock->getRefPoint(currentBlock->getCurrentOrientation()).y;
 				transformedOrientation = currentBlock->getCurrentOrientation();
 				xChange = 0;
 				yChange = 0;
@@ -76,16 +79,24 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 	}
 	transformedRefPoint.x += xChange;
 	transformedRefPoint.y += yChange;
-	transformedOrientation = (transformedOrientation + rotateChange) % 4; 
-	vector<Pos> transformedPoints = currentBlock->getOrientationWith(transformedRefPoint, transformedOrientation);
-	
+	transformedOrientation = (transformedOrientation + rotateChange) % 4;
+	vector<Pos> transformedPoints = currentBlock->getOrPtsOf(transformedRefPoint, transformedOrientation);
+
+	#ifdef DEBUG	
+	cout << "Initial Points: " << endl;
+	cout << initialPoints.at(0).x << initialPoints.at(0).y << endl;
+	cout << initialPoints.at(1).x << initialPoints.at(1).y << endl;
+	cout << initialPoints.at(2).x << initialPoints.at(2).y << endl;
+	cout << initialPoints.at(3).x << initialPoints.at(3).y << endl;
+	cout << "Transformed Points: " << endl;
 	cout << transformedPoints.at(0).x << transformedPoints.at(0).y << endl;
 	cout << transformedPoints.at(1).x << transformedPoints.at(1).y << endl;
 	cout << transformedPoints.at(2).x << transformedPoints.at(2).y << endl;
 	cout << transformedPoints.at(3).x << transformedPoints.at(3).y << endl;
+	#endif
 
-	if (isFittable(transformedPoints)) {
-		updateGrid(currentBlock->getCurrOrientationPoints(), '-'); // Sets old points on grid to '-'
+	if (isFittable(initialPoints, transformedPoints)) {
+		updateGrid(initialPoints, '-'); // TODO: Sets old points on grid to empty space '-'
 		currentBlock->setRefPoint(transformedRefPoint);
 		currentBlock->setOrientation(transformedOrientation);
 		setCurrentBlock2();
@@ -104,8 +115,8 @@ bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced
 		if (fitOrientation == 4) {
 			return false;
 		}
-		vector<Pos> currOrientationPoints = blockToBePlaced->getOrientationAtPoint(fitOrientation);
-		if (isFittable(currOrientationPoints)) {
+		vector<Pos> currOrientationPoints = blockToBePlaced->getOrPtsOf(blockToBePlaced->getRefPoint(fitOrientation), fitOrientation);
+		if (isFittable({}, currOrientationPoints)) {
 			// Setting the current block on the board with given orientation
 			currentBlock = blockToBePlaced;
 			currentBlock->setInitialOrientation(fitOrientation);
@@ -120,7 +131,9 @@ bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced
 }
 
 void GameBoard::setCurrentBlock2() {
-	vector<Pos> currOrientationPoints = currentBlock->getCurrOrientationPoints();
+	int currO = currentBlock->getCurrentOr();
+	Pos rp = currentBlock->getRefPoint(currO);
+	vector<Pos> currOrientationPoints = currentBlock->getOrPtsOf(rp, currO);
 	updateGrid(currOrientationPoints, currentBlock->getLetter());
 	blockList.emplace_back(currentBlock);
 }
@@ -131,25 +144,34 @@ void GameBoard::updateGrid(vector<Pos> points, char letter) {
 	}
 }
 
-bool GameBoard::isFittable(vector<Pos> &currentOrientation) {
-	// cout << currentOrientation.at(0).x << currentOrientation.at(0).y << endl;
-	// cout << currentOrientation.at(1).x << currentOrientation.at(1).y << endl;
-	// cout << currentOrientation.at(2).x << currentOrientation.at(2).y << endl;
-	// cout << currentOrientation.at(3).x << currentOrientation.at(3).y << endl;
+bool GameBoard::isFittable(const vector<Pos> &oldPoints, const vector<Pos> &currentOrientation) {
+	cout << currentOrientation.at(0).x << currentOrientation.at(0).y << endl;
+	cout << currentOrientation.at(1).x << currentOrientation.at(1).y << endl;
+	cout << currentOrientation.at(2).x << currentOrientation.at(2).y << endl;
+	cout << currentOrientation.at(3).x << currentOrientation.at(3).y << endl;
 
 	// START HERE: Block doesn't move because it recognizes it's own character as overlapping
 	for (auto &p : currentOrientation) {
 		int px = p.x;
 		int py = p.y;
-		if (px < 0 || px >= 11 || py < 0 || py >= 18) {
-			return false;
+		int i = 0;
+		for (i = 0; i < oldPoints.size(); i++) {
+			if (oldPoints.at(i) == p) {
+				i = 100;
+			}
 		}
-		Cell currCell = getCellAt(px, py);
-		char cLetter = currCell.getData().blockType;
-		cout << "Letter: " << cLetter << endl;
-		if (() and cLetter != '-') { // TODO: change to appropriate empty space
-			return false;
+		if (i >= 100) {
+		} else {
+			if (px < 0 || px >= 11 || py < 0 || py >= 18) {
+				return false;
+			}
+			Cell currCell = getCellAt(px, py);
+			char cLetter = currCell.getData().blockType;
+			if (cLetter != '-') { // TODO: change to appropriate empty space
+				return false;
+			}
 		}
+		
 	}
 	return true;
 }

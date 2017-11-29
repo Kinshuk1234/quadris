@@ -49,7 +49,7 @@ public:
 	~GameBoard();
 
 private:
-	bool isFittable(std::vector<Pos> &currOrientation); // TODO: make const, then make getCellAt const, then make Cell copy ctor, Subject copy ctor
+	bool isFittable(const std::vector<Pos> &oldPoints, const std::vector<Pos> &currOrientation); // TODO: make const, then make getCellAt const, then make Cell copy ctor, Subject copy ctor
 	void dropBlock();
 	void levelChange(bool goUp);
 };

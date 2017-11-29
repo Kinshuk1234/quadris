@@ -7,10 +7,10 @@ class GameBoard;
 
 BlockL::BlockL()
 : myType{'L'} {
-	refPoints.at(0) = {0, 2};
-	refPoints.at(1) = {0, 1};
-	refPoints.at(2) = {0, 2}; 
-	refPoints.at(3) = {0, 1};
+	refPoints.at(0) = {0, 5};
+	refPoints.at(1) = {0, 4};
+	refPoints.at(2) = {0, 5}; 
+	refPoints.at(3) = {0, 4};
 }
 
 vector<vector<Pos>> BlockL::getOrientationsAt(Pos refPoint) const {

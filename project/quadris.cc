@@ -20,10 +20,11 @@ void Quadris::runGameLoop() {
 
 	bool gameFinished = false;
 	gameBoard->init();
+	cout << *textDisplay << endl;
 	while (!gameFinished and (!cin.eof())) {
 		// TODO: what happens at EOF signal?
 		cin >> command;
-		cout << "Command: \'" << command << "\'" << endl;
+		// cout << "Command: \'" << command << "\'" << endl;
 		execute(command);
 		cout << *textDisplay << endl;
 	}

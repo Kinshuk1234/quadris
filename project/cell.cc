@@ -34,9 +34,7 @@ Cell::Cell(const Cell &other)
 : Subject<CellData>{other}, r{other.r}, c{other.c}, blockType{other.blockType} {/* COPY CTOR BODY */}
 
 Cell::Cell(Cell &&other)
-: /* TODO: Copy superclasses (i.e. Subject) */r{other.r}, c{other.c} {/* COPY CTOR BODY */
-cout << "MOVE RUNNING" << endl;
-}
+: /* TODO: Copy superclasses (i.e. Subject) */r{other.r}, c{other.c} {/* COPY CTOR BODY */}
 
 Cell::~Cell() {
 	

@@ -9,8 +9,8 @@ using namespace std;
 // other methods ------------------
 
 void TextDisplay::notify(Subject<CellData> &notifier) {
-	cout << "Notified" << endl;
 	CellData ci = notifier.getData();
+	cout << "CI: " << ci.c << ", " << ci.r << endl;
 	grid.at(ci.r).at(ci.c) = ci.blockType; // Change to enum?
 }
 
@@ -20,7 +20,7 @@ void TextDisplay::notify(Subject<CellData> &notifier) {
 
 TextDisplay::TextDisplay()
 : grid{} {
-	for (int i = 0; i < 15; i++) {
+	for (int i = 0; i < 18; i++) {
 		grid.emplace_back();
 		for (int j = 0; j < 11; j++) {
 			grid.back().emplace_back('-');

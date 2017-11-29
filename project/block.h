@@ -12,6 +12,8 @@ protected:
 	std::vector<Pos> refPoints;
 	int currOrientation; // One of 0, 1, 2, 3
 
+	virtual std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const = 0;
+
 public:
 
 	// Big 5 + ctor
@@ -29,19 +31,26 @@ public:
 	// void checkOrientation(const Block &b);
 	void rotate(bool clockwise); // USED
 
-	void lockOrientationsAbout(Pos refPoint); // USED
+	// void lockOrientationsAbout(Pos refPoint); // USED
 	void setRefPoint(Pos newRefPoint); // USED
-	void setInitialOrientation(int initOrientation); // USED
 
 	void setOrientation(int i); // USED
 	int getCurrentOrientation(); // USED
 	std::vector<Pos> getCurrOrientationPoints(); // USED
-	Pos getRefPoint() const;
 	std::vector<Pos> getOrientationAtPoint(int orValue);
 
 	virtual char getLetter() = 0; // USED
 	std::vector<Pos> getOrientationWith(Pos otherRefPoint, int otherOrientation) const; // USED
-	virtual std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const = 0; // USED
+
+	// NEW
+	// Gets the orientation
+	std::vector<Pos> getOrPtsOf(Pos givenRefPoint, int givenOrientation) const;
+	int getCurrentOr() const;
+	void setCurrentOr(int newO);
+	Pos getRefPoint(int o) const;
+	void setInitialOrientation(int initOrientation);
+
+
 };
 
 

@@ -1,4 +1,5 @@
 #include "block.h"
+#include <iostream>
 
 using namespace std;
 
@@ -75,13 +76,6 @@ void Block::setOrientation(int i) { // USED
 	currOrientation = i;
 }
 
-void Block::setInitialOrientation(int initOrientation) { // USED
-	refPoints.at(0) = refPoints.at(initOrientation);
-	refPoints.erase(refPoints.begin() + 1);
-	refPoints.erase(refPoints.begin() + 1);
-	refPoints.erase(refPoints.begin() + 1);
-}
-
 
 void Block::rotate(bool clockwise) { // USED
 	int direction = clockwise ? 1 : -1;
@@ -89,21 +83,25 @@ void Block::rotate(bool clockwise) { // USED
 }
 
 void Block::setRefPoint(Pos newRefPoint) { // USED
+	orientations = getOrientationsAt(newRefPoint);
+	// refPoints.at(atOrientation) = newRefPoint;
 	refPoints.at(0) = newRefPoint;
-	lockOrientationsAbout(refPoints.at(0));
+	refPoints.at(1) = newRefPoint;
+	refPoints.at(2) = newRefPoint;
+	refPoints.at(3) = newRefPoint;
 }
 
 vector<Pos> Block::getOrientationWith(Pos otherRefPoint, int otherOrientation) const { // USED
 	return getOrientationsAt(otherRefPoint).at(otherOrientation);
 }
 
-void Block::lockOrientationsAbout(Pos refPoint) { // USED
-	orientations = getOrientationsAt(refPoint);
-}
+// void Block::lockOrientationsAbout(Pos refPoint) { // USED
+// 	orientations = getOrientationsAt(refPoint);
+// }
 
-Pos Block::getRefPoint() const {
-	return refPoints.at(0);
-}
+// Pos Block::getRefPoint() const {
+// 	return refPoints.at(0);
+// }
 
 int Block::getCurrentOrientation() {
 	return currOrientation;
@@ -111,9 +109,38 @@ int Block::getCurrentOrientation() {
 
 // Gets orientation orValue about position refPoint
 vector<Pos> Block::getOrientationAtPoint(int orValue) {
-	lockOrientationsAbout(refPoints.at(orValue));
-	return orientations.at(orValue);
+	
+	return getOrientationsAt(refPoints.at(orValue)).at(orValue);
 }
+
+// NEW NEW NEW
+
+vector<Pos> Block::getOrPtsOf(Pos givenRefPoint, int givenOrientation) const {
+	return getOrientationsAt(givenRefPoint).at(givenOrientation);
+}
+
+int Block::getCurrentOr() const {
+	return currOrientation;
+}
+
+void Block::setCurrentOr(int newO) {
+	currOrientation = newO;
+}
+
+Pos Block::getRefPoint(int o) const {
+	cout << "REF POINT: " << refPoints.at(o) << endl;
+	return refPoints.at(o);
+}
+
+void Block::setInitialOrientation(int initOrientation) { // USED
+	refPoints.at(0) = refPoints.at(initOrientation);
+	refPoints.at(1) = refPoints.at(0);
+	refPoints.at(2) = refPoints.at(0);
+	refPoints.at(3) = refPoints.at(0);
+}
+
+
+
 
 // Big 5 + ctor ----------------------------------
 

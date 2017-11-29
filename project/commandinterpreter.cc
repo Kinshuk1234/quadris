@@ -35,9 +35,9 @@ istream &operator>>(istream &in, vector<string> &vec){
 
 
 void CommandInterpreter::execute(string c) {
-	cout << "Given command: " << c << endl;
+	// cout << "Given command: " << c << endl;
 	string command = getFullCommand(c);
-	cout << "Actual command: " << command << endl;
+	// cout << "Actual command: " << command << endl;
 
 	if (command == "") {
 		cout << "Command does NOT exist" << endl;
