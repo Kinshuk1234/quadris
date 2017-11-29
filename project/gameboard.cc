@@ -47,7 +47,7 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 			transformedRefPoint.y += yChange;
 			transformedOrientation = (transformedOrientation + rotateChange) % 4; 
 			vector<Pos> transformedPoints = currentBlock->getOrPtsOf(transformedRefPoint, transformedOrientation);
-			if (isFittable(initialPoints, transformedPoints)) {
+			if (isFittable(initialPoints, transformedPoints, false)) {
 				dropBlock();
 				transformedRefPoint.x = currentBlock->getRefPoint(currentBlock->getCurrentOrientation()).x;
 				transformedRefPoint.y = currentBlock->getRefPoint(currentBlock->getCurrentOrientation()).y;
@@ -95,7 +95,7 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 	cout << transformedPoints.at(3).x << transformedPoints.at(3).y << endl;
 	#endif
 
-	if (isFittable(initialPoints, transformedPoints)) {
+	if (isFittable(initialPoints, transformedPoints, false)) {
 		updateGrid(initialPoints, '-'); // TODO: Sets old points on grid to empty space '-'
 		currentBlock->setRefPoint(transformedRefPoint);
 		currentBlock->setOrientation(transformedOrientation);
@@ -116,7 +116,7 @@ bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced
 			return false;
 		}
 		vector<Pos> currOrientationPoints = blockToBePlaced->getOrPtsOf(blockToBePlaced->getRefPoint(fitOrientation), fitOrientation);
-		if (isFittable({}, currOrientationPoints)) {
+		if (isFittable({}, currOrientationPoints, false)) {
 			// Setting the current block on the board with given orientation
 			currentBlock = blockToBePlaced;
 			currentBlock->setInitialOrientation(fitOrientation);
@@ -144,7 +144,7 @@ void GameBoard::updateGrid(vector<Pos> points, char letter) {
 	}
 }
 
-bool GameBoard::isFittable(const vector<Pos> &oldPoints, const vector<Pos> &currentOrientation) {
+bool GameBoard::isFittable(const vector<Pos> &oldPoints, const vector<Pos> &currentOrientation, bool dropCheck) {
 	cout << currentOrientation.at(0).x << currentOrientation.at(0).y << endl;
 	cout << currentOrientation.at(1).x << currentOrientation.at(1).y << endl;
 	cout << currentOrientation.at(2).x << currentOrientation.at(2).y << endl;
@@ -162,7 +162,8 @@ bool GameBoard::isFittable(const vector<Pos> &oldPoints, const vector<Pos> &curr
 		}
 		if (i >= 100) {
 		} else {
-			if (px < 0 || px >= 11 || py < 0 || py >= 18) {
+			int lowestY = dropCheck ? 3 : 0;
+			if (px < 0 || px >= 11 || py < lowestY || py >= 18) {
 				return false;
 			}
 			Cell currCell = getCellAt(px, py);
@@ -181,6 +182,8 @@ Cell &GameBoard::getCellAt(int x, int y) {
 }
 
 void GameBoard::dropBlock() {
+	bool dropSuccess = false;
+	
 	// TODO: only drop if all cells of the block are below the 3rd row (>= 4th row), can't use isFittable
 	// TODO: drop block
 	// TODO: remove row(s) if full, etc
