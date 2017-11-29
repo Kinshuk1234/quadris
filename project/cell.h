@@ -12,6 +12,8 @@ public:
 
 	CellData getData() override;
 	void set(char newBlockType);
+	void clear();
+
 
 	// Big 5 + ctor
 	Cell(int x, int y);

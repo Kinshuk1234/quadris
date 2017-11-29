@@ -21,3 +21,12 @@ BlockI::BlockI() {
 	orientations.emplace_back(p4);
 }
 
+std::vector<std::vector<Pos>> BlockI::getOrientationsAt(Pos refPoint) const {
+	return {}; // TODO
+}
+
+char BlockI::getLetter() {
+	return '-'; // TODO
+}
+
+

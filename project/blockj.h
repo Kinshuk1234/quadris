@@ -15,6 +15,10 @@ public:
 	~BlockJ() = default;
 
 	// other methods
+
+	// overrides
+	std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const override; // USED
+	char getLetter() override; // USED
 };
 
 

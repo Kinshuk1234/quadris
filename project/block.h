@@ -9,23 +9,39 @@ class Block {
 	// To get the counter-clockwise rotation orientation, get (currOrientation - 1) % 4
 protected:
 	std::vector<std::vector<Pos>> orientations;
+	std::vector<Pos> refPoints;
 	int currOrientation; // One of 0, 1, 2, 3
+
 public:
 
 	// Big 5 + ctor
-	Block() = default;
+	Block();
 	Block(const Block &other) = delete;
 	Block(Block &&other) = delete;
 	Block &operator=(const Block &other) = delete;
 	Block &operator=(Block &&other) = delete;
-	~Block() = default;
+	virtual ~Block();
 
 	// other methods
-	void translateX(bool toRight);
-	void translateY();
-	void checkOrientation(const Block &b);
-	void rotate_cw();
-	void rotate_ccw();
+	// std::vector<Pos> getOrientationPoints(int i);
+	// void translateX(bool toRight); 
+	// void translateY(); 
+	// void checkOrientation(const Block &b);
+	void rotate(bool clockwise); // USED
+
+	void lockOrientationsAbout(Pos refPoint); // USED
+	void setRefPoint(Pos newRefPoint); // USED
+	void setInitialOrientation(int initOrientation); // USED
+
+	void setOrientation(int i); // USED
+	int getCurrentOrientation(); // USED
+	std::vector<Pos> getCurrOrientationPoints(); // USED
+	Pos getRefPoint() const;
+	std::vector<Pos> getOrientationAtPoint(int orValue);
+
+	virtual char getLetter() = 0; // USED
+	std::vector<Pos> getOrientationWith(Pos otherRefPoint, int otherOrientation) const; // USED
+	virtual std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const = 0; // USED
 };
 
 

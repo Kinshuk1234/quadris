@@ -27,11 +27,18 @@ class GameBoard : public Observer<std::vector<std::string>> {
 
 public:
 
+	// TODO: SO MANY OF THESE METHODS CAN BE PRIVATE
+
+	void init(); // public method 
+	
 	void notify(Subject<std::vector<std::string>> &notifier);
 
 	void changeCell(int r, int c, char ch); // TEMP
 
-	void setCurrentBlock(Block *b);
+	bool tryNewBlock(Block *blockToBePlaced = nullptr);
+	void setCurrentBlock2();
+	void updateGrid(std::vector<Pos> points, char letter);
+	Cell &getCellAt(int x, int y);
 
 	// Big 5 + ctor
 	GameBoard(TextDisplay *td);
@@ -42,10 +49,8 @@ public:
 	~GameBoard();
 
 private:
+	bool isFittable(std::vector<Pos> &currOrientation); // TODO: make const, then make getCellAt const, then make Cell copy ctor, Subject copy ctor
 	void dropBlock();
-	void moveX(bool goLeft); // if goLeft, then goes left, else goes right
-	void moveY(); // TODO: amount can only be positive!
-	void rotate(bool isClockwise);
 	void levelChange(bool goUp);
 };
 

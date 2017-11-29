@@ -23,3 +23,12 @@ BlockO::BlockO() {
 
 
 // REMEMBER: THERE IS NO ROTATION FOR BLOCKO
+
+std::vector<std::vector<Pos>> BlockO::getOrientationsAt(Pos refPoint) const {
+	return {}; // TODO
+}
+
+char BlockO::getLetter() {
+	return '-'; // TODO
+}
+

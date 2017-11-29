@@ -4,6 +4,9 @@
 #include "textdisplay.h"
 #include <iostream>
 #include "level0.h"
+#include "blockl.h"
+
+#include "pos.h"
 
 using namespace std;
 
@@ -13,60 +16,166 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 	// TODO: check if after run of commands, the block is in a valid place.
 	// i.e. inside the board AND not overlapping another block
 
+	int xChange = 0;
+	int yChange = 0;
+	int rotateChange = 0;
+	Pos transformedRefPoint = currentBlock->getRefPoint();
+	int transformedOrientation = currentBlock->getCurrentOrientation();
+
 	for (auto it = arr.begin(); it != arr.end(); ++it) {
 		string currCommand = *it;
 		if (currCommand == "left") {
-			moveX(true);
+			xChange -= 1;
+			// TODO: if block isHeavy, move down one
 		} else if (currCommand == "right") {
-			moveX(false);
+			xChange += 1;
+			// TODO: if block isHeavy, move down one, if valid
 		} else if (currCommand == "down") {
-			moveY();
+			yChange += 1;
 		} else if (currCommand == "clockwise") {
-			rotate(true);
+			rotateChange += 1;
+			// TODO: if block isHeavy, move down one
 		} else if (currCommand == "counterclockwise") {
-			rotate(false);
+			rotateChange = rotateChange + 4 - 1;
+			// TODO: if block isHeavy, move down one
 		} else if (currCommand == "drop") {
-			dropBlock();
+			// TODO: check the transformations
+			transformedRefPoint.x += xChange;
+			transformedRefPoint.y += yChange;
+			transformedOrientation = (transformedOrientation + rotateChange) % 4; 
+			vector<Pos> transformedPoints = currentBlock->getOrientationWith(transformedRefPoint, transformedOrientation);
+			if (isFittable(transformedPoints)) {
+				dropBlock();
+				transformedRefPoint.x = currentBlock->getRefPoint().x;
+				transformedRefPoint.y = currentBlock->getRefPoint().y;
+				transformedOrientation = currentBlock->getCurrentOrientation();
+				xChange = 0;
+				yChange = 0;
+				rotateChange = 0;
+			} else {
+				// Invalid position
+			}
 		} else if (currCommand == "levelup") {
 			// TODO: level up.
+		} else if (currCommand == "I"
+				 or currCommand == "J"
+				 or currCommand == "L"
+				 or currCommand == "O"
+				 or currCommand == "S"
+				 or currCommand == "T"
+				 or currCommand == "Z") {
+			Block *tempBlock = new BlockL;; // TODO: level->getSpecificBlock(currCommand);
+			if (!tryNewBlock(tempBlock)) {
+				// Unable to place block. Maybe inform textDisplay to output that via observer/subject?
+			} else {
+				// TODO: remove previous block
+				setCurrentBlock2();
+			}
 		}
 		// TODO: add other commands, if any left
 	}
+	transformedRefPoint.x += xChange;
+	transformedRefPoint.y += yChange;
+	transformedOrientation = (transformedOrientation + rotateChange) % 4; 
+	vector<Pos> transformedPoints = currentBlock->getOrientationWith(transformedRefPoint, transformedOrientation);
+	
+	cout << transformedPoints.at(0).x << transformedPoints.at(0).y << endl;
+	cout << transformedPoints.at(1).x << transformedPoints.at(1).y << endl;
+	cout << transformedPoints.at(2).x << transformedPoints.at(2).y << endl;
+	cout << transformedPoints.at(3).x << transformedPoints.at(3).y << endl;
+
+	if (isFittable(transformedPoints)) {
+		updateGrid(currentBlock->getCurrOrientationPoints(), '-'); // Sets old points on grid to '-'
+		currentBlock->setRefPoint(transformedRefPoint);
+		currentBlock->setOrientation(transformedOrientation);
+		setCurrentBlock2();
+	}
 }
 
-void GameBoard::setCurrentBlock(Block *b) {
-	currentBlock = b;
-	blockList.emplace_back(currentBlock);
+bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced: nullptr
+	
+	if (blockToBePlaced == nullptr) {
+		blockToBePlaced = new BlockL();
+		// TODO: currentBlock = level->getBlock();
+	}
+	
+	int fitOrientation = 0;
+	while (fitOrientation <= 4) {
+		if (fitOrientation == 4) {
+			return false;
+		}
+		vector<Pos> currOrientationPoints = blockToBePlaced->getOrientationAtPoint(fitOrientation);
+		if (isFittable(currOrientationPoints)) {
+			// Setting the current block on the board with given orientation
+			currentBlock = blockToBePlaced;
+			currentBlock->setInitialOrientation(fitOrientation);
+			setCurrentBlock2();
+			break;
+		}
+		++fitOrientation;
+	}
+	return true;
+
 	// TODO: set the current block to the given block.
 }
 
+void GameBoard::setCurrentBlock2() {
+	vector<Pos> currOrientationPoints = currentBlock->getCurrOrientationPoints();
+	updateGrid(currOrientationPoints, currentBlock->getLetter());
+	blockList.emplace_back(currentBlock);
+}
+
+void GameBoard::updateGrid(vector<Pos> points, char letter) {
+	for (auto &k : points) {
+		getCellAt(k.x, k.y).set(letter); // setting cell letter
+	}
+}
+
+bool GameBoard::isFittable(vector<Pos> &currentOrientation) {
+	// cout << currentOrientation.at(0).x << currentOrientation.at(0).y << endl;
+	// cout << currentOrientation.at(1).x << currentOrientation.at(1).y << endl;
+	// cout << currentOrientation.at(2).x << currentOrientation.at(2).y << endl;
+	// cout << currentOrientation.at(3).x << currentOrientation.at(3).y << endl;
+
+	// START HERE: Block doesn't move because it recognizes it's own character as overlapping
+	for (auto &p : currentOrientation) {
+		int px = p.x;
+		int py = p.y;
+		if (px < 0 || px >= 11 || py < 0 || py >= 18) {
+			return false;
+		}
+		Cell currCell = getCellAt(px, py);
+		char cLetter = currCell.getData().blockType;
+		cout << "Letter: " << cLetter << endl;
+		if (() and cLetter != '-') { // TODO: change to appropriate empty space
+			return false;
+		}
+	}
+	return true;
+}
+
+Cell &GameBoard::getCellAt(int x, int y) {
+	return grid.at(y).at(x);
+}
+
 void GameBoard::dropBlock() {
+	// TODO: only drop if all cells of the block are below the 3rd row (>= 4th row), can't use isFittable
 	// TODO: drop block
 	// TODO: remove row(s) if full, etc
 	// TODO: remove blocks that have been on the board for >= 10 turns
 	// TODO: update score
-	cout << "Gameboard says: Drop block" << endl;
-}
 
-void GameBoard::moveX(bool goLeft) {
-	// TODO: see if block can move that much in that direction
-	// TODO: if so, move it
-	cout << "Gameboard says: move in X dir" << endl;
-}
+	// IF: drop successful: Here, it's starting the next turn by trying to place a block
+	currentBlock = nullptr;
 
-void GameBoard::moveY() { // TODO: amount can only be positive!
-	// TODO: see if block can move that much in that direction
-	// TODO: if so, move it
-	cout << "Gameboard says: move in Y dir" << endl;
-}
-
-void GameBoard::rotate(bool isClockwise) {
-	cout << "Gameboard says: rotate block" << endl;
-	if (isClockwise) {
-		// TODO: rotate currentBlock clockwise
+	if (tryNewBlock()) { // TODO: instead of doing this, can you notify Quadris that turn is over?
+		setCurrentBlock2();
 	} else {
-		// TODO: rotate currentBlock counter-clockwise
+		// TODO: Game Over sequence, unable to place next block.
 	}
+	// ELSE: drop not successful
+	cout << "Gameboard says: Drop block" << endl;
+	
 }
 
 void GameBoard::levelChange(bool goUp) {
@@ -87,6 +196,10 @@ GameBoard::GameBoard(TextDisplay *td)
 			grid.back().back().attach(td);
 		}
 	}
+}
+
+void GameBoard::init() {
+	tryNewBlock();
 }
 
 GameBoard::~GameBoard() {

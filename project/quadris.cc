@@ -19,7 +19,7 @@ void Quadris::runGameLoop() {
 	string command = "";
 
 	bool gameFinished = false;
-
+	gameBoard->init();
 	while (!gameFinished and (!cin.eof())) {
 		// TODO: what happens at EOF signal?
 		cin >> command;

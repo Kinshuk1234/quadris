@@ -21,3 +21,13 @@ BlockJ::BlockJ() {
 	orientations.emplace_back(p4);
 }
 
+
+
+std::vector<std::vector<Pos>> BlockJ::getOrientationsAt(Pos refPoint) const {
+	return {}; // TODO
+}
+
+char BlockJ::getLetter() {
+	return '-'; // TODO
+}
+

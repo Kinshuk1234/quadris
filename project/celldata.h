@@ -2,7 +2,7 @@
 #define CELL_DATA_H
 
 struct CellData {
-	char blockType = '-'; // Change to enum?
+	char blockType; // Change to enum?
 	int r, c;
 };
 

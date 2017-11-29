@@ -5,6 +5,7 @@
 #include <vector>
 
 class BlockL : public Block {
+	char myType;
 public:
 	// ctors
 	BlockL();
@@ -15,6 +16,11 @@ public:
 	~BlockL() = default;
 
 	// other methods
+
+	// Overrides
+	std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const override; // USED
+	char getLetter() override; // USED
+
 };
 
 

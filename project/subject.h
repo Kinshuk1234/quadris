@@ -7,10 +7,10 @@
 
 #include <iostream> // TEMP
 
-// template <typename DataType> class Observer; // 
 
-template <typename DataType>
-class Subject {
+template <typename DataType> class Observer; // 
+
+template <typename DataType> class Subject {
 	// shared_ptr used because unique_ptr doesn't allow for incomplete type deletion
 	std::vector<Observer<DataType> *> observerList;
 public:
