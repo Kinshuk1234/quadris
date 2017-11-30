@@ -259,9 +259,10 @@ void GameBoard::bestPlace() {
 	int maxEmptyRowsCells=0;
 	int tempMaxEmptyRowsCells=0;
 	char type = currentBlock->getLetter();
-	for(int i=0; i<4; ++i) {  // orientations
-		for(int j=0; j<18; ++j) {
-			for(int k=0; k<11; ++k) {
+	//for(int i=0; i<4; ++i) {  // orientations
+		for(int j=0; j<11; ++j) {
+			for(int k=0; k<18; ++k) {
+				for(int i=0; i<4; ++i) {  // orientations
 				if(isFittable(currOrientationPoints, currentBlock->getOrPtsOf({j,k}, i), true)) {
 					updateGrid(currentBlock->getOrPtsOf({j,k}, i), type);
 					tempMaxEmptyRowsCells = totalEmptyRows();
@@ -273,9 +274,10 @@ void GameBoard::bestPlace() {
 						currOrientationPoints = currentBlock->getOrPtsOf({j,k}, i);
 					}
 				}
+			}
 			}	
 		}
-	}
+	//}
 	updateGrid(currentBlock->getOrPtsOf(hintRefPt, orientation), '?');
 	currentBlock = temp;
 }
