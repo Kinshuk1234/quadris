@@ -233,7 +233,6 @@ int GameBoard::totalEmptyRows() {
 					countFullRow += 1;
 				}
 			}
-			//cout << "PPPPPPPPPPP" << countFullRow << endl;
 			if(isEmptyRow || (countFullRow==11)) {
 				totalEmptyRows += 1;
 			}
@@ -250,8 +249,6 @@ int GameBoard::totalEmptyRows() {
 
 void GameBoard::bestPlace() {
 
-	//Block *temp = currentBlock;
-
 	int currO = currentBlock->getCurrentOr();
 	Pos rp = currentBlock->getRefPoint(currO);
 	vector<Pos> currOrientationPoints = currentBlock->getOrPtsOf(rp, currO);
@@ -263,15 +260,10 @@ void GameBoard::bestPlace() {
 	int tempMaxEmptyRowsCells=0;
 	char type = currentBlock->getLetter();
 
+	for(int row=0; row<18; ++row) {
 		for(int col=0; col<11; ++col) {
-			for(int row=0; row<18; ++row) {
 				for(int ort=0; ort<4; ++ort) {  // orientations
 					if(isFittable(currOrientationPoints, currentBlock->getOrPtsOf({col,row}, ort), true)) {
-						////
-						currentBlock->setInitialOrientation(ort);
-						currentBlock->setRefPoint({col,row});
-						//setCurrentBlock2();
-						////
 					updateGrid(currentBlock->getOrPtsOf({col,row}, ort), type);
 					tempMaxEmptyRowsCells = totalEmptyRows();
 					if(tempMaxEmptyRowsCells >= maxEmptyRowsCells) {
@@ -286,15 +278,7 @@ void GameBoard::bestPlace() {
 			}	
 		}
 	updateGrid(currentBlock->getOrPtsOf(hintRefPt, orientation), '?');
-	//currentBlock = temp;
-	currentBlock->setInitialOrientation(currO);
-	currentBlock->setRefPoint(rp);
-	//setCurrentBlock2();
 }
-
-// currentBlock = blockToBePlaced;
-// 			currentBlock->setInitialOrientation(fitOrientation);
-// 			setCurrentBlock2();
 
 // Big 5 + ctor --------------------------------------
 
