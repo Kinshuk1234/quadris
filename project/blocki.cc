@@ -5,28 +5,31 @@ using namespace std;
 
 class GameBoard;
 
-// Here, inside the constructor of BlockI, I have stored the coordinates
-// in the order they appear, that is, either starting with the top left coordinate or 
-// bottom left coordinate. I haven't stored the coordinate of lower
-// left corner first   
 
-BlockI::BlockI() {
-	vector<Pos> p1 = {{0,0},{1,0},{2,0},{3,0}};
-	orientations.emplace_back(p1);
-	vector<Pos> p2 = {{0,0},{0,1},{0,2},{0,3}};
-	orientations.emplace_back(p2);
-	vector<Pos> p3 = {{0,0},{1,0},{2,0},{3,0}};
-	orientations.emplace_back(p3);
-	vector<Pos> p4 = {{0,0},{0,1},{0,2},{0,3}};
-	orientations.emplace_back(p4);
+BlockI::BlockI()
+: myType{'I'} {
+	refPoints.at(0) = {0, 3};
+	refPoints.at(1) = {0, 6};
+	refPoints.at(2) = {0, 3}; 
+	refPoints.at(3) = {0, 6};
 }
 
-std::vector<std::vector<Pos>> BlockI::getOrientationsAt(Pos refPoint) const {
-	return {}; // TODO
+vector<vector<Pos>> BlockI::getOrientationsAt(Pos refPoint) const {
+	int refX = refPoint.x;
+	int refY = refPoint.y;
+	vector<vector<Pos>> oCpy;
+	oCpy.emplace_back(); oCpy.emplace_back(); oCpy.emplace_back(); oCpy.emplace_back();
+	oCpy.at(0) = {{refX, refY}, {refX + 1, refY}, {refX + 2, refY}, {refX + 3, refY}};
+	oCpy.at(1) = {{refX, refY}, {refX, refY - 1}, {refX, refY - 2}, {refX, refY - 3}};
+	oCpy.at(2) = {{refX, refY}, {refX + 1, refY}, {refX + 2, refY}, {refX + 3, refY}};
+	oCpy.at(3) = {{refX, refY}, {refX, refY - 1}, {refX, refY - 2}, {refX, refY - 3}};
+	return oCpy;
 }
 
-char BlockI::getLetter() {
-	return '-'; // TODO
+
+char BlockI::getLetter() { // USED
+	return myType;
 }
 
+// ONLY TWO POSSIBLE ORIENTATIONS
 

@@ -5,6 +5,7 @@
 #include <vector>
 
 class BlockI : public Block {
+	char myType;
 public:
 	// ctors
 	BlockI();
@@ -15,9 +16,7 @@ public:
 	~BlockI() = default;
 
 	// other methods
-	void rotate_cw();
-	void rotate_ccw();
-
+	
 	std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const override; // USED
 	char getLetter() override; // USED
 };

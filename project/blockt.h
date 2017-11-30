@@ -5,6 +5,7 @@
 #include <vector>
 
 class BlockT : public Block {
+	char myType;
 public:
 	// ctors
 	BlockT();
@@ -13,8 +14,6 @@ public:
 	BlockT &operator=(const BlockT &other) = delete;
 	BlockT &operator=(BlockT &&other) = delete;
 	~BlockT() = default;
-
-	// other methods
 
 	// overrides
 	std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const override; // USED

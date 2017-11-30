@@ -15,8 +15,6 @@ public:
 	BlockL &operator=(BlockL &&other) = delete;
 	~BlockL() = default;
 
-	// other methods
-
 	// Overrides
 	std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const override; // USED
 	char getLetter() override; // USED
