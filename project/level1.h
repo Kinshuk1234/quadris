@@ -1,6 +1,7 @@
 #ifndef LEVEL1_H
 #define LEVEL1_H
 #include <cstdlib>
+#include <ctime>
 #include "level.h"
 
 class Block;

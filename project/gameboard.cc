@@ -4,7 +4,14 @@
 #include "textdisplay.h"
 #include <iostream>
 #include "level0.h"
+#include "level1.h"
 #include "blockl.h"
+#include "blocki.h"
+#include "blockj.h"
+#include "blocko.h"
+#include "blocks.h"
+#include "blockt.h"
+#include "blockz.h"
 
 #include "pos.h"
 
@@ -106,8 +113,8 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced: nullptr
 	
 	if (blockToBePlaced == nullptr) {
-		blockToBePlaced = new BlockL();
-		// TODO: currentBlock = level->getBlock();
+		// blockToBePlaced = new BlockO();
+		blockToBePlaced = level->getBlock();
 	}
 	
 	int fitOrientation = 0;
@@ -212,7 +219,7 @@ void GameBoard::levelChange(bool goUp) {
 
 
 GameBoard::GameBoard(TextDisplay *td)
-: grid{}, lastTurnScore{0}, currentBlock{nullptr}, blockList{}, level{new Level0{}}, scoreBoard{} {
+: grid{}, lastTurnScore{0}, currentBlock{nullptr}, blockList{}, level{new Level1{}}, scoreBoard{} {
 	for (int i = 0; i < 18; i++) {
 		grid.emplace_back();
 		for (int j = 0; j < 11; j++) {
