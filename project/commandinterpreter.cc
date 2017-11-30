@@ -107,6 +107,7 @@ CommandInterpreter::CommandInterpreter()
 	cList["counterclockwise"] = {"counterclockwise"};
 	cList["clockwise"] = {"clockwise"};
 	cList["newcom"] = {"newcom"};
+	cList["hint"] = {"hint"};
 	// TODO: add more usual commands...
 }
 

@@ -81,6 +81,10 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				// TODO: remove previous block
 				setCurrentBlock2();
 			}
+		} else if (currCommand == "hint") {
+			// TODO: call hint method
+			// On the very next command, no matter what the command is, the hint must disappear from the displays
+			bestPlace();
 		}
 		// TODO: add other commands, if any left
 	}
@@ -151,14 +155,14 @@ void GameBoard::updateGrid(vector<Pos> points, char letter) {
 	}
 }
 
-bool GameBoard::isFittable(const vector<Pos> &oldPoints, const vector<Pos> &currentOrientation, bool dropCheck) {
-	cout << currentOrientation.at(0).x << currentOrientation.at(0).y << endl;
-	cout << currentOrientation.at(1).x << currentOrientation.at(1).y << endl;
-	cout << currentOrientation.at(2).x << currentOrientation.at(2).y << endl;
-	cout << currentOrientation.at(3).x << currentOrientation.at(3).y << endl;
+bool GameBoard::isFittable(const vector<Pos> &oldPoints, const vector<Pos> &newOrientation, bool dropCheck) {
+	cout << newOrientation.at(0).x << newOrientation.at(0).y << endl;
+	cout << newOrientation.at(1).x << newOrientation.at(1).y << endl;
+	cout << newOrientation.at(2).x << newOrientation.at(2).y << endl;
+	cout << newOrientation.at(3).x << newOrientation.at(3).y << endl;
 
 	// START HERE: Block doesn't move because it recognizes it's own character as overlapping
-	for (auto &p : currentOrientation) {
+	for (auto &p : newOrientation) {
 		int px = p.x;
 		int py = p.y;
 		int i = 0;
@@ -213,6 +217,67 @@ void GameBoard::dropBlock() {
 void GameBoard::levelChange(bool goUp) {
 	// TODO: make level go up if goUp, else level go down
 	cout << "Gameboard says: Level change" << endl;
+}
+
+// Hint method ---------------------------------------
+
+int GameBoard::totalEmptyRows() {
+	bool isEmptyRow=true; // used
+	int totalEmptyRows=0; // used
+	int totalEmptyCellsInTopRow=0;
+	int countFullRow=0; // used
+	for(int i=0; i<18; ++i)  {
+			for(int j=0; j<11; ++j) {
+				if(grid[i][j].getData().blockType != '-') {
+					isEmptyRow = false;
+					countFullRow += 1;
+				}
+			}
+			if(isEmptyRow || (countFullRow==11)) {
+				totalEmptyRows += 1;
+			}
+			if(countFullRow<11) {
+				totalEmptyCellsInTopRow = 11 - countFullRow;
+				break;
+			}
+			countFullRow = 0;
+		}
+		return totalEmptyRows+totalEmptyCellsInTopRow;
+}
+
+void GameBoard::bestPlace() {
+
+	Block *temp = currentBlock;
+
+	int currO = currentBlock->getCurrentOr();
+	Pos rp = currentBlock->getRefPoint(currO);
+	vector<Pos> currOrientationPoints = currentBlock->getOrPtsOf(rp, currO);
+
+
+	Pos hintRefPt;
+	int orientation;
+	int maxEmptyRowsCells=0;
+	int tempMaxEmptyRowsCells=0;
+	char type = currentBlock->getLetter();
+	for(int i=0; i<4; ++i) {  // orientations
+		for(int j=0; j<18; ++j) {
+			for(int k=0; k<11; ++k) {
+				if(isFittable(currOrientationPoints, currentBlock->getOrPtsOf({j,k}, i), true)) {
+					updateGrid(currentBlock->getOrPtsOf({j,k}, i), type);
+					tempMaxEmptyRowsCells = totalEmptyRows();
+					if(tempMaxEmptyRowsCells >= maxEmptyRowsCells) {
+						maxEmptyRowsCells = tempMaxEmptyRowsCells;
+						hintRefPt = {j,k};
+						orientation = i;
+						updateGrid(currentBlock->getOrPtsOf({j,k}, i), '-');
+						currOrientationPoints = currentBlock->getOrPtsOf({j,k}, i);
+					}
+				}
+			}	
+		}
+	}
+	updateGrid(currentBlock->getOrPtsOf(hintRefPt, orientation), '?');
+	currentBlock = temp;
 }
 
 // Big 5 + ctor --------------------------------------

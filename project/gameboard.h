@@ -40,6 +40,10 @@ public:
 	void updateGrid(std::vector<Pos> points, char letter);
 	Cell &getCellAt(int x, int y);
 
+	// hint method
+	int totalEmptyRows();
+	void bestPlace();
+
 	// Big 5 + ctor
 	GameBoard(TextDisplay *td);
 	GameBoard(const GameBoard &other) = delete;
