@@ -128,7 +128,7 @@ void Block::setCurrentOr(int newO) {
 }
 
 Pos Block::getRefPoint(int o) const {
-	cout << "REF POINT: " << refPoints.at(o) << endl;
+	//cout << "REF POINT: " << refPoints.at(o) << endl;
 	return refPoints.at(o);
 }
 

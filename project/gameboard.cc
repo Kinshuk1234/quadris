@@ -156,10 +156,10 @@ void GameBoard::updateGrid(vector<Pos> points, char letter) {
 }
 
 bool GameBoard::isFittable(const vector<Pos> &oldPoints, const vector<Pos> &newOrientation, bool dropCheck) {
-	cout << newOrientation.at(0).x << newOrientation.at(0).y << endl;
-	cout << newOrientation.at(1).x << newOrientation.at(1).y << endl;
-	cout << newOrientation.at(2).x << newOrientation.at(2).y << endl;
-	cout << newOrientation.at(3).x << newOrientation.at(3).y << endl;
+	// cout << newOrientation.at(0).x << newOrientation.at(0).y << endl;
+	// cout << newOrientation.at(1).x << newOrientation.at(1).y << endl;
+	// cout << newOrientation.at(2).x << newOrientation.at(2).y << endl;
+	// cout << newOrientation.at(3).x << newOrientation.at(3).y << endl;
 
 	// START HERE: Block doesn't move because it recognizes it's own character as overlapping
 	for (auto &p : newOrientation) {
@@ -226,13 +226,14 @@ int GameBoard::totalEmptyRows() {
 	int totalEmptyRows=0; // used
 	int totalEmptyCellsInTopRow=0;
 	int countFullRow=0; // used
-	for(int i=0; i<18; ++i)  {
-			for(int j=0; j<11; ++j) {
-				if(grid[i][j].getData().blockType != '-') {
+	for(int row=0; row<18; ++row)  {
+			for(int col=0; col<11; ++col) {
+				if(grid[row][col].getData().blockType != '-') {
 					isEmptyRow = false;
 					countFullRow += 1;
 				}
 			}
+			//cout << "PPPPPPPPPPP" << countFullRow << endl;
 			if(isEmptyRow || (countFullRow==11)) {
 				totalEmptyRows += 1;
 			}
@@ -241,13 +242,15 @@ int GameBoard::totalEmptyRows() {
 				break;
 			}
 			countFullRow = 0;
+			isEmptyRow = true;
 		}
+		cout << "TOTAL" << totalEmptyCellsInTopRow+totalEmptyRows << endl;
 		return totalEmptyRows+totalEmptyCellsInTopRow;
 }
 
 void GameBoard::bestPlace() {
 
-	Block *temp = currentBlock;
+	//Block *temp = currentBlock;
 
 	int currO = currentBlock->getCurrentOr();
 	Pos rp = currentBlock->getRefPoint(currO);
@@ -259,28 +262,39 @@ void GameBoard::bestPlace() {
 	int maxEmptyRowsCells=0;
 	int tempMaxEmptyRowsCells=0;
 	char type = currentBlock->getLetter();
-	//for(int i=0; i<4; ++i) {  // orientations
-		for(int j=0; j<11; ++j) {
-			for(int k=0; k<18; ++k) {
-				for(int i=0; i<4; ++i) {  // orientations
-				if(isFittable(currOrientationPoints, currentBlock->getOrPtsOf({j,k}, i), true)) {
-					updateGrid(currentBlock->getOrPtsOf({j,k}, i), type);
+
+		for(int col=0; col<11; ++col) {
+			for(int row=0; row<18; ++row) {
+				for(int ort=0; ort<4; ++ort) {  // orientations
+					if(isFittable(currOrientationPoints, currentBlock->getOrPtsOf({col,row}, ort), true)) {
+						////
+						currentBlock->setInitialOrientation(ort);
+						currentBlock->setRefPoint({col,row});
+						//setCurrentBlock2();
+						////
+					updateGrid(currentBlock->getOrPtsOf({col,row}, ort), type);
 					tempMaxEmptyRowsCells = totalEmptyRows();
 					if(tempMaxEmptyRowsCells >= maxEmptyRowsCells) {
 						maxEmptyRowsCells = tempMaxEmptyRowsCells;
-						hintRefPt = {j,k};
-						orientation = i;
-						updateGrid(currentBlock->getOrPtsOf({j,k}, i), '-');
-						currOrientationPoints = currentBlock->getOrPtsOf({j,k}, i);
+						hintRefPt = {col,row};
+						orientation = ort;
+						updateGrid(currentBlock->getOrPtsOf({col,row}, ort), '-');
+						currOrientationPoints = currentBlock->getOrPtsOf({col,row}, ort);
+						}
 					}
 				}
-			}
 			}	
 		}
-	//}
 	updateGrid(currentBlock->getOrPtsOf(hintRefPt, orientation), '?');
-	currentBlock = temp;
+	//currentBlock = temp;
+	currentBlock->setInitialOrientation(currO);
+	currentBlock->setRefPoint(rp);
+	//setCurrentBlock2();
 }
+
+// currentBlock = blockToBePlaced;
+// 			currentBlock->setInitialOrientation(fitOrientation);
+// 			setCurrentBlock2();
 
 // Big 5 + ctor --------------------------------------
 
