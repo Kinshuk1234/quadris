@@ -139,13 +139,16 @@ void Block::setInitialOrientation(int initOrientation) { // USED
 	refPoints.at(3) = refPoints.at(0);
 }
 
+void Block::setDropped(bool dropped) {
+	isDropped = dropped;
+}
 
 
 
 // Big 5 + ctor ----------------------------------
 
 Block::Block() // USED
-: refPoints{}, orientations{}, currOrientation{0} {
+: refPoints{}, orientations{}, currOrientation{0}, isDropped{false} {
 	refPoints.emplace_back();
 	refPoints.emplace_back();
 	refPoints.emplace_back();

@@ -193,6 +193,34 @@ Cell &GameBoard::getCellAt(int x, int y) {
 
 void GameBoard::dropBlock() {
 	bool dropSuccess = false;
+
+	Pos refPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
+	int currO = currentBlock->getCurrentOr();
+
+	vector<Pos> initialPoints = currentBlock->getOrPtsOf(refPoint, currO);
+	vector<Pos> currPoints = initialPoints;
+	refPoint.y += 1;
+	vector<Pos> translatedPoints = currentBlock->getOrPtsOf(refPoint, currO);
+
+	while (isFittable(currPoints, translatedPoints, false)) {
+		currPoints = translatedPoints;
+		refPoint.y += 1;
+		translatedPoints = currentBlock->getOrPtsOf(refPoint, currO);
+	}
+
+	if (isFittable(initialPoints, currPoints, true)) {
+		dropSuccess = true;
+		refPoint.y -= 1;
+		currentBlock->setRefPoint(refPoint);
+		currentBlock->setDropped(true);
+		setCurrentBlock2();
+	} else {
+		cout << "doesn't fit anymore" << endl;
+	}
+
+
+
+
 	
 	// TODO: only drop if all cells of the block are below the 3rd row (>= 4th row), can't use isFittable
 	// TODO: drop block
@@ -203,7 +231,7 @@ void GameBoard::dropBlock() {
 	// IF: drop successful: Here, it's starting the next turn by trying to place a block
 	blockList.emplace_back(currentBlock);
 	currentBlock = nullptr;
-
+	
 	if (tryNewBlock()) { // TODO: instead of doing this, can you notify Quadris that turn is over?
 		
 		setCurrentBlock2();
