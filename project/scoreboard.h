@@ -6,12 +6,14 @@ class GameBoard;
 // ScoreBoard: To keep track of the current and highscore
 class ScoreBoard {
 	int currentScore;
-	int highScore;
+	int hiScore;
 public:
 	
 
 	// Visitor of GameBoard
 	void updateScore(int lastTurnScore);
+	int getCurrentScore();
+	int getHiScore();
 
 	// Big 5 + ctor
 	ScoreBoard();

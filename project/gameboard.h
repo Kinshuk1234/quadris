@@ -9,6 +9,7 @@
 #include "block.h"
 #include "scoreboard.h"
 #include "pos.h"
+#include "gameboarddata.h"
 
 class TextDisplay;
 
@@ -17,13 +18,17 @@ class ScoreBoard;
 class Level; // May need to change if changing from ptr to another ref to object.
 
 
-class GameBoard : public Observer<std::vector<std::string>> {
+// Observer of the Command Interpreter
+// Subject to the displays
+class GameBoard : public Observer<std::vector<std::string>>, Subject<GameBoardData> {
 	std::vector<std::vector<Cell>> grid; // List of rows in the grid containing each cell (r, c)
 	int lastTurnScore; // score of the most recent turn, to be sent to the scoreboard
 	Block *currentBlock;
 	std::vector<Block *> blockList;
 	Level *level;
 	ScoreBoard scoreBoard;
+	bool gameOver;
+	Block *nextBlock;
 
 public:
 
@@ -39,6 +44,7 @@ public:
 	void setCurrentBlock2();
 	void updateGrid(std::vector<Pos> points, char letter);
 	Cell &getCellAt(int x, int y);
+	GameBoardData getData();
 
 	// hint method
 	int totalEmptyRows();

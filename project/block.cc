@@ -68,13 +68,13 @@ using namespace std;
 // 	// }
 // }
 
-vector<Pos> Block::getCurrOrientationPoints() { // USED
-	return orientations.at(currOrientation);
-}
+// vector<Pos> Block::getCurrOrientationPoints() { // USED
+// 	return orientations.at(currOrientation);
+// }
 
-void Block::setOrientation(int i) { // USED
-	currOrientation = i;
-}
+// void Block::setOrientation(int i) { // USED
+// 	currOrientation = i;
+// }
 
 
 void Block::rotate(bool clockwise) { // USED
@@ -91,9 +91,9 @@ void Block::setRefPoint(Pos newRefPoint) { // USED
 	refPoints.at(3) = newRefPoint;
 }
 
-vector<Pos> Block::getOrientationWith(Pos otherRefPoint, int otherOrientation) const { // USED
-	return getOrientationsAt(otherRefPoint).at(otherOrientation);
-}
+// vector<Pos> Block::getOrientationWith(Pos otherRefPoint, int otherOrientation) const { // USED
+// 	return getOrientationsAt(otherRefPoint).at(otherOrientation);
+// }
 
 // void Block::lockOrientationsAbout(Pos refPoint) { // USED
 // 	orientations = getOrientationsAt(refPoint);
@@ -103,15 +103,15 @@ vector<Pos> Block::getOrientationWith(Pos otherRefPoint, int otherOrientation) c
 // 	return refPoints.at(0);
 // }
 
-int Block::getCurrentOrientation() {
-	return currOrientation;
-}
+// int Block::getCurrentOrientation() {
+// 	return currOrientation;
+// }
 
 // Gets orientation orValue about position refPoint
-vector<Pos> Block::getOrientationAtPoint(int orValue) {
+// vector<Pos> Block::getOrientationAtPoint(int orValue) {
 	
-	return getOrientationsAt(refPoints.at(orValue)).at(orValue);
-}
+// 	return getOrientationsAt(refPoints.at(orValue)).at(orValue);
+// }
 
 // NEW NEW NEW
 

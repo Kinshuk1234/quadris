@@ -26,7 +26,7 @@ public:
 	~Quadris();
 
 private:
-	void runGameLoop();
+	void initGame();
 
 };
 

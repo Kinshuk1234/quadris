@@ -34,13 +34,13 @@ public:
 	// void lockOrientationsAbout(Pos refPoint); // USED
 	void setRefPoint(Pos newRefPoint); // USED
 
-	void setOrientation(int i); // USED
-	int getCurrentOrientation(); // USED
-	std::vector<Pos> getCurrOrientationPoints(); // USED
-	std::vector<Pos> getOrientationAtPoint(int orValue);
+	// void setOrientation(int i); // 1
+	// int getCurrentOrientation(); // 2
+	// std::vector<Pos> getCurrOrientationPoints(); // USED // 3
+	// std::vector<Pos> getOrientationAtPoint(int orValue); // 4
 
 	virtual char getLetter() = 0; // USED
-	std::vector<Pos> getOrientationWith(Pos otherRefPoint, int otherOrientation) const; // USED
+	// std::vector<Pos> getOrientationWith(Pos otherRefPoint, int otherOrientation) const; // USED
 
 	// NEW
 	// Gets the orientation

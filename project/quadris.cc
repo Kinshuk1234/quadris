@@ -1,6 +1,6 @@
 #include <memory>
 #include "quadris.h"
-
+#include "gameboarddata.h"
 
 
 // TEMP:
@@ -12,26 +12,32 @@ using namespace std;
 void Quadris::init() {
 	// TODO: initialize the game object
 	this->attach(gameBoard); // This inherits from CommandInterpreter
-	runGameLoop();
+	initGame();
 }
 
-void Quadris::runGameLoop() {
+void Quadris::initGame() {
 	string command = "";
 
-	bool gameFinished = false;
 	gameBoard->init();
-	cout << *textDisplay << endl;
-	while (!gameFinished and (!cin.eof())) {
-		// TODO: what happens at EOF signal?
-		cin >> command;
-		// cout << "Command: \'" << command << "\'" << endl;
-		execute(command);
+	// TODO: attach Graphics display to cells
+	// TODO: graphics display output
+	GameBoardData gbData = gameBoard->getData();
+	while (!gbData.gameOver and (!cin.eof())) {
 		cout << *textDisplay << endl;
+		cin >> command;
+		if (cin.eof()) {
+			break;
+		}
+		execute(command);
+		// TODO: graphics display output
 	}
 
-	// TODO: show score, highscore and stuff??
+	// TODO: show score, highscore and stuff?? // In the displays
 }
 
+void notify(Subject<GameBoardData> &notifier) {
+
+}
 
 // Big 5 + ctor -------------------------------------------
 

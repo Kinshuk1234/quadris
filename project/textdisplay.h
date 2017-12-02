@@ -4,15 +4,22 @@
 #include <iostream>
 #include <vector>
 #include "celldata.h"
+#include "gameboarddata.h"
 #include "observer.h"
 
 class Cell;
 
-class TextDisplay : public Observer<CellData> {
+class TextDisplay : public Observer<GameBoardData> {
 	std::vector<std::vector<char>> grid;
+	int hiScore;
+	int currentScore;
+	int currentLevel;
 
 public:
-	void notify(Subject<CellData> &notifier) override;
+	void notify(Subject<GameBoardData> &notifier) override;
+	int getCurrentLevel() const;
+	int getCurrentScore() const;
+	int getHiScore() const;
 
 	// Big 5 + ctor
 	TextDisplay();

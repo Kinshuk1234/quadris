@@ -4,7 +4,6 @@
 #include <map>
 #include "subject.h"
 
-
 class CommandInterpreter : public Subject<std::vector<std::string>> { // TODO: inherit from subject
 	std::map<std::string, std::vector<std::string>> cList;
 	std::string currentCommand;

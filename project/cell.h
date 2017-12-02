@@ -1,18 +1,16 @@
 #ifndef CELL_H
 #define CELL_H
 
-#include "subject.h"
 #include "celldata.h"
 
-class Cell : public Subject<CellData> { // Subject to textdisplay
+class Cell { // Subject to textdisplay
 	int r, c;
 	char blockType;
 
 public:
-
-	CellData getData() override;
 	void set(char newBlockType);
 	void clear();
+	char getLetter() const;
 
 
 	// Big 5 + ctor
