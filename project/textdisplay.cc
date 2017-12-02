@@ -30,7 +30,7 @@ TextDisplay::TextDisplay()
 
 ostream &operator<<(ostream &out, const TextDisplay &td) {
 	auto &grid = td.grid;
-	for (auto it = grid.begin(); it != grid.end(); ++it) {
+	for (auto it = grid.begin() + 3; it != grid.end(); ++it) {
 		for (auto innerIt = it->begin(); innerIt != it->end(); ++innerIt) {
 			out << *innerIt;
 		}
