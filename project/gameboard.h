@@ -13,7 +13,7 @@
 
 class TextDisplay;
 
-class GraphicsDisplay;
+//class GraphicsDisplay;
 
 class ScoreBoard;
 
@@ -31,6 +31,7 @@ class GameBoard : public Observer<std::vector<std::string>>, Subject<GameBoardDa
 	ScoreBoard scoreBoard;
 	bool gameOver;
 	Block *nextBlock;
+	std::vector<Pos> hintPoints;
 
 public:
 
@@ -54,7 +55,7 @@ public:
 	void bestPlace();
 
 	// Big 5 + ctor
-	GameBoard(TextDisplay *td, GraphicsDisplay *gd);
+	GameBoard(TextDisplay *td, int startLevel, int seed, std::string filename); //, GraphicsDisplay *gd);
 	GameBoard(const GameBoard &other) = delete;
 	GameBoard(GameBoard &&other) = delete;
 	GameBoard &operator=(const GameBoard &other) = delete;

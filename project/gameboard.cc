@@ -2,10 +2,13 @@
 #include "gameboard.h"
 #include "scoreboard.h"
 #include "textdisplay.h"
-#include "graphicsdisplay.h"
+//#include "graphicsdisplay.h"
 #include <iostream>
+#include "quadris.h"
 #include "level0.h"
 #include "level1.h"
+#include "level2.h"
+#include "level3.h"
 #include "blockl.h"
 #include "blocki.h"
 #include "blockj.h"
@@ -33,6 +36,7 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 
 	for (auto it = arr.begin(); it != arr.end(); ++it) {
 		string currCommand = *it;
+		updateGrid(hintPoints, '-');
 		if (currCommand == "left") {
 			xChange -= 1;
 			cout << "Going Left" << endl;
@@ -90,7 +94,6 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				placeCurrentBlock();
 			}
 		} else if (currCommand == "hint") {
-			// TODO: call hint method
 			// TODO: On the very next command, no matter what the command is, the hint must disappear from the displays
 			bestPlace();
 		}
@@ -260,9 +263,9 @@ void GameBoard::levelChange(bool goUp) {
 
 // Hint method ---------------------------------------
 
-bool GameBoard::checkCoor(int row, int col, vector<Pos> currentBlockPoints) {
+bool GameBoard::checkCoor(int col, int row, vector<Pos> currentBlockPoints) {
 	for(int i=0; i<4; ++i) {
-		if((row==currentBlockPoints[i].y)&&(col==currentBlockPoints[i].x)) {
+		if((col==currentBlockPoints[i].x)&&(row==currentBlockPoints[i].y)) {
 			return true;
 	    }
 	}
@@ -270,37 +273,36 @@ bool GameBoard::checkCoor(int row, int col, vector<Pos> currentBlockPoints) {
 }
 
 int GameBoard::totalEmptyRows(vector<Pos> currentBlockPoints) {
-	//bool isEmptyRow=true; // used
 	int emptyCellCount = 0;
 	int totalEmptyRows=0; // used
 	int totalEmptyCellsInTopRow=0; // used
 	int countFullRow=0; // used
-	for(int row=0; row<18; ++row)  {
+	for(int row=3; row<18; ++row)  {
 			for(int col=0; col<11; ++col) {
 
-				////////////////
+				if(checkCoor(col,row,currentBlockPoints)) {
+					emptyCellCount += 1;
+					continue;
+				}
 
-				if(checkCoor(row,col,currentBlockPoints)) {
+				if(grid[row][col].getLetter() != '-') {
+					countFullRow += 1;
+				} else {
 					emptyCellCount += 1;
 				}
 
-				////////////////
-
-
-				if(grid[row][col].getLetter() != '-') {
-					//isEmptyRow = false;
-					countFullRow += 1;
-				}
 			}
+
 			if(emptyCellCount==11 || (countFullRow==11)) {
 				totalEmptyRows += 1;
 			}
+
 			if(countFullRow<11) {
 				totalEmptyCellsInTopRow = 11 - countFullRow;
 				break;
 			}
+
 			countFullRow = 0;
-			//isEmptyRow = true;
 			emptyCellCount = 0;
 		}
 		return totalEmptyRows+totalEmptyCellsInTopRow;
@@ -310,10 +312,8 @@ void GameBoard::bestPlace() {
 
 	int currO = currentBlock->getCurrentOr();
 	Pos rp = currentBlock->getRefPoint(currO);
-	cout << "RP: " << rp << endl;
 	vector<Pos> currOrientationPoints = currentBlock->getOrPtsOf(rp, currO);
 	vector<Pos> initialPoints = currOrientationPoints;
-
 
 	Pos hintRefPt;
 	int orientation;
@@ -321,26 +321,26 @@ void GameBoard::bestPlace() {
 	int tempMaxEmptyRowsCells=0;
 	char type = currentBlock->getLetter();
 
-	for(int row=0; row<18; ++row) {
+	for(int row=3; row<18; ++row) {
 		for(int col=0; col<11; ++col) {
-				for(int ort=0; ort<4; ++ort) {  // orientations
+			for(int ort=0; ort<4; ++ort) {
 					if(isFittable(currOrientationPoints, currentBlock->getOrPtsOf({col,row}, ort), true)) {
 					updateGrid(currentBlock->getOrPtsOf({col,row}, ort), type);
 					tempMaxEmptyRowsCells = totalEmptyRows(initialPoints);
+					updateGrid(currentBlock->getOrPtsOf({col,row}, ort), '-');
 					if(tempMaxEmptyRowsCells >= maxEmptyRowsCells) {
 						maxEmptyRowsCells = tempMaxEmptyRowsCells;
 						hintRefPt = {col,row};
 						orientation = ort;
-						updateGrid(currentBlock->getOrPtsOf({col,row}, ort), '-');
 						currOrientationPoints = currentBlock->getOrPtsOf({col,row}, ort);
-						}
 					}
 				}
-			}	
-		}
+			}
+		}	
+	}
 	updateGrid(currentBlock->getOrPtsOf(hintRefPt, orientation), '?');
+	hintPoints = currentBlock->getOrPtsOf(hintRefPt, orientation);
 }
-
 
 
 // Subject method ---------------------------------
@@ -351,19 +351,33 @@ GameBoardData GameBoard::getData() {
 
 // Big 5 + ctor --------------------------------------
 
-
-GameBoard::GameBoard(TextDisplay *td, GraphicsDisplay *gd)
+// Add graphicsDisplay pointer
+GameBoard::GameBoard(TextDisplay *td, int startLevel, int seed, string filename) //, GraphicsDisplay *gd)
+// TODO:: Assign correct level by using the parameter "level"
 : grid{}, 
-lastTurnScore{0},
+lastTurnScore{0}, 
  currentBlock{nullptr},
+ level{new Level0{}},
   blockList{}, 
-  level{new Level1{}}, 
-  scoreBoard{},
-  gameOver{false} {
-	attach(td);
-	if (gd != nullptr) {
-		attach(gd);
+  scoreBoard{}, 
+  gameOver{false} { 
+	attach(td); 
+	// if (gd != nullptr) { 
+	// 	attach(gd); 
+	// }
+
+	if(level==0) {
+		level = new Level0{filename};
+	} else if(startLevel==1) {
+		level = new Level1{seed};
+	} else if(startLevel==2) {
+		level = new Level2{seed};
+	} else if(startLevel==3) {
+		level = new Level3{seed};
+	} else if(startLevel==4) {
+		// TODO: Initialize level 4
 	}
+
 	for (int i = 0; i < 18; i++) {
 		grid.emplace_back();
 		for (int j = 0; j < 11; j++) {
@@ -375,7 +389,7 @@ lastTurnScore{0},
 }
 
 void GameBoard::init() {
-	nextBlock = level->getBlock(); // Gets block from level
+	nextBlock = level->getBlock(); // Gets block from 
 	tryNewBlock();
 }
 
