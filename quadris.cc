@@ -12,32 +12,26 @@ using namespace std;
 void Quadris::init() {
 	// TODO: initialize the game object
 	this->attach(gameBoard); // This inherits from CommandInterpreter
-	initGame();
+	runGameLoop();
 }
 
-void Quadris::initGame() {
+void Quadris::runGameLoop() {
 	string command = "";
 
+	bool gameFinished = false;
 	gameBoard->init();
-	// TODO: attach Graphics display to cells
-	// TODO: graphics display output
-	GameBoardData gbData = gameBoard->getData();
-	while (!gbData.gameOver and (!cin.eof())) {
-		cout << *textDisplay << endl;
+	cout << *textDisplay << endl;
+	while (!gameFinished and (!cin.eof())) {
+		// TODO: what happens at EOF signal?
 		cin >> command;
-		if (cin.eof()) {
-			break;
-		}
+		// cout << "Command: \'" << command << "\'" << endl;
 		execute(command);
-		// TODO: graphics display output
+		cout << *textDisplay << endl;
 	}
 
-	// TODO: show score, highscore and stuff?? // In the displays
+	// TODO: show score, highscore and stuff??
 }
 
-void notify(Subject<GameBoardData> &notifier) {
-
-}
 
 // Big 5 + ctor -------------------------------------------
 
@@ -49,6 +43,7 @@ gameBoard{new GameBoard{textDisplay}}
 Quadris::Quadris(int gridSize, int winSize) : 
 graphicsdisplay{new GraphicsDisplay(gridSize, winSize)},
 gameBoard{new GameBoard{graphicsdisplay}} {}
+
 
 Quadris::~Quadris() {
 	delete textDisplay;

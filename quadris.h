@@ -9,10 +9,12 @@
 #include "graphicsdisplay.h"
 
 
+
+
 class Quadris : public CommandInterpreter {
 	TextDisplay *textDisplay; // Change to smart pointer (i.e. unique_ptr, shared_ptr)
-	GameBoard *gameBoard;
 	GraphicsDisplay *graphicsdisplay;
+	GameBoard *gameBoard;
 	
 public:
 	void init();
@@ -27,7 +29,7 @@ public:
 	~Quadris();
 
 private:
-	void initGame();
+	void runGameLoop();
 
 };
 
