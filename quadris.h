@@ -9,16 +9,19 @@
 #include "graphicsdisplay.h"
 
 
+
+
 class Quadris : public CommandInterpreter {
 	TextDisplay *textDisplay; // Change to smart pointer (i.e. unique_ptr, shared_ptr)
-	GameBoard *gameBoard;
 	GraphicsDisplay *graphicsdisplay;
+	GameBoard *gameBoard;
 	
 public:
 	void init();
 
 	// Big 5 + ctor
 	Quadris();
+	Quadris(int gridSize, int winSize);
 	Quadris(const Quadris &other) = delete;
 	Quadris(Quadris &&other) = delete;
 	Quadris &operator=(const Quadris &other) = delete;
@@ -26,7 +29,7 @@ public:
 	~Quadris();
 
 private:
-	void initGame();
+	void runGameLoop();
 
 };
 

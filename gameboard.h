@@ -9,7 +9,6 @@
 #include "block.h"
 #include "scoreboard.h"
 #include "pos.h"
-#include "gameboarddata.h"
 
 class TextDisplay;
 
@@ -20,17 +19,13 @@ class ScoreBoard;
 class Level; // May need to change if changing from ptr to another ref to object.
 
 
-// Observer of the Command Interpreter
-// Subject to the displays
-class GameBoard : public Observer<std::vector<std::string>>, Subject<GameBoardData> {
+class GameBoard : public Observer<std::vector<std::string>> {
 	std::vector<std::vector<Cell>> grid; // List of rows in the grid containing each cell (r, c)
 	int lastTurnScore; // score of the most recent turn, to be sent to the scoreboard
 	Block *currentBlock;
 	std::vector<Block *> blockList;
 	Level *level;
 	ScoreBoard scoreBoard;
-	bool gameOver;
-	Block *nextBlock;
 
 public:
 
@@ -43,18 +38,17 @@ public:
 	void changeCell(int r, int c, char ch); // TEMP
 
 	bool tryNewBlock(Block *blockToBePlaced = nullptr);
-	void placeCurrentBlock();
+	void setCurrentBlock2();
 	void updateGrid(std::vector<Pos> points, char letter);
-	Cell &getCellAt(Pos p);
-	GameBoardData getData();
+	Cell &getCellAt(int x, int y);
 
 	// hint method
-	bool checkCoor(int row, int col, std::vector<Pos> currentBlockPoints);
-	int totalEmptyRows(std::vector<Pos> currentBlockPoints);
+	int totalEmptyRows();
 	void bestPlace();
 
 	// Big 5 + ctor
-	GameBoard(TextDisplay *td, GraphicsDisplay *gd);
+	GameBoard(TextDisplay *td);
+	GameBoard(GraphicsDisplay *gd);
 	GameBoard(const GameBoard &other) = delete;
 	GameBoard(GameBoard &&other) = delete;
 	GameBoard &operator=(const GameBoard &other) = delete;
@@ -62,7 +56,7 @@ public:
 	~GameBoard();
 
 private:
-	bool isFittable(const std::vector<Pos> &oldPoints, const std::vector<Pos> &currOrientation, const bool dropCheck); // TODO: make const, then make getCellAt const, then make Cell copy ctor, Subject copy ctor
+	bool isFittable(const std::vector<Pos> &oldPoints, const std::vector<Pos> &currOrientation, bool dropCheck); // TODO: make const, then make getCellAt const, then make Cell copy ctor, Subject copy ctor
 	void dropBlock();
 	void levelChange(bool goUp);
 };
