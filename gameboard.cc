@@ -2,7 +2,6 @@
 #include "gameboard.h"
 #include "scoreboard.h"
 #include "textdisplay.h"
-#include "graphicsdisplay.h"
 #include <iostream>
 #include "level0.h"
 #include "level1.h"
@@ -57,19 +56,12 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 			vector<Pos> transformedPoints = currentBlock->getOrPtsOf(transformedRefPoint, transformedOrientation);
 			if (isFittable(initialPoints, transformedPoints, false)) {
 				dropBlock();
-				
+				transformedRefPoint.x = currentBlock->getRefPoint(currentBlock->getCurrentOrientation()).x;
+				transformedRefPoint.y = currentBlock->getRefPoint(currentBlock->getCurrentOrientation()).y;
+				transformedOrientation = currentBlock->getCurrentOrientation();
 				xChange = 0;
 				yChange = 0;
 				rotateChange = 0;
-				blockList.emplace_back(currentBlock);
-				if (!tryNewBlock()) {
-					// TODO: Game over
-					cout << "Game Over" << endl;
-				} else {
-					transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
-					transformedOrientation = currentBlock->getCurrentOr();
-					initialPoints = currentBlock->getOrPtsOf(transformedRefPoint, transformedOrientation);
-				}
 			} else {
 				// Invalid position
 			}
@@ -87,11 +79,11 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				// Unable to place block. Maybe inform textDisplay to output that via observer/subject?
 			} else {
 				// TODO: remove previous block
-				placeCurrentBlock();
+				setCurrentBlock2();
 			}
 		} else if (currCommand == "hint") {
 			// TODO: call hint method
-			// TODO: On the very next command, no matter what the command is, the hint must disappear from the displays
+			// On the very next command, no matter what the command is, the hint must disappear from the displays
 			bestPlace();
 		}
 		// TODO: add other commands, if any left
@@ -101,24 +93,32 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 	transformedOrientation = (transformedOrientation + rotateChange) % 4;
 	vector<Pos> transformedPoints = currentBlock->getOrPtsOf(transformedRefPoint, transformedOrientation);
 
+	#ifdef DEBUG	
+	cout << "Initial Points: " << endl;
+	cout << initialPoints.at(0).x << initialPoints.at(0).y << endl;
+	cout << initialPoints.at(1).x << initialPoints.at(1).y << endl;
+	cout << initialPoints.at(2).x << initialPoints.at(2).y << endl;
+	cout << initialPoints.at(3).x << initialPoints.at(3).y << endl;
+	cout << "Transformed Points: " << endl;
+	cout << transformedPoints.at(0).x << transformedPoints.at(0).y << endl;
+	cout << transformedPoints.at(1).x << transformedPoints.at(1).y << endl;
+	cout << transformedPoints.at(2).x << transformedPoints.at(2).y << endl;
+	cout << transformedPoints.at(3).x << transformedPoints.at(3).y << endl;
+	#endif
+
 	if (isFittable(initialPoints, transformedPoints, false)) {
 		updateGrid(initialPoints, '-'); // TODO: Sets old points on grid to empty space '-'
 		currentBlock->setRefPoint(transformedRefPoint);
-		currentBlock->setCurrentOr(transformedOrientation);
-		cout << "CURRENT OR: " << currentBlock->getRefPoint(currentBlock->getCurrentOr()) << endl;
-		cout << "OR VALUE: " << currentBlock->getCurrentOr() << endl;
-		placeCurrentBlock();
+		currentBlock->setOrientation(transformedOrientation);
+		setCurrentBlock2();
 	}
 }
 
 bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced: nullptr
 	
-	bool checkWithCurrentBlock = false;
-
 	if (blockToBePlaced == nullptr) {
+		// blockToBePlaced = new BlockO();
 		blockToBePlaced = level->getBlock();
-	} else {
-		checkWithCurrentBlock = true;
 	}
 	
 	int fitOrientation = 0;
@@ -127,110 +127,73 @@ bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced
 			return false;
 		}
 		vector<Pos> currOrientationPoints = blockToBePlaced->getOrPtsOf(blockToBePlaced->getRefPoint(fitOrientation), fitOrientation);
-		vector<Pos> currentBlockPts = {};
-		if (checkWithCurrentBlock) {
-			// NOTE: needed to make sure new "required" block ignores the current block in the grid.
-			int currentBlockOr = currentBlock->getCurrentOr();
-			Pos currentBlockRP = currentBlock->getRefPoint(currentBlockOr);
-			currentBlockPts = currentBlock->getOrPtsOf(currentBlockRP, currentBlockOr);
-		}
-		if (isFittable(currentBlockPts, currOrientationPoints, false)) {
+		if (isFittable({}, currOrientationPoints, false)) {
 			// Setting the current block on the board with given orientation
-			cout << "Orientation: " << fitOrientation << endl;
-			cout << currOrientationPoints.at(0) << endl;
-			cout << currOrientationPoints.at(1) << endl;
-			cout << currOrientationPoints.at(2) << endl;
-			cout << currOrientationPoints.at(3) << endl;
-			if (checkWithCurrentBlock) { delete currentBlock; } // Also delete from grid
 			currentBlock = blockToBePlaced;
 			currentBlock->setInitialOrientation(fitOrientation);
-			placeCurrentBlock();
+			setCurrentBlock2();
 			break;
 		}
 		++fitOrientation;
 	}
 	return true;
+
+	// TODO: set the current block to the given block.
 }
 
-void GameBoard::placeCurrentBlock() {
+void GameBoard::setCurrentBlock2() {
 	int currO = currentBlock->getCurrentOr();
 	Pos rp = currentBlock->getRefPoint(currO);
 	vector<Pos> currOrientationPoints = currentBlock->getOrPtsOf(rp, currO);
-	// cout << currOrientationPoints.at(0) << endl;
-	// cout << currOrientationPoints.at(1) << endl;
-	// cout << currOrientationPoints.at(2) << endl;
-	// cout << currOrientationPoints.at(3) << endl;
 	updateGrid(currOrientationPoints, currentBlock->getLetter());
+	blockList.emplace_back(currentBlock);
 }
 
 void GameBoard::updateGrid(vector<Pos> points, char letter) {
 	for (auto &k : points) {
-		getCellAt(k).set(letter); // setting cell letter
+		getCellAt(k.x, k.y).set(letter); // setting cell letter
 	}
-	notifyAll();
 }
 
-bool GameBoard::isFittable(const vector<Pos> &oldPoints, const vector<Pos> &newOrientation, const bool dropCheck) {
+bool GameBoard::isFittable(const vector<Pos> &oldPoints, const vector<Pos> &newOrientation, bool dropCheck) {
+	// cout << newOrientation.at(0).x << newOrientation.at(0).y << endl;
+	// cout << newOrientation.at(1).x << newOrientation.at(1).y << endl;
+	// cout << newOrientation.at(2).x << newOrientation.at(2).y << endl;
+	// cout << newOrientation.at(3).x << newOrientation.at(3).y << endl;
 
+	// START HERE: Block doesn't move because it recognizes it's own character as overlapping
 	for (auto &p : newOrientation) {
 		int px = p.x;
 		int py = p.y;
-		int lowestY = dropCheck ? 3 : 0;
-		if (px < 0 || px >= 11 || py < lowestY || py >= 18) {
-			return false;
-		}
-		Cell currCell = getCellAt(p);
-		char cLetter = currCell.getLetter();
-		if (cLetter != '-') { // TODO: change to appropriate empty space
-			int i = 0;
-			for (i = 0; i < oldPoints.size(); i++) {
-				if (oldPoints.at(i) == p) {
-					i = 100;
-				}
+		int i = 0;
+		for (i = 0; i < oldPoints.size(); i++) {
+			if (oldPoints.at(i) == p) {
+				i = 100;
 			}
-			if (i < 100) {
+		}
+		if (i >= 100) {
+		} else {
+			int lowestY = dropCheck ? 3 : 0;
+			if (px < 0 || px >= 11 || py < lowestY || py >= 18) {
+				return false;
+			}
+			Cell currCell = getCellAt(px, py);
+			char cLetter = currCell.getData().blockType;
+			if (cLetter != '-') { // TODO: change to appropriate empty space
 				return false;
 			}
 		}
+		
 	}
-	
 	return true;
 }
 
-Cell &GameBoard::getCellAt(Pos p) {
-	return grid.at(p.y).at(p.x);
+Cell &GameBoard::getCellAt(int x, int y) {
+	return grid.at(y).at(x);
 }
 
 void GameBoard::dropBlock() {
 	bool dropSuccess = false;
-
-	Pos refPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
-	int currO = currentBlock->getCurrentOr();
-
-	vector<Pos> initialPoints = currentBlock->getOrPtsOf(refPoint, currO);
-	vector<Pos> currPoints = initialPoints;
-
-	while (isFittable(initialPoints, currPoints, false)) {
-		refPoint.y += 1;
-		currPoints = currentBlock->getOrPtsOf(refPoint, currO);
-	}
-	refPoint.y -= 1;
-	currPoints = currentBlock->getOrPtsOf(refPoint, currO);
-
-	if (isFittable(initialPoints, currPoints, true)) {
-		dropSuccess = true;
-		currentBlock->setRefPoint(refPoint);
-		currentBlock->setDropped(true);
-		updateGrid(initialPoints, '-');
-		updateGrid(currPoints, currentBlock->getLetter());
-		placeCurrentBlock();
-	} else {
-		cout << "doesn't fit anymore" << endl;
-	}
-
-
-
-
 	
 	// TODO: only drop if all cells of the block are below the 3rd row (>= 4th row), can't use isFittable
 	// TODO: drop block
@@ -239,15 +202,13 @@ void GameBoard::dropBlock() {
 	// TODO: update score
 
 	// IF: drop successful: Here, it's starting the next turn by trying to place a block
-	// blockList.emplace_back(currentBlock);
-	// currentBlock = nullptr;
-	
-	// if (tryNewBlock()) { // TODO: instead of doing this, can you notify Quadris that turn is over?
-		
-	// 	setCurrentBlock2();
-	// } else {
-	// 	// TODO: Game Over sequence, unable to place next block.
-	// }
+	currentBlock = nullptr;
+
+	if (tryNewBlock()) { // TODO: instead of doing this, can you notify Quadris that turn is over?
+		setCurrentBlock2();
+	} else {
+		// TODO: Game Over sequence, unable to place next block.
+	}
 	// ELSE: drop not successful
 	cout << "Gameboard says: Drop block" << endl;
 	
@@ -267,7 +228,7 @@ int GameBoard::totalEmptyRows() {
 	int countFullRow=0; // used
 	for(int row=0; row<18; ++row)  {
 			for(int col=0; col<11; ++col) {
-				if(grid[row][col].getLetter() != '-') {
+				if(grid[row][col].getData().blockType != '-') {
 					isEmptyRow = false;
 					countFullRow += 1;
 				}
@@ -282,6 +243,7 @@ int GameBoard::totalEmptyRows() {
 			countFullRow = 0;
 			isEmptyRow = true;
 		}
+		cout << "TOTAL" << totalEmptyCellsInTopRow+totalEmptyRows << endl;
 		return totalEmptyRows+totalEmptyCellsInTopRow;
 }
 
@@ -289,7 +251,6 @@ void GameBoard::bestPlace() {
 
 	int currO = currentBlock->getCurrentOr();
 	Pos rp = currentBlock->getRefPoint(currO);
-	cout << "RP: " << rp << endl;
 	vector<Pos> currOrientationPoints = currentBlock->getOrPtsOf(rp, currO);
 
 
@@ -319,45 +280,36 @@ void GameBoard::bestPlace() {
 	updateGrid(currentBlock->getOrPtsOf(hintRefPt, orientation), '?');
 }
 
-
-
-// Subject method ---------------------------------
-
-GameBoardData GameBoard::getData() {
-	return {grid, gameOver, 0, scoreBoard.getHiScore(), scoreBoard.getCurrentScore()};
-}
-
 // Big 5 + ctor --------------------------------------
 
 
-GameBoard::GameBoard(TextDisplay *td, GraphicsDisplay *gd)
-: grid{}, 
-lastTurnScore{0},
- currentBlock{nullptr},
-  blockList{}, 
-  level{new Level1{}}, 
-  scoreBoard{},
-  gameOver{false} {
-	attach(td);
-	if (gd != nullptr) {
-		attach(gd);
-	}
+GameBoard::GameBoard(TextDisplay *td)
+: grid{}, lastTurnScore{0}, currentBlock{nullptr}, blockList{}, level{new Level1{}}, scoreBoard{} {
 	for (int i = 0; i < 18; i++) {
 		grid.emplace_back();
 		for (int j = 0; j < 11; j++) {
 			Cell c{i, j};
 			grid.back().emplace_back(c);
+			grid.back().back().attach(td);
 		}
 	}
-	notifyAll();
+}
+
+GameBoard::GameBoard(GraphicsDisplay *gd) 
+: grid{}, lastTurnScore{0}, currentBlock{nullptr}, blockList{}, level{new Level1{}}, scoreBoard{} {
+	for (int i = 0; i < 18; i++) {
+		grid.emplace_back();
+		for (int j = 0; j < 11; j++) {
+			Cell c{i, j};
+			grid.back().emplace_back(c);
+			grid.back().back().attach(gd);
+		}
+	}
 }
 
 void GameBoard::init() {
-	nextBlock = level->getBlock(); // Gets block from level
 	tryNewBlock();
 }
-
-
 
 GameBoard::~GameBoard() {
 	// TODO: should we delete the currentBlock ptr?

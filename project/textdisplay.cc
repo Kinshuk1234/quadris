@@ -12,7 +12,7 @@ void TextDisplay::notify(Subject<GameBoardData> &notifier) {
 	GameBoardData gbData = notifier.getData();
 	for (int i = 0; i < 18; i++) {
 		for (int j = 0; j < 11; j++) {
-			gbData.cells.at(i).at(j).getLetter();
+			//gbData.cells.at(i).at(j).getLetter();
 			grid.at(i).at(j) = gbData.cells.at(i).at(j).getLetter();
 		}
 	}
