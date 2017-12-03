@@ -4,19 +4,21 @@
 #include <iostream>
 #include <vector>
 #include "celldata.h"
-#include "gameboarddata.h"
+// #include "gameboarddata.h" // Don't need
+#include "scoreboarddata.h"
 #include "observer.h"
 
 class Cell;
 
-class TextDisplay : public Observer<GameBoardData> {
+class TextDisplay : public Observer<CellData>, public Observer<ScoreBoardData> {
 	std::vector<std::vector<char>> grid;
 	int hiScore;
 	int currentScore;
 	int currentLevel;
 
 public:
-	void notify(Subject<GameBoardData> &notifier) override;
+	void notify(Subject<CellData> &notifier) override;
+	void notify(Subject<ScoreBoardData> &notifier) override;
 	int getCurrentLevel() const;
 	int getCurrentScore() const;
 	int getHiScore() const;

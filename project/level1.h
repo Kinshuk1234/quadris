@@ -11,6 +11,8 @@ class Level1 : public Level{
 		Level1(int seed = 1);
 		Block *getBlock() override;
 		~Level1();
+
+		int getLevelNumber() const override;
 };
 
 #endif

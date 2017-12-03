@@ -6,8 +6,8 @@ using namespace std;
 class GameBoard;
 
 
-BlockI::BlockI()
-: myType{'I'} {
+BlockI::BlockI(int levelCreated, bool isHeavy)
+: Block{levelCreated, isHeavy}, myType{'I'} {
 	refPoints.at(0) = {0, 3};
 	refPoints.at(1) = {0, 6};
 	refPoints.at(2) = {0, 3}; 

@@ -8,7 +8,7 @@ class BlockT : public Block {
 	char myType;
 public:
 	// ctors
-	BlockT();
+	BlockT(int levelCreated, bool isHeavy = false);
 	BlockT(const BlockT &other) = delete;
 	BlockT(BlockT &&other) = delete;
 	BlockT &operator=(const BlockT &other) = delete;

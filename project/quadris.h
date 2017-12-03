@@ -6,13 +6,13 @@
 #include "commandinterpreter.h"
 #include "textdisplay.h"
 #include "gameboard.h"
-#include "graphicsdisplay.h"
+// #include "graphicsdisplay.h"
 
 
 class Quadris : public CommandInterpreter {
 	TextDisplay *textDisplay; // Change to smart pointer (i.e. unique_ptr, shared_ptr)
 	GameBoard *gameBoard;
-	GraphicsDisplay *graphicsdisplay;
+	// GraphicsDisplay *graphicsdisplay;
 	
 public:
 	void init();

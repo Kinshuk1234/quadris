@@ -1,19 +1,26 @@
 #ifndef SCOREBOARD_H
 #define SCOREBOARD_H
 
+#include "scoreboarddata.h"
+#include "subject.h"
+
 class GameBoard;
 
 // ScoreBoard: To keep track of the current and highscore
-class ScoreBoard {
+class ScoreBoard : public Subject<ScoreBoardData> {
+	int currentLevel;
 	int currentScore;
 	int hiScore;
 public:
 	
+	ScoreBoardData getData() override;
 
 	// Visitor of GameBoard
 	void updateScore(int lastTurnScore);
+	void updateLevel(int newLevel);
 	int getCurrentScore();
 	int getHiScore();
+	void updateCurrentScore(int lastTurnScore);
 
 	// Big 5 + ctor
 	ScoreBoard();

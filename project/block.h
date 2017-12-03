@@ -12,13 +12,15 @@ protected:
 	std::vector<Pos> refPoints;
 	int currOrientation; // One of 0, 1, 2, 3
 	bool isDropped;
+	int levelCreated;
+	bool isHeavy;
 
 	virtual std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const = 0;
 
 public:
 
 	// Big 5 + ctor
-	Block();
+	Block(int levelCreated, bool isHeavy = false);
 	Block(const Block &other) = delete;
 	Block(Block &&other) = delete;
 	Block &operator=(const Block &other) = delete;
@@ -51,6 +53,9 @@ public:
 	Pos getRefPoint(int o) const;
 	void setInitialOrientation(int initOrientation);
 	void setDropped(bool dropped);
+	void removeCellsAt(int row);
+	int getLevelCreated() const;
+	bool getIsHeavy() const;
 
 
 };

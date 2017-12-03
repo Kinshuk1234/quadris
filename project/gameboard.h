@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory> // For pointer to TextDisplay
 #include "observer.h"
-#include "subject.h"
+// #include "subject.h"
 #include "cell.h"
 #include "block.h"
 #include "scoreboard.h"
@@ -22,7 +22,7 @@ class Level; // May need to change if changing from ptr to another ref to object
 
 // Observer of the Command Interpreter
 // Subject to the displays
-class GameBoard : public Observer<std::vector<std::string>>, Subject<GameBoardData> {
+class GameBoard : public Observer<std::vector<std::string>> {
 	std::vector<std::vector<Cell>> grid; // List of rows in the grid containing each cell (r, c)
 	int lastTurnScore; // score of the most recent turn, to be sent to the scoreboard
 	Block *currentBlock;
@@ -31,6 +31,7 @@ class GameBoard : public Observer<std::vector<std::string>>, Subject<GameBoardDa
 	ScoreBoard scoreBoard;
 	bool gameOver;
 	Block *nextBlock;
+	TextDisplay *td;
 
 public:
 
@@ -46,14 +47,15 @@ public:
 	void placeCurrentBlock();
 	void updateGrid(std::vector<Pos> points, char letter);
 	Cell &getCellAt(Pos p);
-	GameBoardData getData();
-
+	void removeFullRows();
+	void refreshBoard(); // TOOD: may not need if Cell doesn't use it's coords
+	
 	// hint method
 	int totalEmptyRows();
 	void bestPlace();
 
 	// Big 5 + ctor
-	GameBoard(TextDisplay *td, GraphicsDisplay *gd);
+	GameBoard(TextDisplay *td); // , GraphicsDisplay *gd);
 	GameBoard(const GameBoard &other) = delete;
 	GameBoard(GameBoard &&other) = delete;
 	GameBoard &operator=(const GameBoard &other) = delete;
