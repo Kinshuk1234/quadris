@@ -253,19 +253,39 @@ void GameBoard::levelChange(bool goUp) {
 
 // Hint method ---------------------------------------
 
-int GameBoard::totalEmptyRows() {
-	bool isEmptyRow=true; // used
+bool GameBoard::checkCoor(int row, int col, vector<Pos> currentBlockPoints) {
+	for(int i=0; i<4; ++i) {
+		if((row==currentBlockPoints[i].y)&&(col==currentBlockPoints[i].x)) {
+			return true;
+	    }
+	}
+	return false;
+}
+
+int GameBoard::totalEmptyRows(vector<Pos> currentBlockPoints) {
+	//bool isEmptyRow=true; // used
+	int emptyCellCount = 0;
 	int totalEmptyRows=0; // used
-	int totalEmptyCellsInTopRow=0;
+	int totalEmptyCellsInTopRow=0; // used
 	int countFullRow=0; // used
 	for(int row=0; row<18; ++row)  {
 			for(int col=0; col<11; ++col) {
+
+				////////////////
+
+				if(checkCoor(row,col,currentBlockPoints)) {
+					emptyCellCount += 1;
+				}
+
+				////////////////
+
+
 				if(grid[row][col].getLetter() != '-') {
-					isEmptyRow = false;
+					//isEmptyRow = false;
 					countFullRow += 1;
 				}
 			}
-			if(isEmptyRow || (countFullRow==11)) {
+			if(emptyCellCount==11 || (countFullRow==11)) {
 				totalEmptyRows += 1;
 			}
 			if(countFullRow<11) {
@@ -273,7 +293,8 @@ int GameBoard::totalEmptyRows() {
 				break;
 			}
 			countFullRow = 0;
-			isEmptyRow = true;
+			//isEmptyRow = true;
+			emptyCellCount = 0;
 		}
 		cout << "TOTAL" << totalEmptyCellsInTopRow+totalEmptyRows << endl;
 		return totalEmptyRows+totalEmptyCellsInTopRow;
@@ -284,6 +305,7 @@ void GameBoard::bestPlace() {
 	int currO = currentBlock->getCurrentOr();
 	Pos rp = currentBlock->getRefPoint(currO);
 	vector<Pos> currOrientationPoints = currentBlock->getOrPtsOf(rp, currO);
+	vector<Pos> initialPoints = currOrientationPoints;
 
 
 	Pos hintRefPt;
@@ -297,7 +319,7 @@ void GameBoard::bestPlace() {
 				for(int ort=0; ort<4; ++ort) {  // orientations
 					if(isFittable(currOrientationPoints, currentBlock->getOrPtsOf({col,row}, ort), true)) {
 					updateGrid(currentBlock->getOrPtsOf({col,row}, ort), type);
-					tempMaxEmptyRowsCells = totalEmptyRows();
+					tempMaxEmptyRowsCells = totalEmptyRows(initialPoints);
 					if(tempMaxEmptyRowsCells >= maxEmptyRowsCells) {
 						maxEmptyRowsCells = tempMaxEmptyRowsCells;
 						hintRefPt = {col,row};

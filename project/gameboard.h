@@ -47,7 +47,8 @@ public:
 	GameBoardData getData();
 
 	// hint method
-	int totalEmptyRows();
+	bool checkCoor(int row, int col, std::vector<Pos> currentBlockPoints);
+	int totalEmptyRows(std::vector<Pos> currentBlockPoints);
 	void bestPlace();
 
 	// Big 5 + ctor
