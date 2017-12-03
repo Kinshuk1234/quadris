@@ -43,7 +43,7 @@ public:
 	bool tryNewBlock(Block *blockToBePlaced = nullptr);
 	void setCurrentBlock2();
 	void updateGrid(std::vector<Pos> points, char letter);
-	Cell &getCellAt(int x, int y);
+	Cell &getCellAt(Pos p);
 	GameBoardData getData();
 
 	// hint method
