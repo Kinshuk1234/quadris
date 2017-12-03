@@ -41,7 +41,7 @@ public:
 	void changeCell(int r, int c, char ch); // TEMP
 
 	bool tryNewBlock(Block *blockToBePlaced = nullptr);
-	void setCurrentBlock2();
+	void placeCurrentBlock();
 	void updateGrid(std::vector<Pos> points, char letter);
 	Cell &getCellAt(Pos p);
 	GameBoardData getData();
@@ -59,7 +59,7 @@ public:
 	~GameBoard();
 
 private:
-	bool isFittable(const std::vector<Pos> &oldPoints, const std::vector<Pos> &currOrientation, bool dropCheck); // TODO: make const, then make getCellAt const, then make Cell copy ctor, Subject copy ctor
+	bool isFittable(const std::vector<Pos> &oldPoints, const std::vector<Pos> &currOrientation, const bool dropCheck); // TODO: make const, then make getCellAt const, then make Cell copy ctor, Subject copy ctor
 	void dropBlock();
 	void levelChange(bool goUp);
 };

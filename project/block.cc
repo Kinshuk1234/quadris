@@ -133,6 +133,7 @@ Pos Block::getRefPoint(int o) const {
 }
 
 void Block::setInitialOrientation(int initOrientation) { // USED
+	currOrientation = initOrientation;
 	refPoints.at(0) = refPoints.at(initOrientation);
 	refPoints.at(1) = refPoints.at(0);
 	refPoints.at(2) = refPoints.at(0);
