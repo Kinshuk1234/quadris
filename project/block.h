@@ -11,6 +11,7 @@ protected:
 	std::vector<std::vector<Pos>> orientations;
 	std::vector<Pos> refPoints;
 	int currOrientation; // One of 0, 1, 2, 3
+	bool isDropped;
 
 	virtual std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const = 0;
 
@@ -49,6 +50,7 @@ public:
 	void setCurrentOr(int newO);
 	Pos getRefPoint(int o) const;
 	void setInitialOrientation(int initOrientation);
+	void setDropped(bool dropped);
 
 
 };

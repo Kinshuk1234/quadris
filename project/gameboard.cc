@@ -62,6 +62,8 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				xChange = 0;
 				yChange = 0;
 				rotateChange = 0;
+				blockList.emplace_back(currentBlock);
+				// currentBlock = nullptr;
 			} else {
 				// Invalid position
 			}
@@ -150,7 +152,7 @@ void GameBoard::setCurrentBlock2() {
 
 void GameBoard::updateGrid(vector<Pos> points, char letter) {
 	for (auto &k : points) {
-		getCellAt(k.x, k.y).set(letter); // setting cell letter
+		getCellAt(k).set(letter); // setting cell letter
 	}
 	notifyAll();
 }
@@ -176,7 +178,7 @@ bool GameBoard::isFittable(const vector<Pos> &oldPoints, const vector<Pos> &newO
 			if (px < 0 || px >= 11 || py < lowestY || py >= 18) {
 				return false;
 			}
-			Cell currCell = getCellAt(px, py);
+			Cell currCell = getCellAt(p);
 			char cLetter = currCell.getLetter();
 			if (cLetter != '-') { // TODO: change to appropriate empty space
 				return false;
@@ -187,12 +189,41 @@ bool GameBoard::isFittable(const vector<Pos> &oldPoints, const vector<Pos> &newO
 	return true;
 }
 
-Cell &GameBoard::getCellAt(int x, int y) {
-	return grid.at(y).at(x);
+Cell &GameBoard::getCellAt(Pos p) {
+	return grid.at(p.y).at(p.x);
 }
 
 void GameBoard::dropBlock() {
 	bool dropSuccess = false;
+
+	Pos refPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
+	int currO = currentBlock->getCurrentOr();
+
+	vector<Pos> initialPoints = currentBlock->getOrPtsOf(refPoint, currO);
+	vector<Pos> currPoints = initialPoints;
+	refPoint.y += 1;
+
+	while (isFittable(initialPoints, currPoints, false)) {
+		refPoint.y += 1;
+		currPoints = currentBlock->getOrPtsOf(refPoint, currO);
+	}
+	refPoint.y -= 1;
+	currPoints = currentBlock->getOrPtsOf(refPoint, currO);
+
+	if (isFittable(initialPoints, currPoints, true)) {
+		dropSuccess = true;
+		currentBlock->setRefPoint(refPoint);
+		currentBlock->setDropped(true);
+		updateGrid(initialPoints, '-');
+		updateGrid(currPoints, currentBlock->getLetter());
+		setCurrentBlock2();
+	} else {
+		cout << "doesn't fit anymore" << endl;
+	}
+
+
+
+
 	
 	// TODO: only drop if all cells of the block are below the 3rd row (>= 4th row), can't use isFittable
 	// TODO: drop block
@@ -201,15 +232,15 @@ void GameBoard::dropBlock() {
 	// TODO: update score
 
 	// IF: drop successful: Here, it's starting the next turn by trying to place a block
-	blockList.emplace_back(currentBlock);
-	currentBlock = nullptr;
-
-	if (tryNewBlock()) { // TODO: instead of doing this, can you notify Quadris that turn is over?
+	// blockList.emplace_back(currentBlock);
+	// currentBlock = nullptr;
+	
+	// if (tryNewBlock()) { // TODO: instead of doing this, can you notify Quadris that turn is over?
 		
-		setCurrentBlock2();
-	} else {
-		// TODO: Game Over sequence, unable to place next block.
-	}
+	// 	setCurrentBlock2();
+	// } else {
+	// 	// TODO: Game Over sequence, unable to place next block.
+	// }
 	// ELSE: drop not successful
 	cout << "Gameboard says: Drop block" << endl;
 	
