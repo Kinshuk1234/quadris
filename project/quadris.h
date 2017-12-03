@@ -19,7 +19,6 @@ public:
 
 	// Big 5 + ctor
 	Quadris();
-	Quadris(int gridSize, int winSize);
 	Quadris(const Quadris &other) = delete;
 	Quadris(Quadris &&other) = delete;
 	Quadris &operator=(const Quadris &other) = delete;

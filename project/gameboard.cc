@@ -2,6 +2,7 @@
 #include "gameboard.h"
 #include "scoreboard.h"
 #include "textdisplay.h"
+#include "graphicsdisplay.h"
 #include <iostream>
 #include "level0.h"
 #include "level1.h"
@@ -323,7 +324,7 @@ GameBoardData GameBoard::getData() {
 // Big 5 + ctor --------------------------------------
 
 
-GameBoard::GameBoard(TextDisplay *td)
+GameBoard::GameBoard(TextDisplay *td, GraphicsDisplay *gd)
 : grid{}, 
 lastTurnScore{0},
  currentBlock{nullptr},
@@ -332,25 +333,9 @@ lastTurnScore{0},
   scoreBoard{},
   gameOver{false} {
 	attach(td);
-	for (int i = 0; i < 18; i++) {
-		grid.emplace_back();
-		for (int j = 0; j < 11; j++) {
-			Cell c{i, j};
-			grid.back().emplace_back(c);
-		}
+	if (gd != nullptr) {
+		attach(gd);
 	}
-	notifyAll();
-}
-
-GameBoard::GameBoard(GraphicsDisplay *gd)
-: grid{}, 
-lastTurnScore{0},
- currentBlock{nullptr},
-  blockList{}, 
-  level{new Level1{}}, 
-  scoreBoard{},
-  gameOver{false} {
-	attach(gd);
 	for (int i = 0; i < 18; i++) {
 		grid.emplace_back();
 		for (int j = 0; j < 11; j++) {

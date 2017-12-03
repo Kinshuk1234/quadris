@@ -13,6 +13,8 @@
 
 class TextDisplay;
 
+class GraphicsDisplay;
+
 class ScoreBoard;
 
 class Level; // May need to change if changing from ptr to another ref to object.
@@ -51,7 +53,7 @@ public:
 	void bestPlace();
 
 	// Big 5 + ctor
-	GameBoard(TextDisplay *td);
+	GameBoard(TextDisplay *td, GraphicsDisplay *gd);
 	GameBoard(const GameBoard &other) = delete;
 	GameBoard(GameBoard &&other) = delete;
 	GameBoard &operator=(const GameBoard &other) = delete;

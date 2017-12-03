@@ -16,7 +16,7 @@ class GraphicsDisplay: public Observer<GameBoardData> {
   int currentScore;
   int currentLevel;
  public:
-  GraphicsDisplay(int gridSize, int winSize);
+  GraphicsDisplay();
 
   void notify(Subject<GameBoardData> &notifier) override;
 };

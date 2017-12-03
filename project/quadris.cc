@@ -42,13 +42,9 @@ void notify(Subject<GameBoardData> &notifier) {
 // Big 5 + ctor -------------------------------------------
 
 Quadris::Quadris()
-: textDisplay{new TextDisplay{}}, 
-gameBoard{new GameBoard{textDisplay}}
+: textDisplay{new TextDisplay{}}, graphicsdisplay{new GraphicsDisplay{}}, 
+gameBoard{new GameBoard{textDisplay, graphicsdisplay}}
 {}
-
-Quadris::Quadris(int gridSize, int winSize) : 
-graphicsdisplay{new GraphicsDisplay(gridSize, winSize)},
-gameBoard{new GameBoard{graphicsdisplay}} {}
 
 Quadris::~Quadris() {
 	delete textDisplay;
