@@ -249,6 +249,7 @@ void GameBoard::removeFullRows() {
 			for (int k = 0; k < 11; k++) {
 				newRow.emplace_back(Cell{k, j});
 				newRow.back().attach(td);
+				// newRow.back().attach(gd);
 			}
 			grid.insert(grid.begin(), newRow);
 			j++;
@@ -349,7 +350,7 @@ void GameBoard::bestPlace() {
 // Big 5 + ctor --------------------------------------
 
 
-GameBoard::GameBoard(TextDisplay *td)// , GraphicsDisplay *gd)
+GameBoard::GameBoard(TextDisplay *td)
 : grid{}, 
 lastTurnScore{0},
  currentBlock{nullptr},
@@ -357,8 +358,10 @@ lastTurnScore{0},
   level{new Level1{}}, 
   scoreBoard{},
   gameOver{false},
-  td{td} {
+  td{td}//, gd{gd}
+   {
   	scoreBoard.attach(td);
+  	// scoreBoard.attach(gd);
   	scoreBoard.updateLevel(level->getLevelNumber());
 	for (int i = 0; i < 18; i++) {
 		grid.emplace_back();
@@ -366,6 +369,7 @@ lastTurnScore{0},
 			Cell c{j, i};
 			grid.back().emplace_back(c);
 			grid.back().back().attach(td);
+			// grid.back().back().attach(gd);
 		}
 	}
 }

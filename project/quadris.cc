@@ -1,6 +1,7 @@
 #include <memory>
 #include "quadris.h"
 #include "gameboarddata.h"
+// #include "graphicsdisplay.h"
 
 
 // TEMP:
@@ -41,8 +42,8 @@ void notify(Subject<GameBoardData> &notifier) {
 // Big 5 + ctor -------------------------------------------
 
 Quadris::Quadris()
-: textDisplay{new TextDisplay{}},// graphicsdisplay{new GraphicsDisplay{}}, 
-gameBoard{new GameBoard{textDisplay}} // , graphicsdisplay}}
+: textDisplay{new TextDisplay{}}, 
+gameBoard{new GameBoard{textDisplay}}
 {}
 
 Quadris::~Quadris() {

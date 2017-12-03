@@ -13,7 +13,7 @@
 
 class TextDisplay;
 
-class GraphicsDisplay;
+// class GraphicsDisplay;
 
 class ScoreBoard;
 
@@ -32,6 +32,7 @@ class GameBoard : public Observer<std::vector<std::string>> {
 	bool gameOver;
 	Block *nextBlock;
 	TextDisplay *td;
+	// GraphicsDisplay * gd;
 
 public:
 
@@ -55,7 +56,7 @@ public:
 	void bestPlace();
 
 	// Big 5 + ctor
-	GameBoard(TextDisplay *td); // , GraphicsDisplay *gd);
+	GameBoard(TextDisplay *td);
 	GameBoard(const GameBoard &other) = delete;
 	GameBoard(GameBoard &&other) = delete;
 	GameBoard &operator=(const GameBoard &other) = delete;
