@@ -9,6 +9,7 @@
 #include "level1.h"
 #include "level2.h"
 #include "level3.h"
+#include "level4.h"
 #include "blockl.h"
 #include "blocki.h"
 #include "blockj.h"
@@ -16,6 +17,7 @@
 #include "blocks.h"
 #include "blockt.h"
 #include "blockz.h"
+#include "blockdot.h"
 
 #include "pos.h"
 
@@ -58,7 +60,19 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 			vector<Pos> transformedPoints = currentBlock->getOrPtsOf(transformedRefPoint, transformedOr);
 			if (isFittable(initialPoints, transformedPoints, false)) {
 				blockList.emplace_back(currentBlock);
-				dropBlock();
+				dropBlock(currentBlock);
+				// if (enhancedVersion) {
+				updateBlockTurnCounts();
+				removeOldBlocks();
+				// }
+				if (level->getLevelNumber() == 4) {
+					Block *dot = new BlockDot{4, false};
+					vector<Pos> pts = dot->getOrPtsOf(dot->getRefPoint(dot->getCurrentOr()), dot->getCurrentOr());
+					cout << pts.at(0) << endl;
+					if (isFittable({}, pts, false) and (blockList.size() % 5 == 0)) {
+						dropBlock(dot);
+					}
+				}
 				if (gameOver) {
 					currentBlock = nullptr;
 					break;
@@ -78,6 +92,9 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 			}
 		} else if (currCommand == "levelup") {
 			// TODO: level up.
+			levelChange(true);
+		} else if (currCommand == "leveldown") {
+			levelChange(false);
 		} else if (currCommand == "I"
 				 or currCommand == "J"
 				 or currCommand == "L"
@@ -115,6 +132,22 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 		return;
 	}
 	cout << "Game over at the end of notify" << endl;
+}
+
+void GameBoard::updateBlockTurnCounts() {
+	for (auto &p : blockList) {
+		p->turnCountAddOne();
+	}
+}
+
+void GameBoard::removeOldBlocks() {
+	for (int b = blockList.size() - 1; b >= 0; b--) {
+		Block *p = blockList.at(b);
+		if (p->getTurnCount() >= 10) {
+			updateGrid(p->getOrPtsOf(p->getRefPoint(p->getCurrentOr()), p->getCurrentOr()), '-');
+			blockList.erase(blockList.begin() + b);
+		}
+	}
 }
 
 void GameBoard::restartGame() {
@@ -216,29 +249,29 @@ Cell &GameBoard::getCellAt(Pos p) {
 	return grid.at(p.y).at(p.x);
 }
 
-void GameBoard::dropBlock() {
+void GameBoard::dropBlock(Block *b) {
 	bool dropSuccess = false;
 
-	Pos refPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
-	int currO = currentBlock->getCurrentOr();
+	Pos refPoint = b->getRefPoint(b->getCurrentOr());
+	int currO = b->getCurrentOr();
 
-	vector<Pos> initialPoints = currentBlock->getOrPtsOf(refPoint, currO);
+	vector<Pos> initialPoints = b->getOrPtsOf(refPoint, currO);
 	vector<Pos> currPoints = initialPoints;
 
 	while (isFittable(initialPoints, currPoints, false)) {
 		refPoint.y += 1;
-		currPoints = currentBlock->getOrPtsOf(refPoint, currO);
+		currPoints = b->getOrPtsOf(refPoint, currO);
 	}
 	refPoint.y -= 1;
-	currPoints = currentBlock->getOrPtsOf(refPoint, currO);
+	currPoints = b->getOrPtsOf(refPoint, currO);
 
 	if (isFittable(initialPoints, currPoints, true)) {
 		dropSuccess = true;
-		currentBlock->setRefPoint(refPoint);
-		currentBlock->setDropped(true);
+		b->setRefPoint(refPoint);
+		b->setDropped(true);
 		placeCurrentBlock();
 		updateGrid(initialPoints, '-');
-		updateGrid(currPoints, currentBlock->getLetter());
+		updateGrid(currPoints, b->getLetter());
 		removeFullRows();
 	} else {
 	}
@@ -302,7 +335,25 @@ void GameBoard::refreshBoard() {
 void GameBoard::levelChange(bool goUp) {
 	// TODO: make level go up if goUp, else level go down
 	// TODO: change level in scoreboard as well
-	cout << "Gameboard says: Level change" << endl;
+	int currentLevelNumber = level->getLevelNumber();
+	delete level;
+	if (goUp) {
+		currentLevelNumber += 1;
+	} else {
+		currentLevelNumber -= 1;
+	}
+	if (currentLevelNumber >= 4) {
+		level = new Level4{}; // TODO: new Level4{}
+	} else if (currentLevelNumber == 3) {
+		level = new Level3{};
+	} else if (currentLevelNumber == 2) {
+		level = new Level2{};
+	} else if (currentLevelNumber == 1) {
+		level = new Level1{};
+	} else {
+		level = new Level0{};
+	}
+	scoreBoard.updateLevel(currentLevelNumber);
 }
 
 // Hint method ---------------------------------------
@@ -418,7 +469,7 @@ lastTurnScore{0},
 	} else if(startLevel==3) {
 		level = new Level3{seed};
 	} else if(startLevel==4) {
-		// TODO: Initialize level 4
+		level = new Level4{seed};
 	}
 
   	scoreBoard.attach(td);

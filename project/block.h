@@ -15,6 +15,8 @@ protected:
 	int levelCreated;
 	bool isHeavy;
 
+	int turnCount = 0;
+
 	virtual std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const = 0;
 
 public:
@@ -56,6 +58,9 @@ public:
 	void removeCellsAt(int row);
 	int getLevelCreated() const;
 	bool getIsHeavy() const;
+
+	void turnCountAddOne();
+	int getTurnCount();
 
 
 };

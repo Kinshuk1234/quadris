@@ -70,8 +70,11 @@ public:
 
 private:
 	bool isFittable(const std::vector<Pos> &oldPoints, const std::vector<Pos> &currOrientation, const bool dropCheck); // TODO: make const, then make getCellAt const, then make Cell copy ctor, Subject copy ctor
-	void dropBlock();
+	void dropBlock(Block *b);
 	void levelChange(bool goUp);
+
+	void removeOldBlocks();
+	void updateBlockTurnCounts();
 };
 
 #endif

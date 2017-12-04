@@ -28,6 +28,7 @@ void ScoreBoard::updateLevel(int newLevel) {
 	notifyAll();
 }
 
+
 int ScoreBoard::getCurrentScore() {
 	return currentScore;
 }

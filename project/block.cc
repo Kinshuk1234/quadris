@@ -169,6 +169,14 @@ bool Block::getIsHeavy() const {
 	return isHeavy;
 }
 
+void Block::turnCountAddOne() {
+	turnCount++;
+}
+
+int Block::getTurnCount() {
+	return turnCount;
+}
+
 
 // Big 5 + ctor ----------------------------------
 

@@ -6,12 +6,13 @@
 #include "blocks.h"
 #include "blockt.h"
 #include "blockz.h"
+#include <ctime>
 using namespace std;
 
 Level1::Level1(int seed) : seed{seed} {};
 
 Block* Level1::getBlock() {
-	// srand(time(NULL)); // TODO: random function not working
+	srand(time(0));
 	int num = (rand() % 12);
 	if (num == 0) return new BlockS{getLevelNumber()};
 	else if (num == 1) return new BlockZ{getLevelNumber()};

@@ -6,12 +6,14 @@
 #include "blocks.h"
 #include "blockt.h"
 #include "blockz.h"
+#include <ctime>
 using namespace std;
 
 Level2::Level2(int seed) : seed{seed} {};
 
 Block* Level2::getBlock() {
-	srand(seed);
+	return new BlockI{getLevelNumber()};
+	srand(time(0));
 	int num = (rand() % 7);
 	if (num == 0) return new BlockS{getLevelNumber()};
 	else if (num == 1) return new BlockZ{getLevelNumber()};
