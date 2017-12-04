@@ -60,17 +60,49 @@ void CommandInterpreter::execute(string c) {
 	}
 
 	if (cList[command].size() != 0) {
+		cout << "COMMAND: ";
+		for (int m = 0; m < cList[command].size(); m++) {
+			cout << cList[command].at(m) << " ";
+		}
+		cout << endl;
 		if (command == "newcom") {
 			// TOOD: make a new command
 			string newCommandName;
 			cout << "New command name: ";
 			cin >> newCommandName;
-			if (cList[newCommandName].size() == 0) {
-				cin >> cList[command]; // from stdin
+			while (cList[newCommandName].size() != 0) {
+				cout << "Command name already taken, please choose another: ";
+				cin >> newCommandName;
+			}
+			string cmd = "";
+			cin >> cmd;
+			while (cmd != "done") {
+				// TODO: add conditions on which cmds are addable if any
+				cmd = getFullCommand(cmd);
+				if (cmd != "") {
+					cList[newCommandName].emplace_back(cmd);
+				}
+				cin >> cmd;
 			}
 			return;
 		} else if (command == "...........") {
 			// TODO: do something NOT related to the gameboard
+		} else if (command == "rename") {
+			string oldCommandName;
+			string newCommandName;
+			cin >> oldCommandName >> newCommandName;
+			if (cList[oldCommandName].size() != 0) {
+
+				while (cList[newCommandName].size() != 0 and newCommandName == "done") {
+					cout << "Name already taken, please choose another: ";
+					cin >> newCommandName;
+				}
+				cList[newCommandName] = cList[oldCommandName];
+				cList.erase(oldCommandName);
+			} else {
+				cout << "Command Doesn't exist yet." << endl;
+			}
+			return;
 		}
 		// Gameboard related commands
 
@@ -99,25 +131,46 @@ string CommandInterpreter::getFullCommand(string incCommand) {
 	int isAmbiguous = true;
 	string actualCommand = "";
 	for (auto &p : cList) {
-		string key = p.first;
-		int i = 0;
-		while ((i < incCommand.length()) and 
-			(i < key.length())
-			and (incCommand[i] == key[i])) {
-			i++;
-		}
-		if (i > score) {
+		int newScore = getScore(p.first, incCommand);
+		if (newScore > score) {
 			isAmbiguous = false;
-			score = i;
-			actualCommand = key;
-		} else if (i == score) {
+			actualCommand = p.first;
+			score = newScore;
+		} else if (newScore == score) {
 			isAmbiguous = true;
 		}
+		// string key = p.first;
+		// int i = 0;
+		// while ((i < incCommand.length()) and 
+		// 	(i < key.length())
+		// 	and (incCommand[i] == key[i])) {
+		// 	i++;
+		// }
+		// if (i > score) {
+		// 	isAmbiguous = false;
+		// 	score = i;
+		// 	actualCommand = key;
+		// } else if (i == score) {
+		// 	isAmbiguous = true;
+		// }
 	}
 	if (isAmbiguous) {
 		return "";
 	}
 	return actualCommand;
+}
+
+int CommandInterpreter::getScore(string full, string sub) {
+	int j = 0;
+	for (int i = 0; i < sub.length(); i++) {
+		if (full[i] == sub[i]) {
+			j++;
+		} else {
+			j = 0;
+			break;
+		}
+	}
+	return j;
 }
 
 // Big 5 + ctor ------------------------
@@ -136,6 +189,18 @@ CommandInterpreter::CommandInterpreter()
 	cList["clockwise"] = {"clockwise"};
 	cList["newcom"] = {"newcom"};
 	cList["hint"] = {"hint"};
+	cList["rename"] = {"rename"};
+	cList["norandom"] = {"norandom"};
+	cList["random"] = {"random"};
+	cList["sequence"] = {"sequence"};
+	cList["I"] = {"I"};
+	cList["L"] = {"L"};
+	cList["J"] = {"J"};
+	cList["O"] = {"O"};
+	cList["S"] = {"S"};
+	cList["Z"] = {"Z"};
+	cList["T"] = {"T"};
+
 	// TODO: add more usual commands...
 }
 

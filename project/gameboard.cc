@@ -32,7 +32,6 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 	Pos transformedRefPoint = currentBlock->getRefPoint(transformedOr);
 	vector<Pos> initialPoints = currentBlock->getOrPtsOf(transformedRefPoint, transformedOr);
 
-
 	for (auto it = arr.begin(); it != arr.end(); ++it) {
 		string currCommand = *it;
 		if(lastWasHint) {
@@ -59,7 +58,11 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 			transformedOr = (transformedOr + rotateChange) % 4; 
 			vector<Pos> transformedPoints = currentBlock->getOrPtsOf(transformedRefPoint, transformedOr);
 			if (isFittable(initialPoints, transformedPoints, false)) {
+				updateGrid(initialPoints, '-');
+				currentBlock->setRefPoint(transformedRefPoint);
+				currentBlock->setCurrentOr(transformedOr);
 				blockList.emplace_back(currentBlock);
+				placeCurrentBlock();
 				dropBlock(currentBlock);
 				// if (enhancedVersion) {
 				updateBlockTurnCounts();
@@ -117,7 +120,7 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 			xChange = 0;
 			yChange = 0;
 			rotateChange = 0;
-			initialPoints = {};
+			initialPoints = currentBlock->getOrPtsOf(currentBlock->getRefPoint(currentBlock->getCurrentOr()), currentBlock->getCurrentOr());
 			transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
 
 		}

@@ -12,6 +12,7 @@ public:
 	void execute(std::string command);
 
 	std::vector<std::string> getData() override;
+	int getScore(std::string full, std::string sub); // private
 
 	// Big 5 + ctor
 	CommandInterpreter(); // main constructor
