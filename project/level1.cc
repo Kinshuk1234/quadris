@@ -11,7 +11,7 @@ using namespace std;
 Level1::Level1(int seed) : seed{seed} {};
 
 Block* Level1::getBlock() {
-	srand(seed); // TODO: random function not working
+	// srand(time(NULL)); // TODO: random function not working
 	int num = (rand() % 12);
 	if (num == 0) return new BlockS{getLevelNumber()};
 	else if (num == 1) return new BlockZ{getLevelNumber()};

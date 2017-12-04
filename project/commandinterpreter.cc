@@ -104,6 +104,7 @@ CommandInterpreter::CommandInterpreter()
 	cList["down"] = {"down"};
 	cList["drop"] = {"drop"};
 	cList["levelup"] = {"levelup"};
+	cList["restart"] = {"restart"};
 	cList["counterclockwise"] = {"counterclockwise"};
 	cList["clockwise"] = {"clockwise"};
 	cList["newcom"] = {"newcom"};

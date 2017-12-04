@@ -52,6 +52,8 @@ public:
 	Cell &getCellAt(Pos p);
 	void removeFullRows();
 	void refreshBoard(); // TOOD: may not need if Cell doesn't use it's coords
+
+	void restartGame();
 	
 	// hint method
 	bool checkCoor(int row, int col, std::vector<Pos> currentBlockPoints);

@@ -18,6 +18,11 @@ void ScoreBoard::updateCurrentScore(int lasTurnScore) {
 	notifyAll();
 }
 
+void ScoreBoard::setCurrentScore(int newScore) {
+	currentScore = newScore;
+	notifyAll();
+}
+
 void ScoreBoard::updateLevel(int newLevel) {
 	currentLevel = newLevel;
 	notifyAll();

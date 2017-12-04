@@ -85,7 +85,7 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				 or currCommand == "S"
 				 or currCommand == "T"
 				 or currCommand == "Z") {
-			Block *tempBlock = new BlockL{level->getLevelNumber()}; // TODO: level->getSpecificBlock(currCommand);
+			Block *tempBlock =  level->getBlock(); //level->getSpecificBlock(currCommand);
 			if (!tryNewBlock(tempBlock)) {
 				// Unable to place block. Maybe inform textDisplay to output that via observer/subject?
 			} else {
@@ -95,6 +95,8 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 		} else if (currCommand == "hint") {
 			bestPlace();
 			lastWasHint = true;
+		} else if (currCommand == "restart") {
+			restartGame();
 		}
 		// TODO: add other commands, if any left
 	}
@@ -113,7 +115,24 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 		return;
 	}
 	cout << "Game over at the end of notify" << endl;
-	
+}
+
+void GameBoard::restartGame() {
+	delete level;
+	level = new Level1{}; // new Level0{};
+	scoreBoard.setCurrentScore(0);
+	for (auto &p : blockList) {
+		delete p;
+	}
+	blockList = {};
+	for (auto &q : grid) {
+		for (auto &r : q) {
+			if (r.getLetter() != '-') {
+				r.set('-');
+			}
+		}
+	}
+
 }
 
 bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced: nullptr
@@ -121,8 +140,8 @@ bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced
 	bool checkWithCurrentBlock = false;
 
 	if (blockToBePlaced == nullptr) {
-		// blockToBePlaced = level->getBlock();
-		blockToBePlaced = new BlockI{level->getLevelNumber()};
+		blockToBePlaced = level->getBlock();
+		// blockToBePlaced = new BlockI{level->getLevelNumber()};
 	} else {
 		checkWithCurrentBlock = true;
 	}
@@ -389,6 +408,7 @@ lastTurnScore{0},
   gameOver{false} {  
 
   	// TODO: delete level before assigning new level
+  	delete level;
 	if(level==0) {
 		level = new Level0{filename};
 	} else if(startLevel==1) {

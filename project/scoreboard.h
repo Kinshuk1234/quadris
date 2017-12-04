@@ -21,6 +21,7 @@ public:
 	int getCurrentScore();
 	int getHiScore();
 	void updateCurrentScore(int lastTurnScore);
+	void setCurrentScore(int newScore);
 
 	// Big 5 + ctor
 	ScoreBoard();
