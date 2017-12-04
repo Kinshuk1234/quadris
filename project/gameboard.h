@@ -61,6 +61,7 @@ public:
 	bool checkCoor(int row, int col, std::vector<Pos> currentBlockPoints);
 	int totalEmptyRows(std::vector<Pos> currentBlockPoints);
 	void bestPlace();
+	bool getGameOver() const; // public
 
 	// Big 5 + ctor
 	GameBoard(TextDisplay *td, int startLevel, int seed, std::string filename); //, GraphicsDisplay *gd);
@@ -72,7 +73,7 @@ public:
 
 private:
 	bool isFittable(const std::vector<Pos> &oldPoints, const std::vector<Pos> &currOrientation, const bool dropCheck); // TODO: make const, then make getCellAt const, then make Cell copy ctor, Subject copy ctor
-	void dropBlock(Block *b);
+	bool dropBlock(Block *b);
 	void levelChange(bool goUp);
 
 	void removeOldBlocks();

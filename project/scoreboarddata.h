@@ -6,6 +6,7 @@ struct ScoreBoardData {
 	int currentScore;
 	int hiScore;
 	char nextBlockLetter;
+	bool gameOver;
 };
 
 

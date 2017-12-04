@@ -8,7 +8,7 @@ using namespace std;
 // Big 5 + ctor ---------------------------------
 
 ScoreBoard::ScoreBoard()
-: currentLevel{0}, currentScore{0}, hiScore{0}, nextBlockLetter{'-'} {/* CTOR BODY */}
+: currentLevel{0}, currentScore{0}, hiScore{0}, nextBlockLetter{'-'}, gameOver{false} {/* CTOR BODY */}
 
 void ScoreBoard::updateCurrentScore(int lasTurnScore) {
 	currentScore += lasTurnScore;
@@ -43,6 +43,7 @@ ScoreBoardData ScoreBoard::getData() {
 	sbData.currentScore = currentScore;
 	sbData.hiScore = hiScore;
 	sbData.nextBlockLetter = nextBlockLetter;
+	sbData.gameOver = gameOver;
 	return sbData;
 }
 
@@ -50,4 +51,13 @@ ScoreBoardData ScoreBoard::getData() {
 void ScoreBoard::updateNextBlock(char newLetter) {
 	nextBlockLetter = newLetter;
 	notifyAll();
+}
+
+void ScoreBoard::setGameOver(bool gameOver) {
+	this->gameOver = gameOver;
+	notifyAll();
+}
+
+bool ScoreBoard::getGameOver() const {
+	return gameOver;
 }

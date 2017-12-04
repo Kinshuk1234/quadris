@@ -62,7 +62,9 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				currentBlock->setRefPoint(transformedRefPoint);
 				currentBlock->setCurrentOr(transformedOr);
 				placeCurrentBlock();
-				dropBlock(currentBlock);
+				if (!dropBlock(currentBlock)) {
+					continue;
+				}
 				// if (enhancedVersion) {
 				updateBlockTurnCounts();
 				removeOldBlocks();
@@ -83,7 +85,8 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				yChange = 0;
 				rotateChange = 0;
 				if (!tryNewBlock()) {
-					cout << "TODO: Game Over" << endl;
+					scoreBoard.setGameOver(true);
+					break;
 				} else {
 					transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
 					transformedOr = currentBlock->getCurrentOr();
@@ -163,7 +166,10 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 		}
 		return;
 	}
-	cout << "Game over at the end of notify" << endl;
+}
+
+bool GameBoard::getGameOver() const {
+	return scoreBoard.getGameOver();
 }
 
 void GameBoard::updateBlockTurnCounts() {
@@ -290,8 +296,7 @@ Cell &GameBoard::getCellAt(Pos p) {
 	return grid.at(p.y).at(p.x);
 }
 
-void GameBoard::dropBlock(Block *b) {
-	bool dropSuccess = false;
+bool GameBoard::dropBlock(Block *b) {
 
 	Pos refPoint = b->getRefPoint(b->getCurrentOr());
 	int currO = b->getCurrentOr();
@@ -307,7 +312,6 @@ void GameBoard::dropBlock(Block *b) {
 	currPoints = b->getOrPtsOf(refPoint, currO);
 
 	if (isFittable(initialPoints, currPoints, true)) {
-		dropSuccess = true;
 		b->setRefPoint(refPoint);
 		b->setDropped(true);
 		placeCurrentBlock();
@@ -316,8 +320,9 @@ void GameBoard::dropBlock(Block *b) {
 		blockList.emplace_back(b);
 		starCount += 1;
 		removeFullRows();
-	} else {
-	}
+		return true;
+	} 
+	return false;
 	// TODO: remove row(s) if full, etc
 	// TODO: remove blocks that have been on the board for >= 10 turns
 	// TODO: update score
