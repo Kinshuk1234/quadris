@@ -224,7 +224,6 @@ void GameBoard::restartGame() {
 	delete currentBlock;
 	currentBlock = nullptr;
 	nextBlock = level->getBlock(); // Gets block from 
-	tryNewBlock();
 
 }
 
