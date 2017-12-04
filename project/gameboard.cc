@@ -135,7 +135,6 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				delete level;
 				level = new Level4{seed, true};
 			}
-
 		}
 		// TODO: add other commands, if any left
 	}
