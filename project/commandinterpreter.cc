@@ -78,11 +78,6 @@ void CommandInterpreter::execute(string c) {
 	}
 
 	if (cList[command].size() != 0) {
-		cout << "COMMAND: ";
-		for (int m = 0; m < cList[command].size(); m++) {
-			cout << cList[command].at(m) << " ";
-		}
-		cout << endl;
 		if (command == "newcom") {
 			// TOOD: make a new command
 			string newCommandName;

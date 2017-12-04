@@ -28,6 +28,7 @@ void TextDisplay::notify(Subject<ScoreBoardData> &notifier) {
 	currentScore = sbData.currentScore;
 	hiScore = sbData.hiScore;
 	nextBlockLetter = sbData.nextBlockLetter;
+	gameOver = sbData.gameOver;
 }
 
 
@@ -47,41 +48,51 @@ char TextDisplay::getNextBlockLetter() const {
 	return nextBlockLetter;
 }
 
+
+
 // Big 5 + ctor ------------------
 
 TextDisplay::TextDisplay()
 : grid{vector<vector<char>>(18, vector<char>(11, '-'))} {/* CTOR BODY */}
 
 ostream &operator<<(ostream &out, const TextDisplay &td) {
-	auto &grid = td.grid;
-	out << "Current Level: " << td.getCurrentLevel() << endl;
-	out << "Current Score: " << td.getCurrentScore() << endl;
-	out << "Hi Score: " << td.getHiScore() << endl;
-	out << "---------------------" << endl;
-	for (auto it = grid.begin() + 3; it != grid.end(); ++it) {
-		for (auto innerIt = it->begin(); innerIt != it->end(); ++innerIt) {
-			out << *innerIt << " ";
+	if (!td.gameOver) {
+		auto &grid = td.grid;
+		out << "Current Level: " << td.currentLevel << endl;
+		out << "Current Score: " << td.currentScore << endl;
+		out << "Hi Score: " << td.hiScore << endl;
+		out << "---------------------" << endl;
+		for (auto it = grid.begin() + 3; it != grid.end(); ++it) {
+			for (auto innerIt = it->begin(); innerIt != it->end(); ++innerIt) {
+				out << *innerIt << " ";
+			}
+			out << endl;
 		}
-		out << endl;
+		out << "---------------------" << endl;
+		out << "Next Block: " << endl;
+		char nextBlockLetter = td.nextBlockLetter;
+		if (nextBlockLetter == 'I') {
+			out << "IIII" << endl;
+		} else if (nextBlockLetter == 'J') {
+			out << "J" << endl << "JJJ" << endl;
+		} else if (nextBlockLetter == 'L') {
+			out << "LLL" << endl << "L" << endl;
+		} else if (nextBlockLetter == 'O') {
+			out << "OO" << endl << "OO" << endl;
+		} else if (nextBlockLetter == 'S') {
+			out << " SS" << endl << "SS" << endl;
+		} else if (nextBlockLetter == 'T') {
+			out << "TTT" << endl << " T" << endl;
+		} else if (nextBlockLetter == 'Z') {
+			out << "ZZ" << endl << " ZZ" << endl;
+		}	
+	} else {
+		out << " ---- GAME OVER ---- " << endl;
+		out << "Current Score: " << td.currentScore << endl;
+		out << "High Score: " << td.hiScore << endl;
+		out << " ------------------- " << endl;
 	}
-	out << "---------------------" << endl;
-	out << "Next Block: " << endl;
-	char nextBlockLetter = td.getNextBlockLetter();
-	if (nextBlockLetter == 'I') {
-		out << "IIII" << endl;
-	} else if (nextBlockLetter == 'J') {
-		out << "J" << endl << "JJJ" << endl;
-	} else if (nextBlockLetter == 'L') {
-		out << "LLL" << endl << "L" << endl;
-	} else if (nextBlockLetter == 'O') {
-		out << "OO" << endl << "OO" << endl;
-	} else if (nextBlockLetter == 'S') {
-		out << " SS" << endl << "SS" << endl;
-	} else if (nextBlockLetter == 'T') {
-		out << "TTT" << endl << " T" << endl;
-	} else if (nextBlockLetter == 'Z') {
-		out << "ZZ" << endl << " ZZ" << endl;
-	}
+	
 
 	return out;
 }

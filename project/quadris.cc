@@ -31,7 +31,7 @@ void Quadris::initGame() {
 	gameBoard->init();
 	// TODO: attach Graphics display to cells
 	// TODO: graphics display output
-	while (true/*TODO: gameBoard.getGameOver()*/ and (!cin.eof())) {
+	while (!gameBoard->getGameOver() and (!cin.eof())) {
 		cout << *textDisplay << endl;
 		cin >> command;
 		if (cin.eof()) {
@@ -40,8 +40,7 @@ void Quadris::initGame() {
 		execute(command);
 		// TODO: graphics display output
 	}
-
-	// TODO: show score, highscore and stuff?? // In the displays
+	cout << *textDisplay << endl;
 }
 
 // void Quadris::notify(Subject<GameBoardData> &notifier) {

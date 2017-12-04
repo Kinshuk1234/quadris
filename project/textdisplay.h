@@ -16,6 +16,7 @@ class TextDisplay : public Observer<CellData>, public Observer<ScoreBoardData> {
 	int currentScore;
 	int currentLevel;
 	char nextBlockLetter;
+	bool gameOver;
 
 public:
 	void notify(Subject<CellData> &notifier) override;
