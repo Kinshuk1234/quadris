@@ -127,6 +127,9 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				delete level;
 				level = new Level4{seed, false};
 			}
+				delete nextBlock;
+				nextBlock = level->getBlock();
+				scoreBoard.updateNextBlock(nextBlock->getLetter());
 		} else if(currCommand == "random") {
 			if(level->getLevelNumber() == 3) {
 				delete level;

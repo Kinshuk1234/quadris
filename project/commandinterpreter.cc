@@ -136,6 +136,8 @@ CommandInterpreter::CommandInterpreter()
 	cList["clockwise"] = {"clockwise"};
 	cList["newcom"] = {"newcom"};
 	cList["hint"] = {"hint"};
+	cList["norandom"] = {"norandom"};
+	cList["random"] = {"random"};
 	// TODO: add more usual commands...
 }
 

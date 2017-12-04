@@ -13,7 +13,9 @@ Level3::Level3(int seed, bool isRandom) : seed{seed}, isRandom{isRandom}, v{}, b
 	srand(seed);
 	if (isRandom == false) {
 		string filename;
+		cout << "reached 1" << endl;
 		cin >> filename;
+		cout << "done" << endl;
 		char blockType;
 		ifstream f{filename};
 		while(f >> blockType) {
