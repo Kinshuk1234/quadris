@@ -179,8 +179,9 @@ void GameBoard::removeOldBlocks() {
 
 void GameBoard::restartGame() {
 	delete level;
-	level = new Level1{}; // new Level0{};
+	level = new Level0{}; // new Level0{};
 	scoreBoard.setCurrentScore(0);
+	scoreBoard.updateLevel(level->getLevelNumber());
 	for (auto &p : blockList) {
 		delete p;
 	}
