@@ -9,3 +9,4 @@ int Level4::getLevelNumber() const {
 Level4::Level4(int seed, bool isRandom)
 : Level3{seed, isRandom} {}
 
+

@@ -11,8 +11,6 @@ class Level0 : public Level {
 		Level0(std::string filename = "sequence.txt");
 		Block *getBlock() override;
 		~Level0();
-
-		int getLevelNumber() const override;
 };
 
 #endif
