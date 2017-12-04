@@ -9,7 +9,7 @@
 using namespace std;
 
 Level0::Level0(string filename)
-: v{}, blockIndex{0} {
+: Level{0}, v{}, blockIndex{0} {
 	char blockType;
 	ifstream f{filename};
 
@@ -46,7 +46,3 @@ Block* Level0::getBlock() {
 }
 
 Level0::~Level0() {}
-
-int Level0::getLevelNumber() const {
-	return 0;
-}

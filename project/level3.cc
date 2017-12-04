@@ -9,7 +9,7 @@
 #include <ctime>
 using namespace std;
 
-Level3::Level3(int seed, bool isRandom) : seed{seed}, isRandom{isRandom}, v{}, blockIndex{0} {
+Level3::Level3(int seed, bool isRandom) : Level{3}, seed{seed}, isRandom{isRandom}, v{}, blockIndex{0} {
 	srand(seed);
 	if (isRandom == false) {
 		string filename;
@@ -62,7 +62,4 @@ Block* Level3::getBlock() {
 
 Level3::~Level3() {}
 
-int Level3::getLevelNumber() const {
-	return 3;
-}
 

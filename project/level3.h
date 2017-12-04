@@ -12,7 +12,6 @@ class Level3 : public Level{
 		Level3(int seed = 1, bool isRandom = true);
 		Block *getBlock() override;
 		~Level3();
-		virtual int getLevelNumber() const override;
 	};
 
 #endif

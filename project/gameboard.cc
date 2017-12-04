@@ -71,7 +71,7 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 					Block *dot = new BlockDot{4, false};
 					vector<Pos> pts = dot->getOrPtsOf(dot->getRefPoint(dot->getCurrentOr()), dot->getCurrentOr());
 					cout << pts.at(0) << endl;
-					if (isFittable({}, pts, false) and (blockList.size() % 5 == 0)) {
+					if (isFittable({}, pts, false) and (starCount % 5 == 0)) {
 						dropBlock(dot);
 					}
 				}
@@ -104,12 +104,15 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				 or currCommand == "S"
 				 or currCommand == "T"
 				 or currCommand == "Z") {
-			Block *tempBlock =  level->getBlock(); //level->getSpecificBlock(currCommand);
+			updateGrid(initialPoints, '-');
+			Block *tempBlock = level->getSpecificBlock(currCommand);
 			if (!tryNewBlock(tempBlock)) {
 				// Unable to place block. Maybe inform textDisplay to output that via observer/subject?
 			} else {
-				// TODO: remove previous block
-				placeCurrentBlock();
+				// TODO: remove previous bloc
+				transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
+				transformedOr = currentBlock->getCurrentOr();
+				initialPoints = currentBlock->getOrPtsOf(transformedRefPoint, transformedOr);
 			}
 		} else if (currCommand == "hint") {
 			bestPlace();
@@ -229,7 +232,10 @@ bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced
 		}
 		if (isFittable(currentBlockPts, currOrientationPoints, false)) {
 			// Setting the current block on the board with given orientation
-			if (checkWithCurrentBlock) { delete currentBlock; } // Also delete from grid
+			if (checkWithCurrentBlock) { 
+				updateGrid(currentBlock->getOrPtsOf(currentBlock->getRefPoint(currentBlock->getCurrentOr()), currentBlock->getCurrentOr()), '-');
+				delete currentBlock;
+			} // Also delete from grid
 			currentBlock = blockToBePlaced;
 			currentBlock->setInitialOrientation(fitOrientation);
 			placeCurrentBlock();
@@ -308,6 +314,7 @@ void GameBoard::dropBlock(Block *b) {
 		updateGrid(initialPoints, '-');
 		updateGrid(currPoints, b->getLetter());
 		blockList.emplace_back(b);
+		starCount += 1;
 		removeFullRows();
 	} else {
 	}
@@ -327,6 +334,8 @@ void GameBoard::removeFullRows() {
 			}
 		}
 		if (full) {
+			starCount = 0;
+			removalCount++;
 			for (int p = blockList.size() - 1; p >= 0; p--) {
 				blockList.at(p)->removeCellsAt(j);
 				Block *b = blockList.at(p);
@@ -491,7 +500,8 @@ lastTurnScore{0},
   scoreBoard{},
   td{td}, // gd{gd} 
   gameOver{false},
-  seed{seed} {  
+  seed{seed},
+  starCount{0} {  
 
 	if(startLevel==0) {
 		level = new Level0{filename};

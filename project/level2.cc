@@ -9,7 +9,7 @@
 #include <ctime>
 using namespace std;
 
-Level2::Level2(int seed) : seed{seed} {
+Level2::Level2(int seed) : Level{2},  seed{seed} {
 	srand(seed);
 };
 
@@ -26,7 +26,3 @@ Block* Level2::getBlock() {
 
 Level2::~Level2() {}
 
-
-int Level2::getLevelNumber() const {
-	return 2;
-}

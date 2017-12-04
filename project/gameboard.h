@@ -35,6 +35,7 @@ class GameBoard : public Observer<std::vector<std::string>> {
 	std::vector<Pos> hintPoints;
 	TextDisplay *td;
 	int seed;
+	int starCount;
 	// GraphicsDisplay * gd;
 
 public:
