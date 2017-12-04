@@ -61,7 +61,6 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				updateGrid(initialPoints, '-');
 				currentBlock->setRefPoint(transformedRefPoint);
 				currentBlock->setCurrentOr(transformedOr);
-				blockList.emplace_back(currentBlock);
 				placeCurrentBlock();
 				dropBlock(currentBlock);
 				// if (enhancedVersion) {
@@ -308,6 +307,7 @@ void GameBoard::dropBlock(Block *b) {
 		placeCurrentBlock();
 		updateGrid(initialPoints, '-');
 		updateGrid(currPoints, b->getLetter());
+		blockList.emplace_back(b);
 		removeFullRows();
 	} else {
 	}
@@ -327,17 +327,16 @@ void GameBoard::removeFullRows() {
 			}
 		}
 		if (full) {
-			removalCount++;
 			for (int p = blockList.size() - 1; p >= 0; p--) {
 				blockList.at(p)->removeCellsAt(j);
 				Block *b = blockList.at(p);
 				int pSize = b->getOrPtsOf(b->getRefPoint(b->getCurrentOr()), b->getCurrentOr()).size();
-				if (pSize == 0) {
+				if (pSize == 0 and (b->getLetter() != '*')) {
 					blocksRemoved++;
 					lastTurnScore += ((blockList.at(p)->getLevelCreated() + 1) * (blockList.at(p)->getLevelCreated() + 1));
-					delete blockList.at(p);
-					blockList.erase(blockList.begin() + p);
 				}
+				delete blockList.at(p);
+				blockList.erase(blockList.begin() + p);
 			}
 			grid.erase(grid.begin() + j);
 			vector<Cell> newRow = {};
