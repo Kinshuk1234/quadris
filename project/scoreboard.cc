@@ -42,5 +42,12 @@ ScoreBoardData ScoreBoard::getData() {
 	sbData.level = currentLevel;
 	sbData.currentScore = currentScore;
 	sbData.hiScore = hiScore;
+	sbData.nextBlockLetter = nextBlockLetter;
 	return sbData;
+}
+
+
+void ScoreBoard::updateNextBlock(char nextBlockLetter) {
+	nextBlockLetter = nextBlockLetter;
+	notifyAll();
 }

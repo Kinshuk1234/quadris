@@ -5,6 +5,7 @@ struct ScoreBoardData {
 	int level;
 	int currentScore;
 	int hiScore;
+	char nextBlockLetter;
 };
 
 

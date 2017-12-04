@@ -12,13 +12,15 @@ Level0::Level0(string filename)
 : v{} {
 	char blockType;
 	ifstream f{filename};
+
 	while(f >> blockType) {
-		v.emplace_back(blockType);	
+		v.emplace_back(blockType);
 	}
+
 }
 
 Block* Level0::getBlock() {
-	char firstLetter = *v.begin();
+	char firstLetter = v.at(0);
 	if (firstLetter == 'I') {
 		v.erase(v.begin());
 		return new BlockI{getLevelNumber()};

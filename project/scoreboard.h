@@ -11,6 +11,7 @@ class ScoreBoard : public Subject<ScoreBoardData> {
 	int currentLevel;
 	int currentScore;
 	int hiScore;
+	char nextBlockLetter;
 public:
 	
 	ScoreBoardData getData() override;
@@ -22,6 +23,7 @@ public:
 	int getHiScore();
 	void updateCurrentScore(int lastTurnScore);
 	void setCurrentScore(int newScore);
+	void updateNextBlock(char nextBlockLetter);
 
 	// Big 5 + ctor
 	ScoreBoard();

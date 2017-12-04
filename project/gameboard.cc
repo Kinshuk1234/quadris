@@ -173,8 +173,9 @@ bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced
 	bool checkWithCurrentBlock = false;
 
 	if (blockToBePlaced == nullptr) {
-		blockToBePlaced = level->getBlock();
-		// blockToBePlaced = new BlockI{level->getLevelNumber()};
+		blockToBePlaced = nextBlock;
+		nextBlock = level->getBlock();
+		scoreBoard.updateNextBlock(nextBlock->getLetter());
 	} else {
 		checkWithCurrentBlock = true;
 	}
@@ -452,14 +453,12 @@ GameBoard::GameBoard(TextDisplay *td, int startLevel, int seed, string filename)
 : grid{}, 
 lastTurnScore{0}, 
  currentBlock{nullptr},
- level{new Level0{}},
   blockList{}, 
   scoreBoard{},
   td{td}, // gd{gd} 
   gameOver{false} {  
 
-  	// TODO: delete level before assigning new level
-  	delete level;
+
 	if(level==0) {
 		level = new Level0{filename};
 	} else if(startLevel==1) {

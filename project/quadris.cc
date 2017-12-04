@@ -26,13 +26,9 @@ void Quadris::init() {
 }
 
 void Quadris::initGame() {
-
-	cout << "initgame() starts" << endl;
 	string command = "";
 
 	gameBoard->init();
-
-	cout << "gameBoard->init() reached" << endl;
 	// TODO: attach Graphics display to cells
 	// TODO: graphics display output
 	while (true/*TODO: gameBoard.getGameOver()*/ and (!cin.eof())) {
