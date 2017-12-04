@@ -122,7 +122,25 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 			rotateChange = 0;
 			initialPoints = currentBlock->getOrPtsOf(currentBlock->getRefPoint(currentBlock->getCurrentOr()), currentBlock->getCurrentOr());
 			transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
-
+		} else if(currCommand == "norandom") {
+			if(level->getLevelNumber()==3) {
+				delete level;
+				level = new Level3{seed, false};
+			} else if (level->getLevelNumber() == 4) {
+				delete level;
+				level = new Level4{seed, false};
+			}
+				delete nextBlock;
+				nextBlock = level->getBlock();
+				scoreBoard.updateNextBlock(nextBlock->getLetter());
+		} else if(currCommand == "random") {
+			if(level->getLevelNumber() == 3) {
+				delete level;
+				level = new Level3{seed, true};
+			} else if (level->getLevelNumber() == 4) {
+				delete level;
+				level = new Level4{seed, true};
+			}
 		}
 		// TODO: add other commands, if any left
 	}
@@ -469,7 +487,8 @@ lastTurnScore{0},
   blockList{}, 
   scoreBoard{},
   td{td}, // gd{gd} 
-  gameOver{false} {  
+  gameOver{false},
+  seed{seed} {  
 
 	if(startLevel==0) {
 		level = new Level0{filename};

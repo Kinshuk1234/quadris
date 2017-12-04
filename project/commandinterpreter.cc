@@ -200,7 +200,6 @@ CommandInterpreter::CommandInterpreter()
 	cList["S"] = {"S"};
 	cList["Z"] = {"Z"};
 	cList["T"] = {"T"};
-
 	// TODO: add more usual commands...
 }
 

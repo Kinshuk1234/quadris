@@ -8,7 +8,7 @@ class Level4 : public Level3 {
 
 public:
 
-	Level4(int seed = 1);
+	Level4(int seed = 1, bool isRandom = true);
 
 	int getLevelNumber() const;
 };
