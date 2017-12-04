@@ -3,7 +3,6 @@
 #include <map>
 #include <string>
 #include <sstream>
-
 #include <iostream>
 
 using namespace std;
@@ -35,9 +34,25 @@ istream &operator>>(istream &in, vector<string> &vec){
 
 
 void CommandInterpreter::execute(string c) {
-	// cout << "Given command: " << c << endl;
-	string command = getFullCommand(c);
-	// cout << "Actual command: " << command << endl;
+
+	int mult=0;
+	string textC;
+	string finalC;
+
+	istringstream ss{c};
+
+	ss >> textC;
+
+	istringstream ssMult{textC};
+
+	if(ssMult>>mult) {
+		ssMult >> finalC;
+	} else {
+		finalC = textC;
+		mult=-1;
+	}
+
+	string command = getFullCommand(finalC);
 
 	if (command == "") {
 		cout << "Command does NOT exist" << endl;
@@ -58,8 +73,19 @@ void CommandInterpreter::execute(string c) {
 			// TODO: do something NOT related to the gameboard
 		}
 		// Gameboard related commands
-		currentCommand = command;
-		notifyAll();
+
+		if(command=="restart" || command=="hint" || command=="norandom" || command=="random") {
+			currentCommand = command;
+			notifyAll();
+		} else if(mult==-1) {
+			currentCommand = command;
+			notifyAll();
+		} else {
+			for(int i=0; i<mult; ++i) {
+				currentCommand = command;
+				notifyAll();
+			}
+		}
 	}
 }
 
