@@ -20,14 +20,14 @@ class Quadris : public CommandInterpreter {
 	int level;
 	int seed;
 	std::string filename;
-	bool textOnly;
+	bool graphicsEnabled;
 	
 public:
 	void init();
 
 	// Big 5 + ctor
 	//  graphicsdisplay{NULL} add that too
-	Quadris() : textDisplay{NULL}, gameBoard{NULL}, level{0}, seed{1}, filename{"sequence.txt"}, textOnly{false} {}
+	Quadris(bool bonusEnabled, int seed, bool graphicsEnabled, std::string filename, int startLevel);
 
 
 	Quadris(const Quadris &other) = delete;
@@ -35,15 +35,6 @@ public:
 	Quadris &operator=(const Quadris &other) = delete;
 	Quadris &operator=(Quadris &&other) = delete;
 	~Quadris();
-
-	// command-line arguments
-	void startLevel(int startLevel=0);
-	void setSeed(int seedNo=1);
-	void setFilename(std::string newFilename="sequence.txt");
-	void isGraphics(bool textOnlyDisplay=false);
-
-private:
-	void initGame();
 
 };
 

@@ -181,8 +181,8 @@ int CommandInterpreter::getScore(string full, string sub) {
 
 // Big 5 + ctor ------------------------
 
-CommandInterpreter::CommandInterpreter()
-: cList{}, currentCommand{} {
+CommandInterpreter::CommandInterpreter(bool bonusEnabled1)
+: cList{}, currentCommand{}, bonusEnabled{bonusEnabled1} {
 	// TODO: make the usual commands
 	cList["left"] = {"left"};
 	cList["right"] = {"right"};
@@ -193,9 +193,11 @@ CommandInterpreter::CommandInterpreter()
 	cList["restart"] = {"restart"};
 	cList["counterclockwise"] = {"counterclockwise"};
 	cList["clockwise"] = {"clockwise"};
-	cList["newcom"] = {"newcom"};
+	if (bonusEnabled) {
+		cList["newcom"] = {"newcom"};
+		cList["rename"] = {"rename"};	
+	}
 	cList["hint"] = {"hint"};
-	cList["rename"] = {"rename"};
 	cList["norandom"] = {"norandom"};
 	cList["random"] = {"random"};
 	cList["sequence"] = {"sequence"};

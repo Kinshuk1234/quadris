@@ -66,10 +66,10 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 					continue;
 				}
 				currentBlock = nullptr;
-				// if (enhancedVersion) {
-				updateBlockTurnCounts();
-				removeOldBlocks();
-				// }
+				if (bonusEnabled) {
+					updateBlockTurnCounts(); // if block turn counts increase, this goes up
+					removeOldBlocks(); // removes blocks past 10 turns
+				}
 				if (level->getLevelNumber() == 4) {
 					Block *dot = new BlockDot{4, false};
 					vector<Pos> pts = dot->getOrPtsOf(dot->getRefPoint(dot->getCurrentOr()), dot->getCurrentOr());
@@ -494,7 +494,7 @@ void GameBoard::bestPlace() {
 // Big 5 + ctor --------------------------------------
 
 // Add graphicsDisplay pointer
-GameBoard::GameBoard(TextDisplay *td, int startLevel, int seed, string filename) //, GraphicsDisplay *gd)
+GameBoard::GameBoard(TextDisplay *td, int startLevel, int seed, string filename, bool bonusEnabled1) //, GraphicsDisplay *gd)
 // TODO:: Assign correct level by using the parameter "level"
 : grid{}, 
 lastTurnScore{0}, 
@@ -504,7 +504,8 @@ lastTurnScore{0},
   td{td}, // gd{gd} 
   gameOver{false},
   seed{seed},
-  starCount{0} {  
+  starCount{0},
+  bonusEnabled{bonusEnabled1} {  
 
 	if(startLevel==0) {
 		level = new Level0{filename};
