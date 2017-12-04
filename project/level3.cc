@@ -9,10 +9,11 @@
 #include <ctime>
 using namespace std;
 
-Level3::Level3(int seed) : seed{seed} {};
+Level3::Level3(int seed) : seed{seed} {
+	srand(seed);
+};
 
 Block* Level3::getBlock() {
-	srand(time(0));
 	int num = (rand() % 9);
 	if ((num == 0) || (num == 1)) return new BlockS{getLevelNumber(), true};
 	else if ((num == 2) || (num == 3)) return new BlockZ{getLevelNumber(), true};
