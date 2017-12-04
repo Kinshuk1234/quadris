@@ -135,11 +135,20 @@ Pos Block::getRefPoint(int o) const {
 }
 
 void Block::setInitialOrientation(int initOrientation) { // USED
+	cout << "SET INIT INT INIT " << endl;
 	currOrientation = initOrientation;
-	refPoints.at(0) = refPoints.at(initOrientation);
-	refPoints.at(1) = refPoints.at(0);
-	refPoints.at(2) = refPoints.at(0);
-	refPoints.at(3) = refPoints.at(0);
+	int size = refPoints.size();
+	cout << "SIZE CHECK: " << size << endl;
+	Pos toBeSet = refPoints.at(initOrientation);
+	for (int i = 0; i < size; i++) {
+		refPoints.at(i)	= toBeSet;
+	}
+	cout << "DONE SIZE CHECK" << endl;
+	// refPoints.at(0) = refPoints.at(initOrientation);
+	// refPoints.at(1) = refPoints.at(0);
+	// refPoints.at(2) = refPoints.at(0);
+	// refPoints.at(3) = refPoints.at(0);
+	cout << "SET INIT INT INIT " << endl;
 }
 
 void Block::setDropped(bool dropped) {

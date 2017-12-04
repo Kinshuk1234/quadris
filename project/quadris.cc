@@ -9,29 +9,29 @@
 
 using namespace std;
 
-
-void Quadris::init() {
-	// TODO: initialize the game object
-	if(textOnly) {
-		textDisplay = new TextDisplay{};
-		//graphicsdisplay = nullptr;
-	} else {
-		textDisplay = new TextDisplay{};
-		//graphicsdisplay = new GraphicsDisplay{};
-	}
-	// add graphicsDisplay too
-	gameBoard = new GameBoard{textDisplay,level,seed,filename};
-	this->attach(gameBoard); // This inherits from CommandInterpreter
-	initGame();
+Quadris::Quadris (bool bonusEnabled, int seed, bool graphicsEnabled, string filename, int startLevel)
+:CommandInterpreter{bonusEnabled},
+ textDisplay{new TextDisplay{}},
+  gameBoard{NULL},
+   level{startLevel},
+    seed{seed},
+     filename{filename}//, graphicsDisplay{graphicsEnabled ? nullptr : nullptr}
+{ 
+ 	if (startLevel > 4) { level = 4; }
+ 	else if (startLevel < 0) { level = 0;}
+ 	else { level = startLevel; }
 }
 
-void Quadris::initGame() {
+void Quadris::init() {
+	// add graphicsDisplay too
+	gameBoard = new GameBoard{textDisplay,level,seed,filename, bonusEnabled};
+	this->attach(gameBoard); // This inherits from CommandInterpreter
 	string command = "";
 
 	gameBoard->init();
 	// TODO: attach Graphics display to cells
 	// TODO: graphics display output
-	while (!gameBoard->getGameOver() and (!cin.eof())) {
+	while (!cin.eof()) {
 		cout << *textDisplay << endl;
 		cin >> command;
 		if (cin.eof()) {
@@ -40,40 +40,9 @@ void Quadris::initGame() {
 		execute(command);
 		// TODO: graphics display output
 	}
-	cout << *textDisplay << endl;
 }
-
-// void Quadris::notify(Subject<GameBoardData> &notifier) {
-
-// }
 
 ////////////COMMAND-LINE ARGUMENTS//////////////
-
-void Quadris::startLevel(int startLevel) {
-	if(startLevel>4) {
-		level = 4;
-	} else if(startLevel<0) {
-		level = 0;
-	} else {
-		level = startLevel;
-	}
-}
-
-void Quadris::setSeed(int seedNo) {
-	seed = seedNo;
-}
-
-void Quadris::setFilename(string newFilename) {
-	filename = newFilename;
-}
-
-void Quadris::isGraphics(bool textOnlyDisplay) {
-	if(textOnlyDisplay) {
-		textOnly = true;
-	} else {
-		textOnly = false;
-	}
-}
 
 // Big 5 + ctor -------------------------------------------
 

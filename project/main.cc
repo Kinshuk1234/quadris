@@ -15,7 +15,13 @@ int main(int argc, const char * argv[]) {
 	//Quadris q;
 	// q.init();
 
-	Quadris q{};
+	
+	bool withBonus = false;
+	bool withGraphics = true;
+	int seed = 1;
+	string filename = "sequence.txt";
+	int startLevel = 0;
+
 	////////////////////////////////////////////////////
 
 	for(int i=0; i<argc; ++i) {
@@ -23,19 +29,18 @@ int main(int argc, const char * argv[]) {
 		string arg = argv[i];
 
 		if(arg=="-text") {
-
-			q.isGraphics(true);
+			withGraphics = false;
 
 		} else if(arg=="-seed") {
 
 			int num;
             istringstream ss(argv[i + 1]);
             ss >> num;
-            q.setSeed(num);
+            seed = num;
 
 		} else if(arg=="-scriptfile") {
 
-			q.setFilename(argv[i + 1]);
+			filename = argv[i + 1];
 
 
 		} else if(arg=="-startlevel") {
@@ -43,11 +48,12 @@ int main(int argc, const char * argv[]) {
 			int num;
             istringstream ss(argv[i + 1]);
             ss >> num;
-            q.startLevel(num);
-
+            startLevel = num;
+		} else if (arg == "-enablebonus") {
+			withBonus = true;
 		}
 	}
-
+	Quadris q{withBonus, seed, withGraphics, filename, startLevel};
 	q.init();
 	
 }

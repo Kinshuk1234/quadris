@@ -9,6 +9,9 @@ class CommandInterpreter : public Subject<std::vector<std::string>> { // TODO: i
 	std::map<std::string, std::vector<std::string>> cList;
 	std::string currentCommand;
 
+protected:
+	bool bonusEnabled;
+
 public:
 	void execute(std::string command);
 
@@ -18,7 +21,7 @@ public:
 	std::string getCommand(std::string c);
 
 	// Big 5 + ctor
-	CommandInterpreter(); // main constructor
+	CommandInterpreter(bool bonusEnabled1); // main constructor
 	CommandInterpreter(const CommandInterpreter &other) = delete;
 	CommandInterpreter(CommandInterpreter &&other) = delete;
 	CommandInterpreter &operator=(const CommandInterpreter &other) = delete;

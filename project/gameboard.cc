@@ -65,10 +65,11 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				if (!dropBlock(currentBlock)) {
 					continue;
 				}
-				// if (enhancedVersion) {
-				updateBlockTurnCounts();
-				removeOldBlocks();
-				// }
+				currentBlock = nullptr;
+				if (bonusEnabled) {
+					updateBlockTurnCounts(); // if block turn counts increase, this goes up
+					removeOldBlocks(); // removes blocks past 10 turns
+				}
 				if (level->getLevelNumber() == 4) {
 					Block *dot = new BlockDot{4, false};
 					vector<Pos> pts = dot->getOrPtsOf(dot->getRefPoint(dot->getCurrentOr()), dot->getCurrentOr());
@@ -77,15 +78,17 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 						dropBlock(dot);
 					}
 				}
-				if (gameOver) {
+				if (scoreBoard.getGameOver()) {
 					currentBlock = nullptr;
 					break;
 				}
 				xChange = 0;
 				yChange = 0;
 				rotateChange = 0;
-				if (!tryNewBlock()) {
+				if (!tryNewBlock()) { // sets current block
 					scoreBoard.setGameOver(true);
+					restartGame();
+					scoreBoard.setGameOver(false);
 					break;
 				} else {
 					transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
@@ -110,6 +113,7 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 			updateGrid(initialPoints, '-');
 			Block *tempBlock = level->getSpecificBlock(currCommand);
 			if (!tryNewBlock(tempBlock)) {
+				delete tempBlock;
 				// Unable to place block. Maybe inform textDisplay to output that via observer/subject?
 			} else {
 				// TODO: remove previous bloc
@@ -149,6 +153,21 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				delete nextBlock;
 				nextBlock = level->getBlock();
 				scoreBoard.updateNextBlock(nextBlock->getLetter());
+		} else if(currCommand == "skip" and bonusEnabled) {
+			Block *tempBlock = nextBlock;
+			nextBlock = level->getBlock();
+			if (!tryNewBlock(tempBlock)) {
+				delete tempBlock;
+				scoreBoard.setGameOver(true);
+				restartGame();
+				scoreBoard.setGameOver(false);
+				break;
+			}
+			scoreBoard.updateNextBlock(nextBlock->getLetter());
+			updateGrid(initialPoints, '-');
+			transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
+			transformedOr = currentBlock->getCurrentOr();
+			initialPoints = currentBlock->getOrPtsOf(transformedRefPoint, transformedOr);
 		}
 		// TODO: add other commands, if any left
 	}
@@ -166,10 +185,6 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 		}
 		return;
 	}
-}
-
-bool GameBoard::getGameOver() const {
-	return scoreBoard.getGameOver();
 }
 
 void GameBoard::updateBlockTurnCounts() {
@@ -205,7 +220,9 @@ void GameBoard::restartGame() {
 		}
 	}
 	delete nextBlock;
+	nextBlock = nullptr;
 	delete currentBlock;
+	currentBlock = nullptr;
 	nextBlock = level->getBlock(); // Gets block from 
 	tryNewBlock();
 
@@ -222,7 +239,6 @@ bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced
 	} else {
 		checkWithCurrentBlock = true;
 	}
-	
 	int fitOrientation = 0;
 	while (fitOrientation <= 4) {
 		if (fitOrientation == 4) {
@@ -241,6 +257,7 @@ bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced
 			if (checkWithCurrentBlock) { 
 				updateGrid(currentBlock->getOrPtsOf(currentBlock->getRefPoint(currentBlock->getCurrentOr()), currentBlock->getCurrentOr()), '-');
 				delete currentBlock;
+				currentBlock = nullptr;
 			} // Also delete from grid
 			currentBlock = blockToBePlaced;
 			currentBlock->setInitialOrientation(fitOrientation);
@@ -266,7 +283,6 @@ void GameBoard::updateGrid(vector<Pos> points, char letter) {
 }
 
 bool GameBoard::isFittable(const vector<Pos> &oldPoints, const vector<Pos> &newOrientation, const bool dropCheck) {
-
 	for (auto &p : newOrientation) {
 		int px = p.x;
 		int py = p.y;
@@ -323,9 +339,6 @@ bool GameBoard::dropBlock(Block *b) {
 		return true;
 	} 
 	return false;
-	// TODO: remove row(s) if full, etc
-	// TODO: remove blocks that have been on the board for >= 10 turns
-	// TODO: update score
 }
 
 void GameBoard::removeFullRows() {
@@ -496,7 +509,7 @@ void GameBoard::bestPlace() {
 // Big 5 + ctor --------------------------------------
 
 // Add graphicsDisplay pointer
-GameBoard::GameBoard(TextDisplay *td, int startLevel, int seed, string filename) //, GraphicsDisplay *gd)
+GameBoard::GameBoard(TextDisplay *td, int startLevel, int seed, string filename, bool bonusEnabled1) //, GraphicsDisplay *gd)
 // TODO:: Assign correct level by using the parameter "level"
 : grid{}, 
 lastTurnScore{0}, 
@@ -506,7 +519,8 @@ lastTurnScore{0},
   td{td}, // gd{gd} 
   gameOver{false},
   seed{seed},
-  starCount{0} {  
+  starCount{0},
+  bonusEnabled{bonusEnabled1} {  
 
 	if(startLevel==0) {
 		level = new Level0{filename};

@@ -37,6 +37,7 @@ class GameBoard : public Observer<std::vector<std::string>> {
 	int seed;
 	int starCount;
 	// GraphicsDisplay * gd;
+	bool bonusEnabled;
 
 public:
 
@@ -61,10 +62,9 @@ public:
 	bool checkCoor(int row, int col, std::vector<Pos> currentBlockPoints);
 	int totalEmptyRows(std::vector<Pos> currentBlockPoints);
 	void bestPlace();
-	bool getGameOver() const; // public
 
 	// Big 5 + ctor
-	GameBoard(TextDisplay *td, int startLevel, int seed, std::string filename); //, GraphicsDisplay *gd);
+	GameBoard(TextDisplay *td, int startLevel, int seed, std::string filename, bool bonusEnabled); //, GraphicsDisplay *gd);
 	GameBoard(const GameBoard &other) = delete;
 	GameBoard(GameBoard &&other) = delete;
 	GameBoard &operator=(const GameBoard &other) = delete;

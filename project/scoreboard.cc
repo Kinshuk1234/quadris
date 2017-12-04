@@ -55,7 +55,9 @@ void ScoreBoard::updateNextBlock(char newLetter) {
 
 void ScoreBoard::setGameOver(bool gameOver) {
 	this->gameOver = gameOver;
-	notifyAll();
+	if (gameOver) {
+		notifyAll();
+	}
 }
 
 bool ScoreBoard::getGameOver() const {
