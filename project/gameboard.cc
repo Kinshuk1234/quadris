@@ -141,6 +141,9 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				delete level;
 				level = new Level4{seed, true};
 			}
+				delete nextBlock;
+				nextBlock = level->getBlock();
+				scoreBoard.updateNextBlock(nextBlock->getLetter());
 		}
 		// TODO: add other commands, if any left
 	}
