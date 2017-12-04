@@ -32,27 +32,45 @@ istream &operator>>(istream &in, vector<string> &vec){
 	return in;
 }
 
-
-void CommandInterpreter::execute(string c) {
-
+int CommandInterpreter::getMultiplier(string c) {
 	int mult=0;
 	string textC;
 	string finalC;
-
 	istringstream ss{c};
-
 	ss >> textC;
-
 	istringstream ssMult{textC};
-
 	if(ssMult>>mult) {
 		ssMult >> finalC;
 	} else {
 		finalC = textC;
 		mult=-1;
 	}
+	return mult;
+}
 
-	string command = getFullCommand(finalC);
+string CommandInterpreter::getCommand(string c) {
+	int mult=0;
+	string textC;
+	string finalC;
+	istringstream ss{c};
+	ss >> textC;
+	istringstream ssMult{textC};
+	if(ssMult>>mult) {
+		ssMult >> finalC;
+	} else {
+		finalC = textC;
+		mult=-1;
+	}
+	return finalC;
+}
+
+
+void CommandInterpreter::execute(string c) {
+
+	int mult = getMultiplier(c);
+	string finalCommand = getCommand(c);
+
+	string command = getFullCommand(finalCommand);
 
 	if (command == "") {
 		cout << "Command does NOT exist" << endl;
@@ -103,8 +121,15 @@ void CommandInterpreter::execute(string c) {
 				cout << "Command Doesn't exist yet." << endl;
 			}
 			return;
+		} else if (command == "sequence") {
+			string filename;
+			cin >> filename;
+			string commandName;
+			ifstream f{filename};
+			while(f>>commandName) {
+				execute(commandName);
+			}
 		}
-		// Gameboard related commands
 
 		if(command=="restart" || command=="hint" || command=="norandom" || command=="random") {
 			currentCommand = command;
@@ -139,20 +164,6 @@ string CommandInterpreter::getFullCommand(string incCommand) {
 		} else if (newScore == score) {
 			isAmbiguous = true;
 		}
-		// string key = p.first;
-		// int i = 0;
-		// while ((i < incCommand.length()) and 
-		// 	(i < key.length())
-		// 	and (incCommand[i] == key[i])) {
-		// 	i++;
-		// }
-		// if (i > score) {
-		// 	isAmbiguous = false;
-		// 	score = i;
-		// 	actualCommand = key;
-		// } else if (i == score) {
-		// 	isAmbiguous = true;
-		// }
 	}
 	if (isAmbiguous) {
 		return "";

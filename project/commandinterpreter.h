@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include "subject.h"
+#include <fstream>
 
 class CommandInterpreter : public Subject<std::vector<std::string>> { // TODO: inherit from subject
 	std::map<std::string, std::vector<std::string>> cList;
@@ -13,6 +14,8 @@ public:
 
 	std::vector<std::string> getData() override;
 	int getScore(std::string full, std::string sub); // private
+	int getMultiplier(std::string c); 
+	std::string getCommand(std::string c);
 
 	// Big 5 + ctor
 	CommandInterpreter(); // main constructor
