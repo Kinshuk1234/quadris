@@ -9,10 +9,11 @@
 #include <ctime>
 using namespace std;
 
-Level1::Level1(int seed) : seed{seed} {};
+Level1::Level1(int seed) : seed{seed} {
+	srand(seed);
+};
 
 Block* Level1::getBlock() {
-	srand(time(0));
 	int num = (rand() % 12);
 	if (num == 0) return new BlockS{getLevelNumber()};
 	else if (num == 1) return new BlockZ{getLevelNumber()};

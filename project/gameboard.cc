@@ -114,6 +114,12 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 			lastWasHint = true;
 		} else if (currCommand == "restart") {
 			restartGame();
+			xChange = 0;
+			yChange = 0;
+			rotateChange = 0;
+			initialPoints = {};
+			transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
+
 		}
 		// TODO: add other commands, if any left
 	}
@@ -165,6 +171,10 @@ void GameBoard::restartGame() {
 			}
 		}
 	}
+	delete nextBlock;
+	delete currentBlock;
+	nextBlock = level->getBlock(); // Gets block from 
+	tryNewBlock();
 
 }
 
@@ -458,8 +468,7 @@ lastTurnScore{0},
   td{td}, // gd{gd} 
   gameOver{false} {  
 
-
-	if(level==0) {
+	if(startLevel==0) {
 		level = new Level0{filename};
 	} else if(startLevel==1) {
 		level = new Level1{seed};

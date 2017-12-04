@@ -9,7 +9,7 @@
 using namespace std;
 
 Level0::Level0(string filename)
-: v{} {
+: v{}, blockIndex{0} {
 	char blockType;
 	ifstream f{filename};
 
@@ -20,33 +20,27 @@ Level0::Level0(string filename)
 }
 
 Block* Level0::getBlock() {
-	char firstLetter = v.at(0);
+	char firstLetter = v.at(blockIndex);
+	blockIndex = (blockIndex+1) % v.size();
 	if (firstLetter == 'I') {
-		v.erase(v.begin());
 		return new BlockI{getLevelNumber()};
 	}
 	else if (firstLetter == 'J') {
-		v.erase(v.begin());
 		return new BlockJ{getLevelNumber()};
 	}
 	else if (firstLetter == 'L') {
-		v.erase(v.begin());
 		return new BlockL{getLevelNumber()};
 	}
 	else if (firstLetter == 'O') {
-		v.erase(v.begin());
 		return new BlockO{getLevelNumber()};
 	}
 	else if (firstLetter == 'S') {
-		v.erase(v.begin());
 		return new BlockS{getLevelNumber()};
 	}
 	else if (firstLetter == 'Z') {
-		v.erase(v.begin());
 		return new BlockZ{getLevelNumber()};
 	}
 	else {
-		v.erase(v.begin());
 		return new BlockT{getLevelNumber()};
 	}
 }
