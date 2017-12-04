@@ -369,7 +369,7 @@ void GameBoard::removeFullRows() {
 			for (int k = 0; k < 11; k++) {
 				newRow.emplace_back(Cell{k, j});
 				newRow.back().attach(td);
-				// newRow.back().attach(gd);
+				// newRow.back().attach(gd); // TODO: GD
 			}
 			grid.insert(grid.begin(), newRow);
 			j++;
@@ -508,14 +508,14 @@ void GameBoard::bestPlace() {
 // Big 5 + ctor --------------------------------------
 
 // Add graphicsDisplay pointer
-GameBoard::GameBoard(TextDisplay *td, GraphicsDisplay *gd, int startLevel, int seed, string filename, bool bonusEnabled1) //, GraphicsDisplay *gd)
+GameBoard::GameBoard(TextDisplay *td , GraphicsDisplay *gd, int startLevel, int seed, string filename, bool bonusEnabled1) //, GraphicsDisplay *gd)
 // TODO:: Assign correct level by using the parameter "level"
 : grid{}, 
 lastTurnScore{0}, 
  currentBlock{nullptr},
   blockList{}, 
   scoreBoard{},
-  td{td}, 
+  td{td},
   gd{gd},
   gameOver{false},
   seed{seed},
@@ -535,7 +535,7 @@ lastTurnScore{0},
 	}
 
   	scoreBoard.attach(td);
-  	if (gd != nullptr) {
+  	if (gd != nullptr) { // TODO: GD
   		scoreBoard.attach(gd);
   	}
   	scoreBoard.updateLevel(level->getLevelNumber());
@@ -545,7 +545,7 @@ lastTurnScore{0},
 			Cell c{j, i};
 			grid.back().emplace_back(c);
 			grid.back().back().attach(td);
-			if (gd != nullptr) {
+			if (gd != nullptr) { // TODO: GD
 				grid.back().back().attach(gd);	
 			}
 		}
