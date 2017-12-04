@@ -61,7 +61,6 @@ public:
 	bool checkCoor(int row, int col, std::vector<Pos> currentBlockPoints);
 	int totalEmptyRows(std::vector<Pos> currentBlockPoints);
 	void bestPlace();
-	bool getGameOver() const; // public
 
 	// Big 5 + ctor
 	GameBoard(TextDisplay *td, int startLevel, int seed, std::string filename); //, GraphicsDisplay *gd);

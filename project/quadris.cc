@@ -31,7 +31,7 @@ void Quadris::initGame() {
 	gameBoard->init();
 	// TODO: attach Graphics display to cells
 	// TODO: graphics display output
-	while (!gameBoard->getGameOver() and (!cin.eof())) {
+	while (!cin.eof()) {
 		cout << *textDisplay << endl;
 		cin >> command;
 		if (cin.eof()) {

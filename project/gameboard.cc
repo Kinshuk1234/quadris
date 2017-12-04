@@ -65,6 +65,7 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				if (!dropBlock(currentBlock)) {
 					continue;
 				}
+				currentBlock = nullptr;
 				// if (enhancedVersion) {
 				updateBlockTurnCounts();
 				removeOldBlocks();
@@ -77,15 +78,16 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 						dropBlock(dot);
 					}
 				}
-				if (gameOver) {
+				if (scoreBoard.getGameOver()) {
 					currentBlock = nullptr;
 					break;
 				}
 				xChange = 0;
 				yChange = 0;
 				rotateChange = 0;
-				if (!tryNewBlock()) {
+				if (!tryNewBlock()) { // sets current block
 					scoreBoard.setGameOver(true);
+					restartGame();
 					break;
 				} else {
 					transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
@@ -168,10 +170,6 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 	}
 }
 
-bool GameBoard::getGameOver() const {
-	return scoreBoard.getGameOver();
-}
-
 void GameBoard::updateBlockTurnCounts() {
 	for (auto &p : blockList) {
 		p->turnCountAddOne();
@@ -205,7 +203,9 @@ void GameBoard::restartGame() {
 		}
 	}
 	delete nextBlock;
+	nextBlock = nullptr;
 	delete currentBlock;
+	currentBlock = nullptr;
 	nextBlock = level->getBlock(); // Gets block from 
 	tryNewBlock();
 
@@ -241,6 +241,7 @@ bool GameBoard::tryNewBlock(Block *blockToBePlaced) { // default blockToBePlaced
 			if (checkWithCurrentBlock) { 
 				updateGrid(currentBlock->getOrPtsOf(currentBlock->getRefPoint(currentBlock->getCurrentOr()), currentBlock->getCurrentOr()), '-');
 				delete currentBlock;
+				currentBlock = nullptr;
 			} // Also delete from grid
 			currentBlock = blockToBePlaced;
 			currentBlock->setInitialOrientation(fitOrientation);
@@ -323,9 +324,6 @@ bool GameBoard::dropBlock(Block *b) {
 		return true;
 	} 
 	return false;
-	// TODO: remove row(s) if full, etc
-	// TODO: remove blocks that have been on the board for >= 10 turns
-	// TODO: update score
 }
 
 void GameBoard::removeFullRows() {
