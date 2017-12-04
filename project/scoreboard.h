@@ -23,7 +23,7 @@ public:
 	int getHiScore();
 	void updateCurrentScore(int lastTurnScore);
 	void setCurrentScore(int newScore);
-	void updateNextBlock(char nextBlockLetter);
+	void updateNextBlock(char newLetter);
 
 	// Big 5 + ctor
 	ScoreBoard();

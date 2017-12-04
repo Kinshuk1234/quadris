@@ -27,6 +27,7 @@ void TextDisplay::notify(Subject<ScoreBoardData> &notifier) {
 	currentLevel = sbData.level;
 	currentScore = sbData.currentScore;
 	hiScore = sbData.hiScore;
+	nextBlockLetter = sbData.nextBlockLetter;
 }
 
 
@@ -42,6 +43,10 @@ int TextDisplay::getHiScore() const {
 	return hiScore;
 }
 
+char TextDisplay::getNextBlockLetter() const {
+	return nextBlockLetter;
+}
+
 // Big 5 + ctor ------------------
 
 TextDisplay::TextDisplay()
@@ -52,11 +57,30 @@ ostream &operator<<(ostream &out, const TextDisplay &td) {
 	out << "Current Level: " << td.getCurrentLevel() << endl;
 	out << "Current Score: " << td.getCurrentScore() << endl;
 	out << "Hi Score: " << td.getHiScore() << endl;
+	out << "---------------------" << endl;
 	for (auto it = grid.begin() + 3; it != grid.end(); ++it) {
 		for (auto innerIt = it->begin(); innerIt != it->end(); ++innerIt) {
-			out << *innerIt;
+			out << *innerIt << " ";
 		}
 		out << endl;
+	}
+	out << "---------------------" << endl;
+	out << "Next Block: " << endl;
+	char nextBlockLetter = td.getNextBlockLetter();
+	if (nextBlockLetter == 'I') {
+		out << "IIII" << endl;
+	} else if (nextBlockLetter == 'J') {
+		out << "J" << endl << "JJJ" << endl;
+	} else if (nextBlockLetter == 'L') {
+		out << "LLL" << endl << "L" << endl;
+	} else if (nextBlockLetter == 'O') {
+		out << "OO" << endl << "OO" << endl;
+	} else if (nextBlockLetter == 'S') {
+		out << " SS" << endl << "SS" << endl;
+	} else if (nextBlockLetter == 'T') {
+		out << "TTT" << endl << " T" << endl;
+	} else if (nextBlockLetter == 'Z') {
+		out << "ZZ" << endl << " ZZ" << endl;
 	}
 
 	return out;
