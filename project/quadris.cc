@@ -1,6 +1,7 @@
 #include <memory>
 #include "quadris.h"
 #include "gameboarddata.h"
+// #include "graphicsdisplay.h"
 
 
 // TEMP:
@@ -34,8 +35,7 @@ void Quadris::initGame() {
 	cout << "gameBoard->init() reached" << endl;
 	// TODO: attach Graphics display to cells
 	// TODO: graphics display output
-	GameBoardData gbData = gameBoard->getData();
-	while (!gbData.gameOver and (!cin.eof())) {
+	while (true/*TODO: gameBoard.getGameOver()*/ and (!cin.eof())) {
 		cout << *textDisplay << endl;
 		cin >> command;
 		if (cin.eof()) {

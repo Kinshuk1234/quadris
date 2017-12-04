@@ -116,6 +116,9 @@ void Block::setRefPoint(Pos newRefPoint) { // USED
 // NEW NEW NEW
 
 vector<Pos> Block::getOrPtsOf(Pos givenRefPoint, int givenOrientation) const {
+	if (isDropped) {
+		return orientations.at(givenOrientation);
+	}
 	return getOrientationsAt(givenRefPoint).at(givenOrientation);
 }
 
@@ -128,7 +131,6 @@ void Block::setCurrentOr(int newO) {
 }
 
 Pos Block::getRefPoint(int o) const {
-	//cout << "REF POINT: " << refPoints.at(o) << endl;
 	return refPoints.at(o);
 }
 
@@ -144,12 +146,34 @@ void Block::setDropped(bool dropped) {
 	isDropped = dropped;
 }
 
+void Block::removeCellsAt(int row) {
+	for (int k = orientations.at(currOrientation).size() - 1; k >= 0; k--) {
+		// Pos refPoint = getRefPoint(currOrientation);
+		if (orientations.at(currOrientation).at(k).y == row) {
+			orientations.at(currOrientation).erase(orientations.at(currOrientation).begin() + k);
+		}
+	}
+	for (int k = orientations.at(currOrientation).size() - 1; k >= 0; k--) {
+		if (orientations.at(currOrientation).at(k).y < row) {
+			orientations.at(currOrientation).at(k).y += 1;
+		}
+	}
+	
+}
+
+int Block::getLevelCreated() const {
+	return levelCreated;
+}
+
+bool Block::getIsHeavy() const {
+	return isHeavy;
+}
 
 
 // Big 5 + ctor ----------------------------------
 
-Block::Block() // USED
-: refPoints{}, orientations{}, currOrientation{0}, isDropped{false} {
+Block::Block(int levelCreated, bool isHeavy) // USED
+: refPoints{}, orientations{}, currOrientation{0}, isDropped{false}, levelCreated{levelCreated}, isHeavy{isHeavy} {
 	refPoints.emplace_back();
 	refPoints.emplace_back();
 	refPoints.emplace_back();
@@ -161,3 +185,5 @@ Block::Block() // USED
 }
 
 Block::~Block() {}
+
+

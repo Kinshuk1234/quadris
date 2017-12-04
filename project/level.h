@@ -12,6 +12,7 @@ class Level {
 public:
 	virtual Block *getBlock() = 0;
 	virtual ~Level();
+	int virtual getLevelNumber() const = 0;
 };
 
 #endif

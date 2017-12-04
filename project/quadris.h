@@ -9,13 +9,14 @@
 //#include "graphicsdisplay.h"
 
 
+
 class Quadris : public CommandInterpreter {
 	TextDisplay *textDisplay; // Change to smart pointer (i.e. unique_ptr, shared_ptr)
 	//	GraphicsDisplay *graphicsdisplay;
 	GameBoard *gameBoard;
 	
 	//COMMAND-LINE ARGUMENTS
-//protected:
+	//protected:
 	int level;
 	int seed;
 	std::string filename;
