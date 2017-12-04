@@ -6,17 +6,16 @@
 #include "commandinterpreter.h"
 #include "textdisplay.h"
 #include "gameboard.h"
-//#include "graphicsdisplay.h"
+#include "graphicsdisplay.h"
 
 
 
 class Quadris : public CommandInterpreter {
 	TextDisplay *textDisplay; // Change to smart pointer (i.e. unique_ptr, shared_ptr)
-	//	GraphicsDisplay *graphicsdisplay;
+	GraphicsDisplay *graphicsDisplay;
 	GameBoard *gameBoard;
 	
 	//COMMAND-LINE ARGUMENTS
-	//protected:
 	int level;
 	int seed;
 	std::string filename;
@@ -26,7 +25,6 @@ public:
 	void init();
 
 	// Big 5 + ctor
-	//  graphicsdisplay{NULL} add that too
 	Quadris(bool bonusEnabled, int seed, bool graphicsEnabled, std::string filename, int startLevel);
 
 

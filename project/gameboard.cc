@@ -2,7 +2,7 @@
 #include "gameboard.h"
 #include "scoreboard.h"
 #include "textdisplay.h"
-// #include "graphicsdisplay.h"
+#include "graphicsdisplay.h"
 #include <iostream>
 #include "quadris.h"
 #include "level0.h"
@@ -508,14 +508,15 @@ void GameBoard::bestPlace() {
 // Big 5 + ctor --------------------------------------
 
 // Add graphicsDisplay pointer
-GameBoard::GameBoard(TextDisplay *td, int startLevel, int seed, string filename, bool bonusEnabled1) //, GraphicsDisplay *gd)
+GameBoard::GameBoard(TextDisplay *td, GraphicsDisplay *gd, int startLevel, int seed, string filename, bool bonusEnabled1) //, GraphicsDisplay *gd)
 // TODO:: Assign correct level by using the parameter "level"
 : grid{}, 
 lastTurnScore{0}, 
  currentBlock{nullptr},
   blockList{}, 
   scoreBoard{},
-  td{td}, // gd{gd} 
+  td{td}, 
+  gd{gd},
   gameOver{false},
   seed{seed},
   starCount{0},
@@ -534,7 +535,9 @@ lastTurnScore{0},
 	}
 
   	scoreBoard.attach(td);
-  	// scoreBoard.attach(gd);
+  	if (gd != nullptr) {
+  		scoreBoard.attach(gd);
+  	}
   	scoreBoard.updateLevel(level->getLevelNumber());
 	for (int i = 0; i < 18; i++) {
 		grid.emplace_back();
@@ -542,7 +545,9 @@ lastTurnScore{0},
 			Cell c{j, i};
 			grid.back().emplace_back(c);
 			grid.back().back().attach(td);
-			// grid.back().back().attach(gd);
+			if (gd != nullptr) {
+				grid.back().back().attach(gd);	
+			}
 		}
 	}
 }
