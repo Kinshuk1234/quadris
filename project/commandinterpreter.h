@@ -11,14 +11,11 @@ class CommandInterpreter : public Subject<std::vector<std::string>> { // TODO: i
 
 protected:
 	bool bonusEnabled;
-
-public:
 	void execute(std::string command);
 
-	std::vector<std::string> getData() override;
-	int getScore(std::string full, std::string sub); // private
-	int getMultiplier(std::string c); 
-	std::string getCommand(std::string c);
+public:
+
+	std::vector<std::string> getData() override; // public
 
 	// Big 5 + ctor
 	CommandInterpreter(bool bonusEnabled1); // main constructor
@@ -30,7 +27,11 @@ public:
 	friend std::istream &operator>>(std::istream &in, std::vector<std::string> &vec);
 
 private:
+
+	int getMultiplier(std::string c); 
 	std::string getFullCommand(std::string incCommand);
+	int getScore(std::string full, std::string sub); // private
+	std::string getCommand(std::string c);
 };
 
 #endif

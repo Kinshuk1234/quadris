@@ -2,7 +2,7 @@
 #include "gameboard.h"
 #include "scoreboard.h"
 #include "textdisplay.h"
-#include "graphicsdisplay.h"
+// #include "graphicsdisplay.h"
 #include <iostream>
 #include "quadris.h"
 #include "level0.h"
@@ -89,7 +89,13 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 					scoreBoard.setGameOver(true);
 					restartGame();
 					scoreBoard.setGameOver(false);
-					break;
+					xChange = 0;
+					yChange = 0;
+					rotateChange = 0;
+					transformedOr = currentBlock->getCurrentOr();
+					initialPoints = currentBlock->getOrPtsOf(currentBlock->getRefPoint(currentBlock->getCurrentOr()), currentBlock->getCurrentOr());
+					transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
+					// break;
 				} else {
 					transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
 					transformedOr = currentBlock->getCurrentOr();
@@ -125,10 +131,13 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 			bestPlace();
 			lastWasHint = true;
 		} else if (currCommand == "restart") {
+			scoreBoard.setGameOver(true);
 			restartGame();
+			scoreBoard.setGameOver(false);
 			xChange = 0;
 			yChange = 0;
 			rotateChange = 0;
+			transformedOr = currentBlock->getCurrentOr();
 			initialPoints = currentBlock->getOrPtsOf(currentBlock->getRefPoint(currentBlock->getCurrentOr()), currentBlock->getCurrentOr());
 			transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
 		} else if(currCommand == "norandom") {
@@ -161,6 +170,12 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 				scoreBoard.setGameOver(true);
 				restartGame();
 				scoreBoard.setGameOver(false);
+				xChange = 0;
+				yChange = 0;
+				rotateChange = 0;
+				transformedOr = currentBlock->getCurrentOr();
+				initialPoints = currentBlock->getOrPtsOf(currentBlock->getRefPoint(currentBlock->getCurrentOr()), currentBlock->getCurrentOr());
+				transformedRefPoint = currentBlock->getRefPoint(currentBlock->getCurrentOr());
 				break;
 			}
 			scoreBoard.updateNextBlock(nextBlock->getLetter());
@@ -171,7 +186,7 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 		}
 		// TODO: add other commands, if any left
 	}
-	if (!gameOver) {
+	if (!scoreBoard.getGameOver()) {
 		Pos change = {xChange, yChange};
 		transformedRefPoint = transformedRefPoint + change;
 		transformedOr = (transformedOr + rotateChange) % 4;
@@ -185,6 +200,7 @@ void GameBoard::notify(Subject<vector<string>> &notifier) {
 		}
 		return;
 	}
+	scoreBoard.setGameOver(false);
 }
 
 void GameBoard::updateBlockTurnCounts() {
@@ -223,7 +239,9 @@ void GameBoard::restartGame() {
 	nextBlock = nullptr;
 	delete currentBlock;
 	currentBlock = nullptr;
-	nextBlock = level->getBlock(); // Gets block from 
+	currentBlock = level->getBlock();
+	nextBlock = level->getBlock();
+	scoreBoard.updateNextBlock(nextBlock->getLetter()); // Gets block from 
 
 }
 
@@ -508,15 +526,15 @@ void GameBoard::bestPlace() {
 // Big 5 + ctor --------------------------------------
 
 // Add graphicsDisplay pointer
-GameBoard::GameBoard(TextDisplay *td , GraphicsDisplay *gd, int startLevel, int seed, string filename, bool bonusEnabled1) //, GraphicsDisplay *gd)
+GameBoard::GameBoard(TextDisplay *td/*, GraphicsDisplay *gd*/, int startLevel, int seed, string filename, bool bonusEnabled1) //, GraphicsDisplay *gd)
 // TODO:: Assign correct level by using the parameter "level"
 : grid{}, 
 lastTurnScore{0}, 
  currentBlock{nullptr},
   blockList{}, 
   scoreBoard{},
-  td{td},
-  gd{gd},
+  td{td}, //,
+  // gd{gd},
   gameOver{false},
   seed{seed},
   starCount{0},
@@ -535,9 +553,9 @@ lastTurnScore{0},
 	}
 
   	scoreBoard.attach(td);
-  	if (gd != nullptr) { // TODO: GD
-  		scoreBoard.attach(gd);
-  	}
+  	// if (gd != nullptr) { // TODO: GD
+  	// 	scoreBoard.attach(gd);
+  	// }
   	scoreBoard.updateLevel(level->getLevelNumber());
 	for (int i = 0; i < 18; i++) {
 		grid.emplace_back();
@@ -545,9 +563,9 @@ lastTurnScore{0},
 			Cell c{j, i};
 			grid.back().emplace_back(c);
 			grid.back().back().attach(td);
-			if (gd != nullptr) { // TODO: GD
-				grid.back().back().attach(gd);	
-			}
+			// if (gd != nullptr) { // TODO: GD
+			// 	grid.back().back().attach(gd);	
+			// }
 		}
 	}
 }

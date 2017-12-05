@@ -21,6 +21,26 @@ protected:
 
 public:
 
+	virtual char getLetter() = 0; // public
+	
+	// Gets the orientation
+	std::vector<Pos> getOrPtsOf(Pos givenRefPoint, int givenOrientation) const; // public
+	
+	void setInitialOrientation(int initOrientation); // public 
+	int getCurrentOr() const; // public 
+	void setCurrentOr(int newO); // public 
+	
+	Pos getRefPoint(int o) const; // public 
+	void setRefPoint(Pos newRefPoint); // public
+
+	
+	void setDropped(bool dropped); // public
+	void removeCellsAt(int row); // public
+	int getLevelCreated() const; // public
+	bool getIsHeavy() const; // public
+	void turnCountAddOne(); // public
+	int getTurnCount(); // public
+
 	// Big 5 + ctor
 	Block(int levelCreated, bool isHeavy = false);
 	Block(const Block &other) = delete;
@@ -28,39 +48,6 @@ public:
 	Block &operator=(const Block &other) = delete;
 	Block &operator=(Block &&other) = delete;
 	virtual ~Block();
-
-	// other methods
-	// std::vector<Pos> getOrientationPoints(int i);
-	// void translateX(bool toRight); 
-	// void translateY(); 
-	// void checkOrientation(const Block &b);
-	void rotate(bool clockwise); // USED
-
-	// void lockOrientationsAbout(Pos refPoint); // USED
-	void setRefPoint(Pos newRefPoint); // USED
-
-	// void setOrientation(int i); // 1
-	// int getCurrentOrientation(); // 2
-	// std::vector<Pos> getCurrOrientationPoints(); // USED // 3
-	// std::vector<Pos> getOrientationAtPoint(int orValue); // 4
-
-	virtual char getLetter() = 0; // USED
-	// std::vector<Pos> getOrientationWith(Pos otherRefPoint, int otherOrientation) const; // USED
-
-	// NEW
-	// Gets the orientation
-	std::vector<Pos> getOrPtsOf(Pos givenRefPoint, int givenOrientation) const;
-	int getCurrentOr() const;
-	void setCurrentOr(int newO);
-	Pos getRefPoint(int o) const;
-	void setInitialOrientation(int initOrientation);
-	void setDropped(bool dropped);
-	void removeCellsAt(int row);
-	int getLevelCreated() const;
-	bool getIsHeavy() const;
-
-	void turnCountAddOne();
-	int getTurnCount();
 
 
 };

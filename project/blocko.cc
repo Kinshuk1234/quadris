@@ -26,8 +26,8 @@ vector<vector<Pos>> BlockO::getOrientationsAt(Pos refPoint) const {
 }
 
 
-char BlockO::getLetter() { // USED
+char BlockO::getLetter() {
 	return myType;
 }
 
-// THERE IS ONLY ONE POSSIBLE ROTATION FOR O-BLOCK
+

@@ -16,8 +16,8 @@ public:
 	~BlockS() = default;
 
 	// overrides
-	std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const override; // USED
-	char getLetter() override; // USED
+	std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const override;
+	char getLetter() override;
 	
 };
 

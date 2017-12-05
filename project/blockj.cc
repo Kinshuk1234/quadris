@@ -27,7 +27,7 @@ vector<vector<Pos>> BlockJ::getOrientationsAt(Pos refPoint) const {
 }
 
 
-char BlockJ::getLetter() { // USED
+char BlockJ::getLetter() {
 	return myType;
 }
 

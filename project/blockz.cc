@@ -27,7 +27,7 @@ vector<vector<Pos>> BlockZ::getOrientationsAt(Pos refPoint) const {
 }
 
 
-char BlockZ::getLetter() { // USED
+char BlockZ::getLetter() { 
 	return myType;
 }
 

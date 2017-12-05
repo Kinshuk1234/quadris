@@ -15,9 +15,9 @@ public:
 	BlockJ &operator=(BlockJ &&other) = delete;
 	~BlockJ() = default;
 
-	// overrides
+
 	std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const override; // USED
-	char getLetter() override; // USED
+	char getLetter() override;
 };
 
 
