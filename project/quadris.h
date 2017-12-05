@@ -27,7 +27,6 @@ public:
 	// Big 5 + ctor
 	Quadris(bool bonusEnabled, int seed, bool graphicsEnabled, std::string filename, int startLevel);
 
-
 	Quadris(const Quadris &other) = delete;
 	Quadris(Quadris &&other) = delete;
 	Quadris &operator=(const Quadris &other) = delete;

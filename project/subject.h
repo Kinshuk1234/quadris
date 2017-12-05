@@ -6,12 +6,9 @@
 #include "observer.h"
 
 #include <iostream> // TEMP
-
-
-// template <typename DataType> class Observer; // 
+ 
 
 template <typename DataType> class Subject {
-	// shared_ptr used because unique_ptr doesn't allow for incomplete type deletion
 	std::vector<Observer<DataType> *> observerList;
 public:
 	void notifyAll();
@@ -30,9 +27,6 @@ void Subject<DataType>::attach(Observer<DataType> *observerPointer) {
 
 template <typename DataType>
 void Subject<DataType>::notifyAll() {
-	// for (auto i = observerList.begin(); i != observerList.end(); ++i) {
-	// 	(*i)->notify(*this);
-	// }
 	for (auto &ob : observerList) {
 		ob->notify(*this);
 	}

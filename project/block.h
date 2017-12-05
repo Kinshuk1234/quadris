@@ -21,25 +21,25 @@ protected:
 
 public:
 
-	virtual char getLetter() = 0; // public
+	virtual char getLetter() = 0; 
 	
 	// Gets the orientation
-	std::vector<Pos> getOrPtsOf(Pos givenRefPoint, int givenOrientation) const; // public
+	std::vector<Pos> getOrPtsOf(Pos givenRefPoint, int givenOrientation) const; 
 	
-	void setInitialOrientation(int initOrientation); // public 
-	int getCurrentOr() const; // public 
-	void setCurrentOr(int newO); // public 
+	void setInitialOrientation(int initOrientation);  
+	int getCurrentOr() const; 
+	void setCurrentOr(int newO); 
 	
-	Pos getRefPoint(int o) const; // public 
-	void setRefPoint(Pos newRefPoint); // public
+	Pos getRefPoint(int o) const; 
+	void setRefPoint(Pos newRefPoint); 
 
 	
-	void setDropped(bool dropped); // public
-	void removeCellsAt(int row); // public
-	int getLevelCreated() const; // public
-	bool getIsHeavy() const; // public
-	void turnCountAddOne(); // public
-	int getTurnCount(); // public
+	void setDropped(bool dropped); 
+	void removeCellsAt(int row); 
+	int getLevelCreated() const;  
+	bool getIsHeavy() const; 
+	void turnCountAddOne(); 
+	int getTurnCount(); 
 
 	// Big 5 + ctor
 	Block(int levelCreated, bool isHeavy = false);

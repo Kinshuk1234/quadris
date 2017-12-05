@@ -6,6 +6,9 @@
 
 class BlockZ : public Block {
 	char myType;
+
+protected:
+	std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const override; 
 public:
 	// ctors
 	BlockZ(int levelCreated, bool isHeavy = false);
@@ -16,7 +19,7 @@ public:
 	~BlockZ() = default;
 
 	// overrides
-	std::vector<std::vector<Pos>> getOrientationsAt(Pos refPoint) const override; 
+	
 	char getLetter() override; 
 
 };
