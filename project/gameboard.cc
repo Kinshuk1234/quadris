@@ -532,10 +532,10 @@ GameBoard::GameBoard(TextDisplay *td/*, GraphicsDisplay *gd*/, int startLevel, i
 lastTurnScore{0}, 
  currentBlock{nullptr},
   blockList{}, 
-  scoreBoard{},
-  td{td}, //,
+  scoreBoard{}, //,
   // gd{gd},
   gameOver{false},
+  td{td},
   seed{seed},
   starCount{0},
   bonusEnabled{bonusEnabled1} {  

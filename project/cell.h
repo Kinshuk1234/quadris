@@ -11,9 +11,7 @@ class Cell : public Subject<CellData> { // Subject to textdisplay
 
 public:
 	void set(char newBlockType);
-	void clear();
 	char getLetter() const;
-	void setRow(int i);
 	void setPos(Pos newPos);
 	Pos getPosition() const;
 

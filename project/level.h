@@ -10,11 +10,14 @@ class Block;
 
 class Level {
 	int levelNumber;
+
 public:
 	Level(int levelNum);
+	virtual ~Level();
+
+
 	Block *getSpecificBlock(std::string blockLetter);
 	virtual Block *getBlock() = 0;
-	virtual ~Level();
 	virtual int getLevelNumber() const;
 };
 

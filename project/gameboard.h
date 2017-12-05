@@ -35,9 +35,9 @@ class GameBoard : public Observer<std::vector<std::string>> {
 	Block *nextBlock;
 	std::vector<Pos> hintPoints;
 	TextDisplay *td;
+	// GraphicsDisplay * gd;
 	int seed;
 	int starCount;
-	// GraphicsDisplay * gd;
 	bool bonusEnabled;
 
 public:
@@ -45,24 +45,9 @@ public:
 	// TODO: SO MANY OF THESE METHODS CAN BE PRIVATE
 
 	void init(); // public method 
-	
 	void notify(Subject<std::vector<std::string>> &notifier);
-
-	void changeCell(int r, int c, char ch); // TEMP
-
-	bool tryNewBlock(Block *blockToBePlaced = nullptr);
-	void placeCurrentBlock();
-	void updateGrid(std::vector<Pos> points, char letter);
-	Cell &getCellAt(Pos p);
-	void removeFullRows();
-	void refreshBoard(); // TOOD: may not need if Cell doesn't use it's coords
-
-	void restartGame();
 	
-	// hint method
-	bool checkCoor(int row, int col, std::vector<Pos> currentBlockPoints);
-	int totalEmptyRows(std::vector<Pos> currentBlockPoints);
-	void bestPlace();
+	
 
 	// Big 5 + ctor
 	GameBoard(TextDisplay *td /*, GraphicsDisplay *gd*/, int startLevel, int seed, std::string filename, bool bonusEnabled); //, GraphicsDisplay *gd);
@@ -73,12 +58,25 @@ public:
 	~GameBoard();
 
 private:
+	void placeCurrentBlock();
+	bool tryNewBlock(Block *blockToBePlaced = nullptr);
 	bool isFittable(const std::vector<Pos> &oldPoints, const std::vector<Pos> &currOrientation, const bool dropCheck); // TODO: make const, then make getCellAt const, then make Cell copy ctor, Subject copy ctor
 	bool dropBlock(Block *b);
 	void levelChange(bool goUp);
-
 	void removeOldBlocks();
 	void updateBlockTurnCounts();
+
+	// hint method
+	bool checkCoor(int row, int col, std::vector<Pos> currentBlockPoints);
+	int totalEmptyRows(std::vector<Pos> currentBlockPoints);
+	void bestPlace();
+
+	void restartGame();
+
+	void updateGrid(std::vector<Pos> points, char letter);
+	Cell &getCellAt(Pos p);
+	void removeFullRows();
+	void refreshBoard(); // TOOD: may not need if Cell doesn't use it's coords
 };
 
 #endif

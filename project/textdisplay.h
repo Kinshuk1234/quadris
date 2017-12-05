@@ -21,10 +21,6 @@ class TextDisplay : public Observer<CellData>, public Observer<ScoreBoardData> {
 public:
 	void notify(Subject<CellData> &notifier) override;
 	void notify(Subject<ScoreBoardData> &notifier) override;
-	int getCurrentLevel() const;
-	int getCurrentScore() const;
-	int getHiScore() const;
-	char getNextBlockLetter() const;
 
 	// Big 5 + ctor
 	TextDisplay();

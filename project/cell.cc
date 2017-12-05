@@ -14,16 +14,8 @@ void Cell::set(char newBlockType) {
 	notifyAll();
 }
 
-void Cell::clear() {
-	set('-'); // TODO: set to appropriate empty space character
-}
-
 char Cell::getLetter() const {
 	return blockType;
-}
-
-void Cell::setRow(int i) {
-	position.y = i;
 }
 
 void Cell::setPos(Pos newPos) {
