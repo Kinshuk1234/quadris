@@ -15,6 +15,8 @@ class GraphicsDisplay: public Observer<ScoreBoardData>, public Observer<CellData
   int hiScore;
   int currentScore;
   int currentLevel;
+  char nextBlockLetter;
+  bool gameOver;
  public:
   GraphicsDisplay();
 
