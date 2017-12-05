@@ -53,7 +53,7 @@ Quadris::~Quadris() {
 	textDisplay = nullptr;
 	delete gameBoard;
 	gameBoard = nullptr;
-	delete graphicsDisplay;
+	delete graphicsDisplay; // TODO: GD
 	graphicsDisplay = nullptr;
 }
 

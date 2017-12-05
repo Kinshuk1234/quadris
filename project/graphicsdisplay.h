@@ -12,10 +12,11 @@ class Cell;
 class GraphicsDisplay: public Observer<ScoreBoardData>, public Observer<CellData> {
   const int gridSize, winSize;
   Xwindow xw;
-  std::vector<std::vector<char>> grid;
   int hiScore;
   int currentScore;
   int currentLevel;
+  char nextBlockLetter;
+  bool gameOver;
  public:
   GraphicsDisplay();
 
