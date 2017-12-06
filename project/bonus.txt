@@ -1,0 +1,17 @@
+Bonus features
+
+These are activated through command line when user enables bonus features of Quadris. 
+1) We added the feature to make the tenth block disappear when user is not able to clear at least one row. 
+We maintained a count inside each block and itís incremented with every drop of new block. 
+Once that count reaches 10, we check if any row has been deleted. If none of the rows have been deleted, 
+then we delete every cell of that block, thus eventually deleting the entire block.
+
+2) The CommandInterpreter has an extra feature to add new command or rename an existing command. 
+Whenever a user enters a ìnewcomî command, it prompts the user to enter a new command name. 
+And then it takes a list of primitive commands to create a macro command until user is done. If user wants to rename any command, 
+then the old command is deleted and replaced with new command.  
+ 
+3) Skip deletes the current block and spawns a new block. If the new block cannot be legally fitted in the board,
+then game is over. Or else, the game proceeds in the usual way.
+
+

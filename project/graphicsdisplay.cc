@@ -31,6 +31,7 @@ void GraphicsDisplay::notify(Subject<CellData> &notifier) {
   xw.drawString(50, 10, string("Level:   " + to_string(currentLevel)));
   xw.drawString(50, 25, string("Score:   " + to_string(currentScore)));
   xw.drawString(50, 40, string("Hi Score:   " + to_string(hiScore)));
+
   if(cd.blockType == 'I') {
     xw.fillRectangle(j * cellSize + 47, i * cellSize - 25, 30, 30, Xwindow::Orange);
   } else if(cd.blockType == 'J') {
@@ -75,7 +76,30 @@ void GraphicsDisplay::notify(Subject<CellData> &notifier) {
     xw.drawString(50, 600, string("ZZ"));
     xw.drawString(50, 110, string(" ZZ"));
   }
+  xw.drawString(0, 100, string("Next Block:"));
+  if (nextBlockLetter == 'I') {
+    xw.drawString(0, 101, string("IIII"));
+  } else if (nextBlockLetter == 'J') {
+    xw.drawString(0, 105, string("J"));
+    xw.drawString(0, 110, string("JJJ"));
+  } else if (nextBlockLetter == 'L') {
+    xw.drawString(0, 105, string("LLL"));
+    xw.drawString(0, 110, string("L"));
+  } else if (nextBlockLetter == 'O') {
+    xw.drawString(0, 105, string("OO"));
+    xw.drawString(0, 110, string("OO"));
+  } else if (nextBlockLetter == 'S') {
+    xw.drawString(0, 105, string(" SS"));
+    xw.drawString(0, 110, string("SS"));
+  } else if (nextBlockLetter == 'T') {
+    xw.drawString(0, 105, string("TTT"));
+    xw.drawString(0, 110, string(" T"));
+  } else if (nextBlockLetter == 'Z') {
+    xw.drawString(0, 105, string("ZZ"));
+    xw.drawString(0, 110, string(" ZZ"));
+  }
 }
+
 
 
 
