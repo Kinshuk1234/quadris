@@ -5,7 +5,7 @@
 #include <memory> // For pointer to TextDisplay
 #include "observer.h"
 // #include "subject.h"
-// #include "graphicsdisplay.h"
+#include "graphicsdisplay.h"
 #include "cell.h"
 #include "block.h"
 #include "scoreboard.h"
@@ -14,7 +14,7 @@
 
 class TextDisplay;
 
-// class GraphicsDisplay;
+class GraphicsDisplay;
 
 class ScoreBoard;
 
@@ -35,7 +35,7 @@ class GameBoard : public Observer<std::vector<std::string>> {
 	Block *nextBlock;
 	std::vector<Pos> hintPoints;
 	TextDisplay *td;
-	// GraphicsDisplay * gd;
+	GraphicsDisplay * gd;
 	int seed;
 	int starCount;
 	bool bonusEnabled;
@@ -50,7 +50,7 @@ public:
 	
 
 	// Big 5 + ctor
-	GameBoard(TextDisplay *td /*, GraphicsDisplay *gd*/, int startLevel, int seed, std::string filename, bool bonusEnabled); //, GraphicsDisplay *gd);
+	GameBoard(TextDisplay *td , GraphicsDisplay *gd, int startLevel, int seed, std::string filename, bool bonusEnabled); //, GraphicsDisplay *gd);
 	GameBoard(const GameBoard &other) = delete;
 	GameBoard(GameBoard &&other) = delete;
 	GameBoard &operator=(const GameBoard &other) = delete;

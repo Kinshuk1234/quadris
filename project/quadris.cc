@@ -1,7 +1,7 @@
 #include <memory>
 #include "quadris.h"
 #include "gameboarddata.h"
-// #include "graphicsdisplay.h"
+#include "graphicsdisplay.h"
 
 
 // TEMP:
@@ -15,8 +15,8 @@ Quadris::Quadris (bool bonusEnabled, int seed, bool graphicsEnabled, string file
   gameBoard{NULL},
    level{startLevel},
     seed{seed},
-     filename{filename} //,
-      // graphicsDisplay{graphicsEnabled ? new GraphicsDisplay{} : nullptr}
+     filename{filename} ,
+      graphicsDisplay{graphicsEnabled ? new GraphicsDisplay{} : nullptr}
 { 
  	if (startLevel > 4) { level = 4; }
  	else if (startLevel < 0) { level = 0;}
@@ -25,7 +25,7 @@ Quadris::Quadris (bool bonusEnabled, int seed, bool graphicsEnabled, string file
 
 void Quadris::init() {
 	// add graphicsDisplay too
-	gameBoard = new GameBoard{textDisplay/*, graphicsDisplay*/, level,seed,filename, bonusEnabled};
+	gameBoard = new GameBoard{textDisplay, graphicsDisplay, level,seed,filename, bonusEnabled};
 	this->attach(gameBoard); // This inherits from CommandInterpreter
 	string command = "";
 
@@ -53,8 +53,8 @@ Quadris::~Quadris() {
 	textDisplay = nullptr;
 	delete gameBoard;
 	gameBoard = nullptr;
-	// delete graphicsDisplay; // TODO: GD
-	// graphicsDisplay = nullptr;
+	delete graphicsDisplay; // TODO: GD
+	graphicsDisplay = nullptr;
 }
 
 

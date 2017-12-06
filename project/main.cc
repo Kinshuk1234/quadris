@@ -10,10 +10,6 @@ using namespace std;
 int main(int argc, const char * argv[]) {
 
 	///////////////////////////////////////////////////
-	cout << "Hello Quadris!" << endl;
-	cout << "--------------" << endl << endl;
-	//Quadris q;
-	// q.init();
 
 	
 	bool withBonus = false;
@@ -57,3 +53,5 @@ int main(int argc, const char * argv[]) {
 	q.init();
 	
 }
+
+
